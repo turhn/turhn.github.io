@@ -85,6 +85,30 @@
     <section class="post">
       <header>
         <h2 class="post-title">
+          <a class="post-link" href="/blog/newtonsoftjson-iin-custom-datetime-converter/">Newtonsoft.Json için Custom DateTime Converter</a>
+        </h2>
+        <p class="post-meta">
+        Aug 16, 2014
+        
+        <a class="post-category" href="/tag/.NET">.NET</a>
+        
+        <a class="post-category" href="/tag/C#">C#</a>
+        
+        </p>
+      </header>
+      <div class="post-description">
+        <summary>
+          <p>
+            Newtonsoft.Json en .NET içerinde artık standart Json kütüphanesi sayılabilir. Çoğu zaman Json ile AJAX işlemleri yürüttüğümüzde tarih formatları başımızı ağrıtır. Bunun farklı kültürleri var, UTC’si haticesi uzayıp gider. Mantıklı ve uygulaması kolay olan iki ayaklı bir çözümüm var : Sunucudan veri okurken her zaman UTC olarak veri çek, formatlama işini JavaScript halletsin. Sunucuya veri yollamadan önce uygulama çapında DateTime girişi yapacak tüm kontroller standart bir format kullansın (örn : ‘dd-mm-yyyy’) Sunucu ile yapılacak bilgi alışverişini...
+          </p>
+          <a class="continue-reading-button pure-button" href="/blog/newtonsoftjson-iin-custom-datetime-converter/">Devamını Oku</a>
+        </summary>
+      </div>
+    </section>
+    
+    <section class="post">
+      <header>
+        <h2 class="post-title">
           <a class="post-link" href="/blog/blogumun-yeni-yeri-ve-tasarm/">Blog'umun Yeni Yeri ve Tasarımı</a>
         </h2>
         <p class="post-meta">
@@ -292,34 +316,6 @@
             Her ne kadar seçmiş olduğum başlık ASP.NET içersede bu yapıyı WPF, WinForms, WindowsServices, ASP.NET MVC gibi .NET ‘in hakim olduğu heryerde kullanabileceğinizi öncelikle belirtmek isterim. İnternet sitelerimizi OutputCache ile önbelleğe aldık ancak sık sık veritabanından aynı veriyi çekmek veya IO işlemleri gerçekleştirmek ciddi performans problemlerine sebep oluyor. Bunu aşmak için verileri önbelleğe almak oldukça geçerli bir çözümdür. .NET kütüphanesindeki ObjectCache sınıfı bu işin biçilmiş kaftandır. Bu yazımda sizlere ObjectCache sınıfını kullanarak veriönbellekme işlemi gerçekleştirmek için...
           </p>
           <a class="continue-reading-button pure-button" href="/blog/c-asp-net-icin-data-cache/">Devamını Oku</a>
-        </summary>
-      </div>
-    </section>
-    
-    <section class="post">
-      <header>
-        <h2 class="post-title">
-          <a class="post-link" href="/blog/mvc4-ile-upload-edilen-dosyalari-asenkron-olarak-kaydetme/">MVC4 ile Upload Edilen Dosyaları Asenkron Olarak Kaydetme</a>
-        </h2>
-        <p class="post-meta">
-        Jun 14, 2013
-        
-        <a class="post-category" href="/tag/JavaScript">JavaScript</a>
-        
-        <a class="post-category" href="/tag/ASP.NET MVC">ASP.NET MVC</a>
-        
-        <a class="post-category" href="/tag/C#">C#</a>
-        
-        <a class="post-category" href="/tag/.NET">.NET</a>
-        
-        </p>
-      </header>
-      <div class="post-description">
-        <summary>
-          <p>
-            C#’ta asenkron metotlar her zamankinden daha popüler. Dosya kaydetmek gibi işlemciyi meşgul edebilecek bir işlem için asenkron metot yazmak akıllıca bir çözüm gibi görünüyor. Bundan yola çıkaran sizlere XMLHttpRequest ile gönderilen JavaScript File nesnesinin asenkron bir yapıyla diske yadırılması işlemini göstermek istiyorum. Controllerımıza böyle bir action ekleyelim: [HttpPost] public async Task&lt;actionresult&gt; UploadFiles() { for (int i = 0; i &lt; Request.Files.Count; i++) { try { HttpPostedFileBase file = Request.Files[i]; if (file == null) continue; string...
-          </p>
-          <a class="continue-reading-button pure-button" href="/blog/mvc4-ile-upload-edilen-dosyalari-asenkron-olarak-kaydetme/">Devamını Oku</a>
         </summary>
       </div>
     </section>

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://turhancoskun.com/blog/ruby-ve-komut-satiri-ile-localhost/</loc>
+    <lastmod>2014-12-26T00:00:00+02:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</loc>
     <lastmod>2014-12-01T00:00:00+02:00</lastmod>
     <priority>0.8</priority>
@@ -137,151 +142,19 @@
   </url>
   <url>
     <loc>http://turhancoskun.com/aboutme/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
+    <lastmod>2014-12-25T05:40:56+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://turhancoskun.com/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
+    <lastmod>2014-12-25T05:40:56+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>http://turhancoskun.com/etiketler/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/Firebird/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/.NET/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/%C4%B0pucu/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/C%23/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/ASP.NET%20MVC/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/JavaScript/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/KnockoutJs/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/Ajax/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/Genel/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/Git/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/VCS/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/Nodejs/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/Unix/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/Komut%20Sat%C4%B1r%C4%B1/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/Dersler/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/C++/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/Ruby/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/AngularJs/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/Linux/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/Ruby%20on%20Rails/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/TDD/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://turhancoskun.com/tag/Clojure/</loc>
-    <lastmod>2014-12-25T05:03:53+02:00</lastmod>
+    <lastmod>2014-12-25T05:40:56+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
