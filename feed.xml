@@ -1,0 +1,1431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Turhan Coskun</title>
+    <description>Ruby, JavaScript, Clojure ve diğer yazılım maceralarım
+</description>
+    <link>http://turhancoskun.com/</link>
+    <atom:link href="http://turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Thu, 25 Dec 2014 05:03:53 +0200</pubDate>
+    <lastBuildDate>Thu, 25 Dec 2014 05:03:53 +0200</lastBuildDate>
+    <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Clojure ile JVM ve Lisp dünyasına &#39;Merhaba Dünya&#39;</title>
+        <description>&lt;p&gt;Lisp ve JVM’in buluştuğu Clojure ile ne zamandan beri tanışmak istiyordum. Clojure,
+söylenenlere göre Lisp fanatiklerinin Lisp’de en sevdiği özelliklerin tutulduğu ve nefret
+edenlerinin en nefret ettiği parçaların çıkarıldığı bir programlama dili. Java
+sanal makinesi üzerinde çalıştığı için bütün Java kütüphanelerini kullanabiliyor,
+Java ve diğer JVM dilleriyle ortak kullanabileceği kod tabanları oluşturabiliyor.
+Kod yapısına baktığınızda direkt Lisp gibi görünse de parantez kullanımı biraz daha
+azaltılmış. Lisp yapısının haricinde dilin harika özellikleri var.&lt;/p&gt;
+
+&lt;p&gt;Fonksiyonel programlama son zamanlarda oldukça popüler. Fonksiyonel programlamada
+yazılım kalitesini arttıracak önemli konseptler ve yaklaşımlar bulunuyor. Zaman zaman
+bunları Ruby ve Python gibi dillere de uyarladığımız oluyor(immutable object vs).
+Ancak gerçek hayatta işler malesef tamamen fonksiyonel olmuyor. Zaten saf fonksiyonel programlama
+her problemin çözümü olsaydı bugün saf fonksiyonel bir dil olan Haskell gibi diller en yaygın dillerden olurdu. Scala,
+Erlang, F#, Groovy vs birçok fonksiyonel dilden Clojure seçmemdeki temel sebep Lisp mantığının
+hayat kolaylaştırıcı yönlerinin modern standartlarla buluşması ve fonksiyonel programlamanın gerçek hayat senaryolarına
+uygun olan yönlerini mantıklı bir şekilde harmanlaması oldu.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Lisp lehçesi olması&lt;/li&gt;
+  &lt;li&gt;Fonksiyonel programlamanın iyi yönlerini alması&lt;/li&gt;
+  &lt;li&gt;Thread-safe olması&lt;/li&gt;
+  &lt;li&gt;Güçlü ve kolay kullanılan paralel programlama özellikleri olması&lt;/li&gt;
+  &lt;li&gt;Büyük ve küçük ölçekli projelere uygun olması&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Yukarıda saydığım özelliklerin büyük çoğunluğu kısmen veya tamamı birçok dilde zaten var.
+Ancak bütün bunların haricinde ben bilhassa o dilde kod yazarken aldığım zevke bakıyorum. Bu nedenle
+Clojure bana uzun süre arkadaşlık edecekmiş gibi duruyor.&lt;/p&gt;
+
+&lt;p&gt;Örn Java ile boş string testi yapmak için:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StringUtils&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;isBlank&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strLen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strLen&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strLen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Character&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isWhitespace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;charAt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Aynı kodun clojure ile yazılması:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;defn &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;blank?&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;every? &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Character/isWhitespace&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Tek satırda işi bitirmek ne güzel değil mi? Özellikle farklı bir tarz syntax ile. :)&lt;/p&gt;
+
+&lt;p&gt;Herkesin bildiği üzere çok kod beraberinde daha çok hata ihtimali, daha uzun yazma
+süresi ve bakım konusunda daha büyük zorluklar getirir. Uzun lafın kısası çok kod eşittir çok
+maliyet. Aslında bu noktada Clojure, girişimlerin de seveceği bir programlama dili.&lt;/p&gt;
+
+&lt;p&gt;Öncelikle Clojure kullanmaya başlamak için &lt;em&gt;Leiningen&lt;/em&gt; isim bir araç yükledim. Pek çok
+alternatifi olmasına rağmen en hoşuma giden bu oldu. Nedir diye sorarsanız Ruby’den bildiğimiz &lt;em&gt;rake&lt;/em&gt; gibi
+bir komut satırı aracı. Terminal’e &lt;em&gt;lein&lt;/em&gt; adında bir komut ekliyor. Aslında rake’den ziyade&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;rake&lt;/li&gt;
+  &lt;li&gt;gem&lt;/li&gt;
+  &lt;li&gt;rails (CLI olarak)&lt;/li&gt;
+  &lt;li&gt;repl&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;gibi birçok aracım kullanışlı bir şekilde bir araya gelmesi diyebiliriz. &lt;em&gt;Leiningen&lt;/em&gt; yüklemek
+için OS X kullanıyorsanız :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;brew install leiningen&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;komutunu kullanabilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;Daha sonra komut satırına&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;lein new helloapp
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;helloapp
+find .&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;komutlarını girerek tipik bir leiningen projesinin yapısı görebilirsiniz.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;lein &lt;span class=&quot;nb&quot;&gt;help&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;komutu ile lein ile çalıştırabileceğiniz komutların listesini kontrol edebilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;Bu noktada Lisp dünyasına ‘merhaba’ demek için&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;lein repl&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;komut satırında &lt;strong&gt;user=&amp;gt;&lt;/strong&gt; promptunun olduğu satıra:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lisp&quot; data-lang=&quot;lisp&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;println&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Merhaba Dünya&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;İşte bu kadar.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 01 Dec 2014 00:00:00 +0200</pubDate>
+        <link>http://turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</guid>
+        
+        <category>Clojure</category>
+        
+        <category>Dersler</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Rails ile TDD - 3 (Controller&#39;ların test edilmesi)</title>
+        <description>&lt;p&gt;Yazı dizimizin üçüncü bölünme MVC’nin C’si yani Controller testlerinin nasıl
+yapıldığını öğreneceğiz.&lt;/p&gt;
+
+&lt;p&gt;Controller testleri aslında birçok yönden model testlerinden farklı değiller.
+Controller testlerinin en büyük faydalarından biri de kodumuzda büyük ölçekli
+refactor işlemleri uyguladığımızda, uygulamamızda  meydana gelen davranış şekillerinin
+zamanında farkedilerek can simidi vazifesi görmeleri olacaktır.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Peki controller üzerinde neleri test edeceğiz?&lt;/strong&gt;
+Bu sorunun yanıtı biraz geliştiriciye ve uygulamaya bağlı olsa da bazı temel
+şeyleri mutlaka test etmenizi öneririm.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Mime Type: Dönen yanıt istediğimiz formatta mı? html, json, xml vs.&lt;/li&gt;
+  &lt;li&gt;Http Status: Dönen http yanıt kodu doğru mu? 201, 200, 400, 403 vs&lt;/li&gt;
+  &lt;li&gt;Template: Bizim istediğimiz şablon mu gösteriliyor? new, edit vs.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;TDD ile geliştirme yaparken sürekli editör ile konsol arasında gidip gelmek yorucu
+olabilir. Böyle bir durumda eğer benim gibi text editör olarak vim kullanıyorsanız
+tmux adındaki terminal çoklayıcı kullanarak ekranı bölebilir ve hatta guard gibi
+bazı ruby gemleri yardımıyla test dosyalarınız değiştikçe otomatik çalışmalarını
+sağlayabilirsiniz. Daha sonra Rails geliştirme ortamları hakkında ayrı bir yazı yazarak,
+kıyaslamalar yapmayı ve bu konu hakkında fikirler paylaşmayı düşünüyorum.&lt;/p&gt;
+
+&lt;p&gt;Yazının bu kısmından itibaren controller yerine denetleyici tanımını kullanacağım. O yüzden
+bu denetleyici nereden çıktı diye şaşırmayın derim.&lt;/p&gt;
+
+&lt;h2 id=&quot;users-denetleyicisi&quot;&gt;Users Denetleyicisi&lt;/h2&gt;
+
+&lt;p&gt;Öncelikle User denetleyicisi için test yazacağız ve bu sefer herşeyi manuel gerçekleştirelim.
+Yani rails generate komutu kullanmak yerine dosyaları bir bir kendimiz oluşturalım.
+Rails ile denetleyici testlerini manuel yoldan geçirebilirseniz bu işin mantığını büyük çoğunlukla
+anlamışsınız demektir.&lt;/p&gt;
+
+&lt;p&gt;Genel Beklentilerimiz:
+1. User email adresini girdiğinde email, daha önce kayıtlı ise doğrudan Todo listesine yönlenecek
+2. Email adresi kayıtlı değilse, email adresi veri tabanına kaydedilip, todo listesine yönlececek&lt;/p&gt;
+
+&lt;p&gt;Model testlerimizin spec klasörü altında models isimli dizinde tutulduğunu önceki bölümden
+hatırlayın. Şimdi ise bize gereken bir controllers/ dizini.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git checkout -b users-controller
+mkdir spec/requests&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Şimdi ise yeni oluşturduğumuz controllers dizininde users_spec.rb isimli bir dosya oluşturun.
+Denetleyici tanımları çoğul eki ile yapıldığı için onun test edileceği spec dosyasını da
+bu kurala uygun olarak oluşturduk. Daha önce Rails’in birçok önkabul ile işlediğini söylemiştim.
+Denetleyici isimlerinin çoğul takısı ile yapılması da bunlardan birisi.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rails_helper&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;UsersController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:controller&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;GET #new&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;assigns a user to @user class variable&amp;#39;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;POST #create&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;when valid&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;saves the user to database&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;when invalid&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rerenders the :new template&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Yazım dili olarak model testlerinden çok da farklı değil gördüğünüz gibi. Tanımlarken
+kullandığımız :type artık :model yerine :controller oldu. Testlerde büyük harflerle
+http metotlarını ve # karakterinin ardın hangi ‘action’ çağrılacağını belirttik. Okunaklı
+testler yazmak açısından bu stil kurallarını takip etmek önemli. Bu konuda daha fazla
+bilgiye ulaşmak için &lt;a href=&quot;http://betterspecs.org/&quot;&gt;Better Specs&lt;/a&gt; sitesini incelemenizi tavsiye ederim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rspec spec/controllers/users_spec.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Kodunu çalıştırdığımızda, doğal olarak UsersController diye bir tanım olmadığını söyleyecek.
+İlk önce denetleyici tanımını yapmak için app/controllers/users_controller.rb dosyasını oluşturun ve
+içeriğini aşağıdaki gibi doldurup kaydedin.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UsersController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Testi tekrar çalıştırdığınızda sarı renkte bekleyen testlerin listelendiğini göreceksiniz.&lt;/p&gt;
+
+&lt;p&gt;Şimdi users_spec.rb dosyasını tekrar açalım ve aşağıdaki düzenlemeleri yapalım.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;assigns a user to @user class variable&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:new&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;assigns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_a_new&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Test kodumuzu çalıştırdığımızda bize Users#new ile eşleşen bir rota olmadığı hatasını verecek.&lt;/p&gt;
+
+&lt;p&gt;config/routes.rb dosyasını açıp gerekli rota eklemesini yapalım. İçerisinde yorum satırı
+yapılmış bir sürü örnek rota göreceksiniz. Onları daha sonra incelemeniz için silmiyorum.
+Aşağıdaki gibi olacak şekilde koda ekleme yapın.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;draw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;only&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:new&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Şimdi test kodumuzu tekrar çağırıp kontrol edelim. Aldığımız hata çıktısı :
+&lt;em&gt;The action ‘new’ could not be found for UsersController&lt;/em&gt; Yani bu hatadan sıyrılmak için
+UsersController sınıfında :new adında bir metot oluşturmamız gerekecek. Bunun için
+app/controllers/users_controller.rb dosyasını açıyoruz va aşağıdaki gibi düzenliyoruz.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UsersController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Testi çalıştırdığınızda MissingTemplate hatası alacaksınız. Bu hatanın sebebi artık Rails
+uygulamamız /users/new url’si çağrıldığında hangi kod dilimini çağırması gerektiğini biliyor
+ancak html içeriğinin yerini bulamıyor. Sadece hatanın geçmesini sağlamak için app/views/users/new.html.erb
+dosyasını oluşturmanız yeterli.&lt;/p&gt;
+
+&lt;p&gt;Unix tabanlı bir sistemde kısaca aşağıdaki komutu yazabilirsiniz.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mkdir app/views/users
+touch app/views/users/new.html.erb
+rspec spec/requests/users_spec.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Artık testimizi geçirmek için sona geldik. Gerekli alt yapının hazırlanması tamamlandı. Şu an
+ekranda gördüğünüz hata eksik bir dosya ya da tanımlanmamış bir sınıftan ziyade karşılanılmamış
+bir beklenti olması gerekiyor. Yani @user değişkenine yeni bir user atamak. Denetleyici dosyasını
+app/controllers/users_controller.rb adresinden tekrar açıp aşağıdaki düzenlemeyi yapın.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UsersController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;  
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Testi çalıştırdığınızda bir yeşilimiz olacak.&lt;/p&gt;
+
+&lt;p&gt;spec/controllers/users_spec.rb dosyasını tekrar açarak testlerimizi yazmayı sürdürelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;when valid&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;saves the user to database&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;person@example.com&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attributes&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Gördüğünüz gibi burada farklı bir except yapısı kullandık. Rspec belgelendirmelerini
+incelerseniz bu tip farklı yaklaşımlarla karşılaşabilirsiniz. Burada post metodunun
+kullanı sayısını 1 arttırmasını bekliyoruz.&lt;/p&gt;
+
+&lt;p&gt;Testi çalıştırın. No route yazısı ile karşılaştıysanız nereden başlamamız gerektiğini
+tahmin edersiniz diye umuyorum.&lt;/p&gt;
+
+&lt;p&gt;Hemen config/routes.rb dosyasını tekrar açıp daha önce yazdığımız satırı aşağıdaki gibi
+dikkatlice düzenleyin.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;only&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Not: Burada only: kısmının artık bir array (dizi değişkeni) olduğuna dikkat edin.&lt;/p&gt;
+
+&lt;p&gt;Testi çalıştırın ve göreceksiniz ki :
+&lt;em&gt;The action ‘create’ could not be found for UsersController&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Post olayı için yazdığımız beklentilere bakarsanız, veri tabanına başarı ile kaydetmesini
+hata olması halinde ise yeniden :new şablonunu görüntülemesini istiyoruz. Denetleyici
+dosyası açıp aşağıdaki gibi düzenleyin.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UsersController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;  
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:user_id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;redirect_to&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:todos&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;render&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:new&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;user_params&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;permit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Burada değinmem gereken birkaç nokta olduğunu düşünüyorum. Öncelikle user_params
+diyerek izin verilen parametreleri tek tek bildirmemiz gerekiyor. Rails’in bu özelliğine
+&lt;em&gt;Strong Parameters&lt;/em&gt; deniliyor. Uygulamaların güvenliği açısında müthiş bir özellik. Daha
+ayrıntılı bilgiyi &lt;a href=&quot;http://edgeapi.rubyonrails.org/classes/ActionController/StrongParameters.html&quot;&gt;buraya&lt;/a&gt;
+tıklayarak bulabilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;session ile kullanıcı id’sini depoladık. Bu basitçe bize Todos kısımlarına girdiğimizde
+yetkilendirme yapmamızı sağlayacak. redirect_to :todos kısmı kodu çalıştırdığınız anda
+öyle bir rota tanımı olmadığı için hata verecektir. Bu kısmı kestirme geçmek için config/routes.rb
+dosyasında daha önce User tanımı için yaptığımız rota tanımının hemen altına&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:todos&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;satırını ekleyin. Bu gerekli tanımların oluşmasını otomatik olarak sağlayacaktır.
+@user.save ifadesi bize bir boolean yani true-false yanıtı döndürüyor. Bunu koşullandırma
+ifadesi içine alırken bir hata oluşması durumunda tekrar :new şablonunu göstermesi gereken
+kısmı da boş geçmedik.&lt;/p&gt;
+
+&lt;p&gt;Son tanımladığımız rotadan sonra rotaların ne durumda olduğunu test etmek için terminal
+ekranına&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rake routes&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;komutunu girerek otomatik oluşturan rota yardımcı metotlarını inceleyebilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;Şimdi test kodumuzu çalıştırdığımızda testimizin geçmesi gerekiyor.&lt;/p&gt;
+
+&lt;p&gt;Test dosyamızı açarak düzenlemeye devam edelim:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;when invalid&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rerenders the :new template&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;wrong email&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attributes&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;render_template&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:new&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Gördüğün gibi testlerimiz artık hatalı bir email adresi olduğunu da farkedebiliyor.&lt;/p&gt;
+
+&lt;p&gt;User denetleyici ile yazılan testlerin sonuna geldik. Burada dikkat ederseniz bütün adımları
+elle oluşturarak geldik. TDD öğrenmek için bu şekilde basit bir denetleyici oluşturup
+olabildiğince çok adıma yaymam gerekiyordu. Tabiki pratikte bu kadar basit adımları manuel
+yapmak çok da efektif olmayabilir. Denetleyici için mutlaka test yazın ama bu testleri
+rails generator kullandıktan sonra da yazabilirsiniz. Tıpkı TodosController oluşturduktan sonra
+yapacağımız gibi. Değişiklikleri git repomuza kaydedip devam edelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add --all
+git commit -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;Users Controller ve Testleri&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;todos-denetleyicisi&quot;&gt;Todos Denetleyicisi&lt;/h2&gt;
+
+&lt;p&gt;TDD mantığını büyük ölçüde anladığımıza göre artık işleri biraz daha hızladırmak adına
+Todos denetleyicinin tüm yapım aşamalarını burada tek tek açıklamayacağım. Ancak çalışan
+bir versiyonunu GitHub reposundan her zaman inceleyebilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/turhancoskun/rails-ile-tdd&quot;&gt;https://github.com/turhancoskun/rails-ile-tdd&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 17 Nov 2014 00:00:00 +0200</pubDate>
+        <link>http://turhancoskun.com/blog/rails-ile-tdd--3-controllerlarn-test-edilmesi/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/rails-ile-tdd--3-controllerlarn-test-edilmesi/</guid>
+        
+        <category>Ruby</category>
+        
+        <category>Ruby on Rails</category>
+        
+        <category>TDD</category>
+        
+        <category>Dersler</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Rails ile TDD - 2 (Modellerin test edilmesi)</title>
+        <description>&lt;p&gt;Rails ile TDD serisinin ikinci bölümünde sizlere bir MVC framework olan Ruby on Rails’in
+M’i yani model kısmının nasıl test edileceğini anlatmak istiyorum. Hello World’den sonra
+ikinci seviye sayılabilecek bir ToDo yani yapılacaklar listesi uygulaması geliştirelim.&lt;/p&gt;
+
+&lt;p&gt;Uygulamada tüm değişken, sınıf, modül vs istisnasız tüm tanımlamalarınızı İngilizce
+olarak yapın. Rails’te çok fazla önkabul bulunur ve tüm bu önkabuller İngilizce
+dil kurallarına göre çalışır. Bunun faydasından yararlanmak dururken boşuna buna karşı
+savaşmayın.&lt;/p&gt;
+
+&lt;p&gt;Gevezeliği bırakırsak örnek uygulamamızın yapısından bahsetmek istiyorum.&lt;/p&gt;
+
+&lt;h2 id=&quot;projenin-planlanmas&quot;&gt;Projenin Planlanması&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Kullanıcı mail adresini girip kendi yapılacaklar listesine giriş yapar (Şifre olmayacak)&lt;/li&gt;
+  &lt;li&gt;Yapılacak listesine öğe ekleyip silebilir ya da tamamlandı, tamamlanmadı tercihi yapabilir. Tamamlandı seçeneği seçildiğinde completed_at alanı güncellenir. Tamamlanmadı seçeneği seçildiğinde complete_at seçeneği nil olarak ayarlanır.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Bunu gerçekleştirebilmek için bize iki model gerekiyor bunlar User ve Todo&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;User&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;email&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;Todo&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;User&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;String&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;complete_at&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;DateTime&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;user-modelinin-oluturulmas&quot;&gt;User modelinin oluşturulması&lt;/h2&gt;
+
+&lt;p&gt;TDD yani test güdümlü programlama dediğimize göre demekki öncelikle test yazılması gerekiyor. Önce test yazmak bizi hatalardan koruduğu gibi büyük kod blokları yazarken de bizi motive edip bizi yönlendirecek. Göreceksiniz ki doğru kod yazım yaklaşımı önce test kodu yazmaktır.&lt;/p&gt;
+
+&lt;p&gt;Kısaca TDD’den bahsedersek yapacağımız işlem sırası RED-GREEN-REFACTOR. Bu konu hakkında araştırma yapmayı ve en iyi pratik seviyelerine ulaşmayı size bırakıyorum. R-G-R ‘yi bizim User modelimize uygularsak:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Önce User model testi için gerekli spec/models/user_spec.rb dosyasına beklentilerimizi yazacağız.&lt;/li&gt;
+  &lt;li&gt;User modelinin beklentileri karşılaması için beklentileri yazacağız. ( email alanı boş olamaz ve geçerli bir email adresi olmalı gibi )&lt;/li&gt;
+  &lt;li&gt;En son testi çalıştıracağız ve kırmızı spec’ler yeşil olana kadar modelimizi geliştireceğiz.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Hadi başlayalım:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git checkout -b user-model&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Konsol ekranımıza aşağıdaki komutu girelim:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rails g model User email&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Aslında burada önce test prensibini kısmen çiğnemiş olduk ama bu koşullarda bizim çıkarımıza bu şekilde ilerlemek daha hızlı. (Pragmatist Programmer kitabını okumanızı şiddetle öneririm)&lt;/p&gt;
+
+&lt;p&gt;Ekran çıktısından gördüğünüz üzere spec/models/user_spec.rb otomatik olarak oluşturuldu. Hemen bu dosyayı açıp inceleyelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rails_helper&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:model&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;pending&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;add some examples to (or delete) &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;__FILE__&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Daha önce bahsettiğimiz rails_helper dosyası en başa gelmiş. User için model tipinde bir spec tanımlanmış. Bu dosyayı birlikte beklentilerimizi karşılayacak şekilde düzenleyeceğiz ama öncelikle olduğu gibi çalıştırıp bir duman testi yapalım. Duman testi, test framework’unun çalışır durumda olduğunu tespit etmek için yaptığımız basit testlere verdiğimiz bir isim.&lt;/p&gt;
+
+&lt;p&gt;İlk testi çalıştırmadan önce akıl sağlımız için ana dizindeki .rspec dosyasını açıp içinden –warning satırını silmenizi öneririm. Aksi halde ekranınızda uyarıdan başka birşey gözükmüyor. Daha sonra konsol ekranında:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rake db:migrate
+rspec spec/models/user_spec.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;rake komutu ruby make deyiminin bir kısaltması. Konsolda açık kaynak programların kodlarını derlerken kullandığımız make komutunun ruby versiyonu. db:migrate ise User oluşturulurken otomatik olarak oluşturulan veri tabanı migration dosyasını çalıştırıyor.&lt;/p&gt;
+
+&lt;p&gt;rspec komutunun ardından ekranda&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Not yet implemented&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ./spec/models/user_spec.rb:4&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;çıktılarını gördüyseniz duman testini geçmişsiniz demektir. Artık testimizi icra etmeye başlayabiliriz.&lt;/p&gt;
+
+&lt;p&gt;Öncelikle git repomuza değişiklikleri kaydedelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add --all
+git commit &lt;span class=&quot;s2&quot;&gt;&amp;quot;User model oluşturulması&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;tekrar user_spec.rb dosyasını açalım. (Artık yerini biliyoruz değil mi?)&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rails_helper&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:model&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;is invalid without email&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_invalid&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;is invalid without a valid email address&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;foo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_invalid&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;email&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;foo@example.com&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_valid&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Dosyamızı yukarıdaki gibi düzenleyelim. Kodun kendi kendini yeterince iyi açıkladığını düşünüyorum.&lt;/p&gt;
+
+&lt;p&gt;Testler it komutuyla başlıyor ve beklentiler block içinde belirtiyoruz. Beklentilerin yazımı expect metodo parametre olarak karşılaştıracağımız elimizdeki öğeyi alıyor. Ardından gelen .to veya olumsuz hali .not_to ve matcher dediğimiz be_invalid ve be_valid gibi eşleştiriciler izliyor. Rspec eşleştiricileri ile daha ayrıntılı bilgi için rspec dokümantasyonunu incelemenizi öneririm.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rspec spec/models/user_spec.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Mevcut durumda her iki spec de kırmızı durumda ve bizim görevimiz bunları yeşile çevirmemiz gerekiyor. Aksi halde kullanıcılar boş email adresleri ekleyebilecek veya aslında email adresi olmayan verileri email alanına yazabilecekler.&lt;/p&gt;
+
+&lt;p&gt;app/models/user.rb dosyasını açalım. Burası User modelinin tanımlandığı yer ve doğrulama işlemlerini burada gerçekleştireceğiz.&lt;/p&gt;
+
+&lt;p&gt;mevcut haliyle user.rb dosyası&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;gibi gözükecektir. Bizim yapacağımız aşağıdaki gibi düzenleyip testi tekrar çalıştırmak.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rspec spec/models/user_spec.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Bingo! Hata sayımız 1’e düştü ve beklentilerden biri yeşil ancak diğeri hala kırmızı. Şimdi diğer testi geçirelim.&lt;/p&gt;
+
+&lt;p&gt;Ekran çıktısını incelediğimizde anlıyoruz ki ‘foo’ hatalı bir email adresi olmak zorundayken modelimiz bunun hatalı olduğunu düşünmüyor öyleyse bunu sağlayalım.&lt;/p&gt;
+
+&lt;h4 id=&quot;email-dorulamas&quot;&gt;Email doğrulaması&lt;/h4&gt;
+&lt;p&gt;Email doğrulaması için basit gem kullanılabileceği gibi regex de yazılabilir. Dışarıya bağımlılığı minimum düzeyde tutabilmek için regex yolunu tercih ediyorum. Dilerseniz küçük bir araştırmayla email_validator nasıl kullanılır bulabilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;User model dosyamızı tekrar açarak aşağıdaki gibi güncelleyelim:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;validates_format_of&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:with&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rspec spec/models/user_spec.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ve bütün testlerimiz geçti. TDD ile spec dosyamızda User için beklentilerimizi belirledik ve testleri çalıştırdıkca aldığımız ekran çıktılarmı bizi yönlendirdi. Şimdilik User modeli ile işimiz bitti artık git repomuza gereken değişiklikleri kaydedip Todo modeline geçebiliriz.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add --all
+git commit &lt;span class=&quot;s2&quot;&gt;&amp;quot;User model testleri geçti&amp;quot;&lt;/span&gt;
+git checkout master
+git merge user-model
+git branch -d user-model&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;todo-modelinin-oluturulmas&quot;&gt;Todo Modelinin Oluşturulması&lt;/h2&gt;
+
+&lt;p&gt;Todo modelimiz biraz daha karışık. Temelleri zaten User modeli için anlattığımdan burada bazı kısımları kestirme geçebilirim. Örneğin model dosyasını düzenleyin deyince size tam adresini vermeyebilirim ya da test komutunu çalıştırın dediğimde siz rspec komutunun ardından spec dosyasının yolunun geleceğini bilirsiniz diye varsayıyorum.&lt;/p&gt;
+
+&lt;p&gt;Şimdi User modelinde yaptığımız gibi yeni model oluşturalım.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git checkout -b todo-model
+rails g model Todo title complete_at:date user:belongs_to
+rake db:migrate&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;user:belongs_to kısmı Todo modelinin user ile bire çok ilişki içinde olduğunu belirtmek için eklendi.&lt;/p&gt;
+
+&lt;p&gt;Şimdi todo_spec.rb dosyasını açarak beklentilerimizi programa belirtelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rails_helper&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:model&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;is invalid without&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;a user&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;a title&amp;#39;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Şimdi konsol ekranından testi çalıştırarak sonuca birlikte inceleyelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;Pending:
+  Todo is invalid without a user
+    &lt;span class=&quot;c&quot;&gt;# Not yet implemented&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# ./spec/models/todo_spec.rb:5&lt;/span&gt;
+  Todo is invalid without a title
+    &lt;span class=&quot;c&quot;&gt;# Not yet implemented&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# ./spec/models/todo_spec.rb:6&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;İki pending testimiz var ve rspec yazdığımız kod yapısını bizim için dokümantasyona dönüştürdü. Block yani do..end eki almamış it tanımları gördüğünüz gibi pending olarak işliyor. Projelerde bu özellikten sıklıkla faydalanabiliriz.&lt;/p&gt;
+
+&lt;p&gt;Şimdi testimizin içini doldurmaya başlayalım isterseniz. Tekrar todo_spec.rb dosyasını açarak aşağıdaki gibi düzenleyelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rails_helper&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:model&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;is invalid without&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;a user&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Kodlar refactor edilecek.&amp;#39;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_invalid&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;foo@example.com&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_valid&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;a title&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;foo@example.com&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_invalid&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Konsoldan testi çalıştırıp sonuca baktığımızda istediğimiz iki koşulun da model tarafından yerine getirilmediğini görüyoruz. Şimdi kırmızıları yeşil yapmak için Todo modelini açıp aşağıdaki gibi kodları ekliyoruz.
+belongs_to :user satırının altına:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;kaydedip testi tekrar çalıştırın. Göreceksiniz ki yerine getirilmesi tek bir koşul kaldı.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;rspec ile testi çalıştırıp tekrar sonucu kontrol ettiğimiz iki yeşilimiz olduğunu göreceksiniz. Ekranda görmeniz gereken sonuç: &lt;em&gt;2 examples, 0 failures&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Şimdi Todo ile yaptığımız değişikliklerin programın başka kısımlarında kalan bölümleri bozup bozmadığını görmek için konsola sadece rspec yazın. Bu komut spec dizininde sonu ‘*_spec.rb’ ile biten tüm dosyaları otomatik çalıştıracaktır.&lt;/p&gt;
+
+&lt;p&gt;Eğer bütün testlerimiz geçiyorsa artık git repomuza kaydedebiliriz.&lt;/p&gt;
+
+&lt;p&gt;Unutmadan:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add --all
+git commit -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;Todo model testleri geçti&amp;quot;&lt;/span&gt;
+git checkout master
+git merge todo-model
+git branch -d todo-model&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;bonus-refactor&quot;&gt;Bonus: Refactor&lt;/h3&gt;
+&lt;p&gt;TDD çalışırken izleyeceğimiz yolun Red-Green-Refactor olduğunu daha önce belirtmiştim. Aslında refactor yani kodun yeniden düzenlenip toparlanması her zaman yapılması gereken birşey olsa da testler yeşil olduktan sonra başka bir kod bölümüne geçmeden önce mutlaka elden geçirmek gerekiyor. User sınıfında refactor ihtiyacı olup olmadığı kanaatini size bırakıyorum. Todo test dosyasını açıp inceleyelim.&lt;/p&gt;
+
+&lt;p&gt;Kendini tekrar eden iki satır görünüyor bunlar:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;foo@example.com&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Kod tekrarları DIY - Don’t repeat yourself! yani kendini &lt;em&gt;tekrarlama&lt;/em&gt; prensibine aykırı. Bu sebeple hemen bu kısımları refactor edelim.&lt;/p&gt;
+
+&lt;p&gt;todo_spec dosyasını aşağıdaki gibi tekrar düzenleyin&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rails_helper&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:model&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;is invalid without&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;a user&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Kodlar refactor edilecek.&amp;#39;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_invalid&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fake_user&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_valid&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;a title&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fake_user&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_invalid&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fake_user&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;foo@example.com&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Burada kullandığımız subject adından da anlaşılacağı gibi test öznesi ve her context için ayrı ayrı özneler belirtilebilir. User.new ise gördüğünüz gibi bir fonksiyonun dönüş nesnesi oldu ve bu sayede kodumuz daha okunaklı hale gelebildi. Eğer siz de kendinizden birşey katıp kodu daha da sadeleştirmek isterseniz kendinizi bu konuda özgür hissedin çünkü yazdığımız testlerde ne beklediğimizi iyi belirledik ve koşullar yerine geldiği sürece kod içerisinde istersek at koştururuz :=) Bu da TDD programlamanın en avantajlı yanlarından birisi.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 16 Nov 2014 00:00:00 +0200</pubDate>
+        <link>http://turhancoskun.com/blog/rails-ile-tdd--2-modellerin-test-edilmesi/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/rails-ile-tdd--2-modellerin-test-edilmesi/</guid>
+        
+        <category>Ruby</category>
+        
+        <category>Ruby on Rails</category>
+        
+        <category>TDD</category>
+        
+        <category>Dersler</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Rails ile TDD - 1 (Giriş)</title>
+        <description>&lt;p&gt;Merhaba, bugün ilk kez Rails ile ilgili bir konudan bahsetmek
+istiyorum: &lt;em&gt;Ruby on Rails uygulamalarının TDD ile geliştirilmesi.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Öncelikle yazı dizisinde yer alacak konu başlıklarına bakarsanız:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Giriş (Şu an okuduğunuz bölüm)&lt;/li&gt;
+  &lt;li&gt;Model’ler nasıl test edilir&lt;/li&gt;
+  &lt;li&gt;Controller’lar nasıl test edilir&lt;/li&gt;
+  &lt;li&gt;Json Api ve Integration Test nasıl gerçekleştirilir&lt;/li&gt;
+  &lt;li&gt;Capybara ile Acceptance testleri nasıl gerçekleştirilir&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Bu yazı dizisini bitirdiğinizde, kodlarının büyük çoğunluğu test edilebilen, tam teşekküllü bir Rails uygulaması nasıl yapılır ilk adımı atmış olacaksınız.&lt;/p&gt;
+
+&lt;p&gt;Yazı dizisinin bitiminde bonus olarak bir de JavaScript testlerinin de
+nasıl yapılacağını, özellikle AngularJS testlerinin nasıl yapılacağı konusuna da değinebilirim(Henüz karar vermedim).&lt;/p&gt;
+
+&lt;p&gt;Bütün anlatımlarımı bir GitHub reposunda paylaşacağım ve tüm commitleri ve kod değişimlerini oradan da takip edebilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;Başlangıç olarak ve anlatılanları daha sağlıklı anlayabilmek açısından en azından başlangıç seviyesinde Ruby dili ve Rails bilmenizi öneririm yine de sıfırdan proje başlatacağım için hali hazırda herhangi bir MVC framework bilen birisi için uygulamanın gidişini takip etmek o kadar da zor olmayacaktır. Git bilmenizi mutlaka öneririm, eğer bilmiyorsanuz git ile ilgili kısımları görmezden gelebilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;Örnekleri geliştirirken versiyon uyumsuzluğu olmaması için kullandığım sürümleri paylaşıyorum:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Rails: 4.1.6&lt;/li&gt;
+  &lt;li&gt;Ruby: 2.1.3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Text editör olarak baştan sona Vim kullanacağım, belki bazı yerlerde Atom Editor kullanabilirim. (SublimeText’i oldum olası sevmedim.) Siz istediğiniz başka bir editör kullanabilirsiniz. Tavsiyem asla IDE kullanmayın, sağa sola saçma sapan dosyalar oluşturarak kafanızı karıştırabilir.&lt;/p&gt;
+
+&lt;h1 id=&quot;rails-projesinin-oluturulmas&quot;&gt;Rails Projesinin Oluşturulması&lt;/h1&gt;
+&lt;p&gt;Projenin bulunduğu reponun bağlantısı: &lt;a href=&quot;https://github.com/turhancoskun/rails-ile-tdd&quot;&gt;https://github.com/turhancoskun/rails-ile-tdd&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Yeni proje başlatmak için:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rails new rails-ile-tdd -T&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;burada rails-ile-tdd adında yeni bir proje oluşturduk ve -T parametresi ile rails’e herhangi bir testing framework kurmamasını söyledik çünkü herşeyi manuel olarak gerçekleştirmek istiyoruz.&lt;/p&gt;
+
+&lt;p&gt;Rails ile testlerimizi gerçekleştirmek için oldukça popüler olan &lt;a href=&quot;https://github.com/rspec/rspec&quot;&gt;Rspec&lt;/a&gt; kütüphanesini kullanacağız ama öncellikle rails uygulamamızı git ile commit edelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add --all
+git commit -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;Rails projesi oluşturuldu&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;rspec-kurulumu-ve-yaplandrlmas&quot;&gt;Rspec Kurulumu ve Yapılandırılması&lt;/h2&gt;
+&lt;p&gt;Rspec kurulumu yapmak için git üzerinde yeni bir dal açıyoruz:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git checkout -b rspec-kurulum&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Yukarıdaki komut kısaca rspec-kurulum adında bir dal oluşturacak ve bu dala geçiş yapacaktır. Proje akışının düzenli olması açısından ve işler ters gittiğinde bazen geriye dönmemiz gerektiğinde sıkıntı yaşamamak için git repolarımızı düzenli tutmaya özen göstermeliyiz.&lt;/p&gt;
+
+&lt;p&gt;Şimdi projemizin ana klasöründe bulunan Gemfile dosyasını açalım ve en altına:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;group&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:development&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:test&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rspec-rails&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Bu kod rspec’in geliştirme ve test aşamalarında projemizde kurulu olacağını ancak canlı ortamda kullanılmayacağını belirtiyor.&lt;/p&gt;
+
+&lt;p&gt;kodunu ekleyip kaydedin. Ardından konsolda:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;bundle install&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;komutunu vererek rails projemize gerekli rspec kütüphanelerimizi eklemiş olacağız.&lt;/p&gt;
+
+&lt;p&gt;şimdi konsolunuza aşağıdaki komutu girin:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rails generate rspec:install -p&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;alacağınız ekran görüntüsü aşağıdaki gibi olacaktır:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rails generate rspec:install -p
+      create  .rspec
+      create  spec
+      create  spec/spec_helper.rb
+      create  spec/rails_helper.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;komutumuzun arkasından gelen -p parametresi İngilizce pretend kelimesinin kısaltmasıdır, yani dilimize ‘gibi davranmak’ olarak çevrilebilir. &lt;em&gt;rails generate&lt;/em&gt; ya da kısaltması &lt;em&gt;rails g&lt;/em&gt; komutlarının arkasına koyduğumuz -p ifadesi komutun &lt;strong&gt;gibi davranmasını&lt;/strong&gt; ve aslında çalışınca neler değişeceğini ekrana göstermesi için kullanılan çok kullanışlı bir parametredir.&lt;/p&gt;
+
+&lt;p&gt;Oluşturulacak dosyaları tek tek incelediğimizde .rspec dosyası rspec komutu çalıştırıldığında arkasına otomatik gelecek parametrelerin listesinin bulunduğu bir basit bir yazı dosyası.&lt;/p&gt;
+
+&lt;p&gt;spec klasörü testlerimizin ve alakalı dosyalarının tutulacağı dizin. Burada bilmemiz gereken Rspec jargonlarında testlerin spec olarak anılmaları. spec_helper.rb dosyası tüm testlerde ortak kullanılacak yardımcı metotların tutulacağı dosya ve rails_helper ise bizim daha çoğunlukla kullanacağımız dosya ve aslında spec_helper’ın rails için özelleşmiş versiyonu da denebilir. Bu dosyayı tüm rails testlerinin üst kısımlarına ekleyeceğiz.&lt;/p&gt;
+
+&lt;p&gt;Artık rspec’in dosya yapısı hakkında genel bir kanıya sahip olduğumuza göre gerçek komutu çalıştırabiliriz.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rails generate rspec:install&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Şimdi Rails uygulamalarını test edebilmek için bize gereken rspec silahlarına sahibiz.&lt;/p&gt;
+
+&lt;p&gt;Son olarak yaptığımız değişiklikleri git repomuza yollamak için.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add --all
+git commit -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;Rspec kurulumu&amp;quot;&lt;/span&gt;
+git checkout master
+git merge rspec-kurulum
+git branch -d rspec-kurulum&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Yazı serisinin giriş bölümü sona erdi. Devamı için &lt;a href=&quot;/blog/rails-ile-tdd--2-modellerin-test-edilmesi/&quot;&gt;buraya&lt;/a&gt; tıklayın.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 15 Nov 2014 00:00:00 +0200</pubDate>
+        <link>http://turhancoskun.com/blog/rails-ile-tdd-test-gdml-programlama--1/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/rails-ile-tdd-test-gdml-programlama--1/</guid>
+        
+        <category>Ruby</category>
+        
+        <category>Ruby on Rails</category>
+        
+        <category>TDD</category>
+        
+        <category>Dersler</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Masaüstü Linux Dünyası</title>
+        <description>&lt;p&gt;GNU/Linux hepimizin çok sevdiği, öve öve bitiremediği ama çoğunlukla sanal makinada
+ya da dual bot ile kullanmayı layık gördüğümüz bir işletim sistemi. Ancak bugün burada Linux’un
+sunucu bazında pazar payındaki tartışılmaz aslan payından, Android olarak ceplerde
+edindiği yerinden, mikro ölçekli milyonlarca cihazla dünyayı ele geçirmesinden
+bahsetmeyeceğim. Benim burada konuşacağım tek konu GNU/Linux dağıtımlarının masaüstü bilgisayarlarındaki durumu olacak.&lt;/p&gt;
+
+&lt;p&gt;Linux ile ilk tanışmam 2000 li yılların başında, ilk bilgisayara sahip olduğum
+zamanlarda, bir derginin yanında hediye verilen Mandrake Linux ile oldu. O zamanlardan aklımda kalan; sistemin sürekli çökmesi ve İngilizce
+bilmediğim bir dönemde işletim sistemindeki bir çok kısımın tercüme edilmemiş olmasından kaynaklanan
+sıkıntılar. Hafızamı daha da kurcaladığımda, o zamanda 56K internal faks modem ile internete
+bağlandığımı ve bu modemler için yazılmış ücretsiz bir sürücü olmamasından dolayı internete
+bağlanamamamdı. Sırf internetten paket yükleyebilmek için, bilgisayarımı Windows ile
+ boot edip yüklemek istediğim paketi internetten yüklüyor, sonra yeniden Mandrake’den
+boot edip windows sürücülerine erişerek söz konusu paketleri Linux’a yüklüyordum.
+Bir süre sonra sıkılıp Linux’u sistemden tamamen uçurarak bir süre o zamanların efsanesi olan Windows XP’yi
+kullanarak yoluma devam ettim.&lt;/p&gt;
+
+&lt;p&gt;Bir süre sonra milli işletim sistemi Pardus duyuruldu. Pisi paket yöneticisi,
+şık KDE ve Gnome masaüstleri, Çomar vs. İlgi çekici ve başarılıydı. Artık ADSL teknolojisi
+evlere girmiş olduğundan internete bağlanmakta da sıkıntı çekmiyordu.Gel gör ki o fontlar,
+o çözünürlük hala Windows ayarında değildi ama sonuçta bu bir milli yazılımdı. Hayalimde; o ayda bir
+formatlamak zorunda olduğum Windows’tan kurtulmak olsa da, swf geliştirmek için
+Macromedia Flash’a olan ihtiyaç ve Linux yazıcı sürücülerinin berbat durumda olması bir taraftan
+sürekli Windows’u el altında tutmayı gerektiriyordu. E tabi bir de oyunlar meselesi
+var. Millet Fifa, NFS ve CS oynarken benim basit puzzle oyunlarıyle yetinmem de
+beklenmezdi(!) Yine de Pardus projesi -sıfırlanıncaya- dek kullanmaya devam ettim.&lt;/p&gt;
+
+&lt;p&gt;XP den 8’e kadar abidik gubudik bütün Windows sürümlerini kullandım ancak gel gör ki
+2013 te Macbook Pro Retina 15” alıp OS X ile tanışıncaya kadar aslında bir işletim sisteminin
+nasıl olması gerektiği ile ilgili yeterli fikre sahip olmadığımı fark ettim. Görüntü
+kalitesi ve font render özellikleri muhteşem. İçindeki donanım ile tam uyumlu ve
+malzeme olarak da çok kaliteli. Burada sabaha kadar ağzım sulana sulana Mac ve OS X övebilirim ancak mesele şu ki gönlüm içinde ne olduğunu bilmediğim yazılımlardan ziyade her zaman özgür yazılımdan yana.&lt;/p&gt;
+
+&lt;p&gt;Açık kaynak temelli web teknolojileri ile yazılım geliştiren birisi zaten sürekli
+Linux sunucularla haşır neşir olmak durumunda olsa da Torvalds’ın lafı hep aklımda
+‘I still want the desktop.’ yani ‘Hala masaüstünü istiyorum.’ Masaüstü için zaman
+zaman popüler olması sebebiyle Ubuntu’yu ara sıra yükleyip inceliyordum ve kabul ediyorum ki
+artık sıradan bir bilgisayar kullanıcısının bile rahatlıkla kullanabileceği noktalara geldi. Ancak
+Canonical kendi saçmalıklarını o kadar çok sisteme bulaştırmış ki şahsen bana Linux
+tadı vermiyor. Sisteme her büyük güncelleme gelişinde çöküyor ve bana ayar dosyalarını
+kurcalattırıyor. Artı ve eksileriyle çok şey yazılabilir ama aradığım tat kesinlikle
+Ubuntu değil.&lt;/p&gt;
+
+&lt;p&gt;En son kullanmaya başladığım Linux dağıtımı ise Mint. Başta görüntü ve fontlar çamur gibi gelmesine
+rağmen birkaç ayarla retina çözünürlüğüne uygun hale geldi ve şu an neredeyse OS X’i bile
+aratmayacak durumda olduğunu düşünüyorum. Ubuntu’dan çatallanan projenin masaüstü yöneticisi
+Cinnamon ise Gnome projesinden çatallanmış. Ubuntu’nun tüm iyi taraflarını üzerinde
+barındırmasına rağmen Canonical saçmalıklarından da arındırılmış durumda.&lt;/p&gt;
+
+&lt;p&gt;En büyük eksisi ise bence süresi geçmiş X Server ise hala arka planda çalışmaya devam ediyor olması. Bu konuda Wayland
+projesi X Server’in yerine almaya henüz uzak gibi duruyor. Görüntü sunucusu teknolojisi yenilenmeli ve
+ben bu gönderiyi yazarken sistem dondu ve yeniden başlatmam gerekti dolayısıyla görünen o ki
+OS X’e bir süre daha devam etmem gerekiyor.&lt;/p&gt;
+
+&lt;p&gt;Evet şu an masaüstü bilgisayarların çoğunluğu ele geçirilemedi ama yakın gelecekte
+işler değişebileceğe benziyor. Şimdilik bu konudaki en güçlü adayım Linux Mint.&lt;/p&gt;
+
+&lt;p&gt;Bir sonraki yazımda görüşmek üzere sağlıcakla kalın.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 01 Nov 2014 00:00:00 +0200</pubDate>
+        <link>http://turhancoskun.com/blog/masast-linux-dnyas/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/masast-linux-dnyas/</guid>
+        
+        <category>Unix</category>
+        
+        <category>Genel</category>
+        
+        <category>Linux</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>İpucu : Konsol ile angular.js scope&#39;unda gezinti</title>
+        <description>&lt;p&gt;Angular.js ile geliştirdiğimiz uygulamalarda bazen &lt;em&gt;controller&lt;/em&gt; üzerinden gelen
+veriye view’ın nasıl tepki vereceğini kestiremediğimiz oluyor. Live edit özellikli
+bir geliştirme ortamınız yoksa controller koduna girip $scope değişkenlerini
+düzenleyerek uygulamamızın nasıl tepki gösterdiği gözlemlemeniz gerekebilir.&lt;/p&gt;
+
+&lt;p&gt;Örneğin sayfanızın bir bölümü ng-show ve/veya ng-hide direktifleriyle &lt;em&gt;controller&lt;/em&gt;‘daki
+bir veri kaynağına veya bir fonksiyonun sonucuna bağlı olsun. Bu değer değiştiğinde
+sayfanızdaki ilgili kısmın gösterildiğinde ya da gizlendiğinde ne olacağını gözlemlemek
+istiyorsunuz.&lt;/p&gt;
+
+&lt;p&gt;Ya da en iyisi örneği boş verin burada hayatta aklıma gelmeyecek bir sebepten dolayı scope’a
+dışarıdan müdahale etmek istiyorsunuz diyelim :)&lt;/p&gt;
+
+&lt;p&gt;Tarayıcının konsolunu açıp :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;angular&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;.secilecek-eleman&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;burada JQuery ile seçim yaptım ama isterseniz &lt;code&gt;document.getElementById()&lt;/code&gt; gibi
+native JS kodu ile de seçebilirsiniz. &lt;em&gt;Dikkat etmeniz gereken nokta: ng-controller
+tagları arasında bir eleman seçmeniz gerekiyor.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;scope.model_name = &quot;abc&quot;&lt;/code&gt; şeklinde veya daha da alt özellikler için &lt;code&gt;scope.model_name.ozellik = &quot;xyz&quot;&lt;/code&gt;
+şeklinde istediğiniz gibi &lt;em&gt;scope&lt;/em&gt; ile oynayabilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;Fakat bir şey kaldı; dışardan yaptığımız bu müdahaleyi onaylamak:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;scope.$apply()&lt;/code&gt; komutunu yazdığınızda yaptığınız değişikliğin sonucunu ekranda görebileceksiniz.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 03 Sep 2014 00:00:00 +0300</pubDate>
+        <link>http://turhancoskun.com/blog/ipucu--konsol-ile-angularjs-scopunda-gezinti/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/ipucu--konsol-ile-angularjs-scopunda-gezinti/</guid>
+        
+        <category>İpucu</category>
+        
+        <category>JavaScript</category>
+        
+        <category>AngularJs</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>JavaScript ile Call, Apply ve Bind Kullanımı</title>
+        <description>&lt;p&gt;Merhaba, sizlere JavaScript’te kullanılan &lt;code&gt;call()&lt;/code&gt;, &lt;code&gt;apply()&lt;/code&gt; ve &lt;code&gt;bind()&lt;/code&gt; fonksiyonlarından ve hayatımızı nasıl kolaylaştırdıklarından bahsetmek istiyorum.&lt;/p&gt;
+
+&lt;p&gt;JavaScript, her ne kadar çok çok iyi bildiğim bir dil olmasa da benim ilgilendiğim programlama dilleri içinde en zevkli bulduğum dil.
+Zaten bundan daha önceki yazılarımdan birinde bu sevgimden bahsettim sanıyorum.
+Yazıya başlamadan önce ayrıca belirtmek isterim ki JavaScript dünyadaki en yanlış anlaşılmış programlama dili olabilir.
+Ülkemizde bu konuda başarılı yazılımcılar olmasına rağmen yine de JavaScript deyince malesef hala çoğu arkadaşımızın aklına gelen JQuery ile iki &lt;code&gt;click&lt;/code&gt; olayı bağlamak ya da birşeyleri &lt;code&gt;toggle&lt;/code&gt;
+etmek oluyor.&lt;/p&gt;
+
+&lt;p&gt;JavaScript gerçekten çok enterasan bir dil. JavaScript ile çok derli toplu projeler yapabileceğiniz gibi, işin ucunu kaçırıp
+karmakarışık ama yine de bir şekilde çalışan spagetti projeler de yapabilirsiniz.
+ (Benim de ilk başlarda yaptığım gibi.)
+Ama unutmayın web’in ana dili JavaScript’tir. Browser ile kullanıcının etkileşimi JavaScript ile olur
+ve siz bir web geliştiricisi olarak JavaScript’i hakkıyla bilmezseniz basit bir işlem için bile 100’er KB’lık frameworkler yükleyip, uygulama performansı ve
+yükleme zamanlarıyla kullanıcılarınızı çıldırtabilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;JavaScript, hem nesneye dayalı(OOP) bir dil, hem de değil. Aslında bu biraz da sizin JavaScript’i nasıl kullandığınıza bağlı.
+ JavaScript ile bir çok OOP konseptini yerine getirebiliriz ancak burada nesnelerimiz &lt;code&gt;class&lt;/code&gt; olarak değil &lt;code&gt;function&lt;/code&gt; olarak
+ tanımlı olmak zorundalar. Bu da JavaScript’i ilginç ve kafa karıştırıcı yapan yönlerden birisi.
+Eğer herhangi bir nesneye dayalı bir programlama dili biliyorsanız yazıda bahsedeceğim; miras(inheritance) ve kurucu(constructor) gibi nesneye dayalı
+ programlama terimlerine zaten aşina olmalısınız. JavaScript’in önemli farklılıklarından biri JS fonksiyonun gövde bloğu - yani &lt;code&gt;{&lt;/code&gt; ve &lt;code&gt;}&lt;/code&gt; arasında kalan kısımlar -
+ nesnemizin kurucusunu oluşturuyor. İlk olarak bunu anlamak önemli.
+İkinci önemli farklılık ise, JavaScript’te nesneler arasındaki miras ilişkisini &lt;code&gt;prototype&lt;/code&gt; nesnesi ile kuruyoruz. (NOT: ECMAScript6
+standardıyla module ve import gibi terimler de JS hayatımıza girecek olsalar da bu yazıyı yazdığım gün itibariyle henüz ES6 tamamlanmadı.)&lt;/p&gt;
+
+&lt;p&gt;Size call, apply ve bind fonksiyonlarını anlatmadan önce context ve scope(kapsam) kavramlarını anlatmak istiyorum.&lt;/p&gt;
+
+&lt;h3 id=&quot;context-ve-scope&quot;&gt;Context ve Scope&lt;/h3&gt;
+&lt;p&gt;JavaScript’i tam anlamıyla anlamak için scope ve context gibi kavramları anlamak gerekir.
+ Zaten bu kavramlar iyi anlaşılmazsa başlıkta bahsettiğim call, apply ve bind fonsiyonlarını anlamak pek mümkün olmaz.&lt;/p&gt;
+
+&lt;p&gt;Öncelikle belirtmeliyim ki bir çok programcının zannettiği gibi context ve scope aynı şeyler değiller.
+Basitçe:&lt;/p&gt;
+
+&lt;p&gt;context =&amp;gt; &lt;code&gt;this&lt;/code&gt; değeri ne ise context dediğimiz de odur.&lt;/p&gt;
+
+&lt;p&gt;scope =&amp;gt; bir değişkenin programın hangi kısımlarında erişilebilir olduğu ya da değişkenin yer aldığı kapsam alanı.&lt;/p&gt;
+
+&lt;p&gt;İki temel scope olduğunu söyleyebiliriz bunlar global scope ve yerel scope. Global scope’ta tanımladığımız bir değişken programın herhangi bir yerinden
+herhangi bir zaman erişilebilir durumdadır. Yerel scope ise sadece tanımlanan blok içinde etkindir.
+Bu blok bir döngü bloğu veya karar ifadesi bloğu olabilir (&lt;code&gt;for&lt;/code&gt;, &lt;code&gt;while&lt;/code&gt;, &lt;code&gt;switch&lt;/code&gt;) ya da
+yerel scope’un geçerli olacağı blok, bir fonsiyonun gövde bloğu da olabilir.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//Global Scope&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//Yerel Scope&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;a =&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;b =&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Çıktı : a = 1 b = 2 (Hem a hem de b değişkenleri erişilebilir durumda)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;fun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;a =&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;b =&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Çıktı : ReferenceError: b is not defined&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Gördüğünüz gibi fonksiyonun dışında &lt;em&gt;b&lt;/em&gt; değişkenine erişmek isterseniz hata alırsınız çünkü b değişkeni, fun1() fonksiyonunun yerel
+scope’unda tanımlı bir yerel değişken. &lt;em&gt;a&lt;/em&gt; ise global scope’da ve programın her yerinde kullanılabilir.&lt;/p&gt;
+
+&lt;p&gt;Daha da saçma bir &lt;strong&gt;Inception&lt;/strong&gt; örneğiyle pekiştirmek istersek aşağıdaki gibi fonksiyonları iç içe yazabiliriz:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;fun2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fun2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;fun3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fun3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;fun4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fun4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Çıktı : 1 2 3&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;fun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Bu örnek içinde fonksiyon içinde fonksiyonlar tanımladık ve diğer tüm fonksiyonlar fun1 içinde tanımlı oldukları için
+fun2, fun3 ve fun4 ‘e fun1 in scope’unda ya da kapsamında diyebiliriz. Bu da şu demek oluyor; bütün bu alt kapsam
+fonksiyonları ait oldukları üst kapsamın değişkenlerine erişebilirler.&lt;/p&gt;
+
+&lt;p&gt;Aslında burada anlatılacak o kadar çok şey var ki ben sadece call, apply ve bind fonksiyonlarını anlamak için yeterli olacağını
+düşündüğüm kadarına değindim.&lt;/p&gt;
+
+&lt;h3 id=&quot;call-ve-apply&quot;&gt;Call ve Apply&lt;/h3&gt;
+&lt;p&gt;Bu iki fonksiyonu aynı başlıkta toplamamın sebebi, ikisinin de aynı işi yapmaları ancak kullanım şekillerinde ufak bir fark olması.
+call ve apply her fonksiyona otomatik olarak miras edilir. Bunun sebebi JavaScript’in native kodundaki tanımlama şekilleridir.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Function.prototype.call&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Function.prototype.apply&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Call ve apply çağırdığımız sınıfın context’ini değiştirir ve sağladığımız argumanlarla kurucu fonksiyonu çalıştırırlar.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Örnek :&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;lineno&quot;&gt; 1&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Otomobil&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;renk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 2&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 3&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;renk&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;renk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 4&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 5&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 6&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bmw&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;renk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 7&lt;/span&gt;   &lt;span class=&quot;nx&quot;&gt;Otomobil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;renk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 8&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;marka&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;bmw&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt; 9&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bmw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Otomobil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;11&lt;/span&gt; 
+&lt;span class=&quot;lineno&quot;&gt;12&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bmw316&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bmw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2005&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;siyah&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;lineno&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bmw316&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Beklenen Çıktı :&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+bmw {model: 2005, renk: &quot;beyaz&quot;, marka: &quot;bmw&quot;}
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Yukarıdaki örnek JavaScript ile OOP programlamayı ve call() kullanımını anlamak için oldukça can alıcı bir örnek. Bu yüzden size
+satır satır olanları anlatmak istiyorum.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Satır : Otomobil isimli kendini döndüren bir sınıf tasarladık. Burada dikkat etmemiz gereken, sınıf tanımımıza &lt;code&gt;function&lt;/code&gt; tanımlayıcımız ile
+başlamak. Bu sayede bu sınıfın prototype’ını başka sınıflardan miras alabiliriz.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Satır : &lt;em&gt;bmw&lt;/em&gt; isimli nesne oluşturduk. Bu nesneden başka nesneler miras almayacağımız için &lt;em&gt;var&lt;/em&gt; ile tanımlamakta sakınca görmedim.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Satır : &lt;em&gt;Otomobil&lt;/em&gt; sınıfının &lt;code&gt;call&lt;/code&gt; fonksiyonunu &lt;code&gt;this&lt;/code&gt;, &lt;code&gt;marka&lt;/code&gt;, &lt;code&gt;renk&lt;/code&gt; argümanlarıyla çağırdık.
+buradaki &lt;code&gt;this&lt;/code&gt;, &lt;em&gt;bmw&lt;/em&gt; nesnesi içinde olduğumuz için &lt;em&gt;bmw&lt;/em&gt; context’ini işaret ediyor. &lt;code&gt;model&lt;/code&gt; ve &lt;code&gt;renk&lt;/code&gt; argümanları da
+aynı şekilde &lt;em&gt;bmw&lt;/em&gt; sınıfının 6. satırdaki parametreleri.
+&lt;code&gt;call&lt;/code&gt; fonksiyonunun çağrılması tamamlandığında, &lt;em&gt;Otomobil&lt;/em&gt; sınıfının kurucusu model ve renk parametreleri ile çağırılıp Otomobil sınıfının
+context’indeki tanımlar (this.model, this.renk), bmw sınıfındaki aynı addaki alanların üzerine yazılıyor.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Satır : &lt;em&gt;bmw&lt;/em&gt; sınıfının context’inde &lt;code&gt;marka&lt;/code&gt; özelliğini “bmw” olarak belirledik.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Satır : &lt;em&gt;bmw&lt;/em&gt; sınıfının, &lt;em&gt;Otomobil&lt;/em&gt; sınıfının alt sınıfı olduğunu belirtlediğimiz satır. Yani &lt;em&gt;Otomobil&lt;/em&gt; sınıfının özelliklerini
+&lt;em&gt;bmw&lt;/em&gt; sınıfı tarafından miras alıyoruz.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Satır : &lt;em&gt;bmw&lt;/em&gt; sınıfından bir &lt;strong&gt;instance&lt;/strong&gt; yaratıp &lt;em&gt;bmw316&lt;/em&gt; isimli değişkene atıyoruz.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Satır : &lt;em&gt;bmw316&lt;/em&gt; isimli nesneyi ekrana yazdırarak kontrol ediyoruz.&lt;/p&gt;
+
+    &lt;p&gt;bmw {model: 2005, renk: “beyaz”, marka: “bmw”}&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Toparlarsak&lt;/strong&gt; : 8. satırda bmw sınıfının sadece marka özelliği vardı. 10. satırda Otomobil’den miras alarak model ve renk
+özelliklerinin de eklenmesini sağladık. 7. satırda Otomobil’i çağırıp bmw context’ini güncelledik.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Kafanızı karıştırdım mı bilmiyorum ama internette incelediğim ve kitaplarda rastladığım örneklerde kodun mantığının ne
+olduğunun düzgünce açıklandığında pek rastlamıyorum. O yüzden bu şekilde bir anlatım yöntemi seçtim. Bu tarz bir anlatım konusunda
+ olumlu-olumsuz eleştirilerinizi bana iletirseniz sevinirim. Böylece bu yönteme devam edip etmeme konusunda karar verebilirim.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Alt başlığın girişinde call ve apply’ın aynı işi yaptığını sadece çağrılma yöntemlerinde ufak bir farklılık olduğundan bahsetmiştik.
+Fark call fonksiyonu manuel olarak tek tek parametre girilmesine karşın, apply argümanları Array olarak istiyor.&lt;/p&gt;
+
+&lt;p&gt;Yukarıdaki örnekte 7. satırı:
+&lt;code&gt;Otomobil.apply(this, [model, renk]);&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Olarak güncellerseniz aynı sonucu aldığınızı görürsünüz.&lt;/p&gt;
+
+&lt;h5 id=&quot;call-apply-ve-anonim-fonksiyonlar&quot;&gt;Call, Apply ve Anonim Fonksiyonlar&lt;/h5&gt;
+&lt;p&gt;JavaScript’in en &lt;em&gt;şeker&lt;/em&gt; özelliklerinden birisi de şüphesiz anonim fonksiyonlar. Hani şu JQuery’de sürekli kullandığınız isimsiz
+ fonksiyonlar.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+   &lt;span class=&quot;c1&quot;&gt;//..&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;İşte bu tarz anonim fonksiyonlar da &lt;code&gt;Function.prototype&lt;/code&gt; ‘dan türedikleri için call ve apply fonksiyonlarını kullanabilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;Mozilla Developer Network’te konuyla ilgili &lt;em&gt;çokça&lt;/em&gt; paylaşılan örneği veriyorum :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;animals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;species&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Lion&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;King&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;species&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Whale&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Fail&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;animals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39; &amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;species&lt;/span&gt;
+                  &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;: &amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;animals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Programın işleyişini anlamak açısından gerçekten harika bir örnek. Bunu beyin cimnastiği olması için satır satır açıklamıyorum
+ama bu örnekle ilgili herhangi bir sorusu olan olursa seve seve cevaplarım.&lt;/p&gt;
+
+&lt;h3 id=&quot;bind&quot;&gt;Bind&lt;/h3&gt;
+&lt;p&gt;Call ve Apply’yi anlatırken scope, context ve temel OOP kavramlarını da işlemiş olduk. Sırada bind() var, hayatımıza daha sonradan
+gelen bir özellik. Şu an anda bir çok tarayıcının kullandığı ECMAScript5 standardı ile hayatımıza girdi. Bilmiyorum hala bind()
+desteklemeyen tarayıcı kullanan amcalar var mıdır ama her ihtimale karşı :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;bind&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)){&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;Function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bind&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;slice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;concat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;slice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)));&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Yukarıdaki kod ile uygulamanızın her koşulda bind() fonksiyonunu desteklemesini sağlayabilirsiniz. Aynı zamanda yukarıdaki
+koddan bind’ın arkaplanında yatan mantığı da anlayabiliriz.&lt;/p&gt;
+
+&lt;p&gt;İlk bakışta göze çarpan call ve apply de görüldüğü gibi ilk parametre olarak context alıyor diğer argümanları apply fonksiyonu
+uygulayarak bize bir fonksiyon döndürüyor. Call-Apply anında çalışırken bind’in bize döndürdüğü fonksiyonu sonra çağırarak
+context’i değiştirme şansı buluyoruz.&lt;/p&gt;
+
+&lt;p&gt;Bind’i uygulamadaki asıl amaç context’i değiştirmek yani farklı bir &lt;code&gt;this&lt;/code&gt; uygulamak.&lt;/p&gt;
+
+&lt;p&gt;Bu sefer MSDN’den Basit bir örnek uygularsak :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// orijinal fonksiyon tanımı&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;checkNumericRange&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typeof&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;number&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;minimum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;maximum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Callback fonksiyonunda &amp;#39;this&amp;#39; olacak nesne&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;range&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;minimum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;maximum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// checkNumericRange fonksiyonunu bind ile bağla&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;boundCheckNumericRange&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;checkNumericRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Yeni oluşturduğumuz fonksiyonu 12 sayısı istediğimiz aralıkta mı diye kontrol için kullanalım.&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;boundCheckNumericRange&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Çıktı: true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Yukarıdaki örnekte &lt;code&gt;checkNumericRange&lt;/code&gt; fonksiyonunun context’i için &lt;code&gt;this.minimum&lt;/code&gt; ve &lt;code&gt;this.maximum&lt;/code&gt; özellikleri
+tanımlanmamış dolayısıyla dışarıdan bir context yapıştırmamız gerekiyor. &lt;em&gt;range&lt;/em&gt; nesnesi minimum ve maximum alanlarına sahip.
+&lt;code&gt;var boundCheckNumericRange = checkNumericRange.bind(range);&lt;/code&gt; bu kod ile range nesnesini checkNumericRange fonksiyonuna
+context olarak yapıştırdık ve yeni bir değişkene fonksiyon tipinde atadık. Ve fonksiyonu uygun parametre ile çağırdığımızda
+sonuç karşımızda. :)&lt;/p&gt;
+
+&lt;p&gt;Yazım ve kod hatalırını bulursanız bana mutlaka bildirmenizi rica ediyorum.&lt;/p&gt;
+
+&lt;p&gt;Bir sonraki blog yazımda görüşmek üzere hoşçakalın.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 28 Aug 2014 00:00:00 +0300</pubDate>
+        <link>http://turhancoskun.com/blog/javascript-ile-call-apply-ve-bind-kullanimi/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/javascript-ile-call-apply-ve-bind-kullanimi/</guid>
+        
+        <category>JavaScript</category>
+        
+        <category>Dersler</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Ajax.BeginForm ve Require.js</title>
+        <description>&lt;h3 id=&quot;arka-plan&quot;&gt;Arka Plan&lt;/h3&gt;
+&lt;p&gt;Geçenlerde ASP.NET MVC ile geliştirdiğim projemin çok büyüdüğünü ve javascript kodlarının artık kontrol edilemez bir hale geldiğini farkettim.
+Modüller ve bağlılıklar içinden çıkılmaz hale geldiğinde artık projenin Require.js ile söz kesmesinin zamanı geldiğine karar verdim.
+RequireJS gerçekten harika! Kullandıkça sizi düzene alıştırıyor ve gerçekten kod yazma alışkanlıklarınızı değiştiriyor. Aslında beklentim EcmaScript6 standart olarak tüm tarayıcılarda yerini aldığında çok daha iyi AMD ler görebilmek.&lt;/p&gt;
+
+&lt;p&gt;Proje backend olarak WebApi 2.0 ve frontend framework olarak da AngularJS kullanıyor. Ancak bazı yerlerde, bazı sorunları daha çabuk halletmek için, Razor’un html yardımcılarından Ajax.BeginForm() fonksiyonunu kullandım. Ajax formunu direkt backend e bağlayarak sızısız bir şekilde modal popuplardan backend’e veri kaydedebiliyordum. Bundan kolayca vazgeçme niyetim yoktu açıkçası. Aşama aşama başıma gelenleri paylaşmak istiyorum.&lt;/p&gt;
+
+&lt;p&gt;Peşinen söyleyeyim bu yazıda konu ile ilgili tutorial bulmayı bekleyenler bekleyenler burada sayfayı terketsinler :). Sadece bu örnekteki gibi birbirleriyle alakasız teknolojilerin kendi aralarında çatıştığı bir durumda, barış için bulduğum kendi çözümümü sunuyorum. Zaten benim gibi ASP.NET MVC, AngularJS ve RequireJS yi bir araya getirerek yılın abzürdlüğünü yapacak fazla da kişi olmayacağından bu konu hakkında tutorial yazma hakkımı gizli tutuyorum. :)
+Ancak ola ki yardım isteyen olursa seve seve ederim. Twitter’da @turhanco hesabım üzerinden ya da GitHub’da @turhancoskun hesaplarından bana ulaşabilirsiniz.&lt;/p&gt;
+
+&lt;h3 id=&quot;ajaxbeginform&quot;&gt;Ajax.BeginForm&lt;/h3&gt;
+&lt;p&gt;Şimdi Ajax formunun tanımına bakarsak :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;n&quot;&gt;@using&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Ajax&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BeginForm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AjaxOptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;HttpMethod&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;POST&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;UpdateTargetId&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;result&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Url&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;/api/customers&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;OnFailure&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;onFailure&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;OnSuccess&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;onSuccess&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;InsertionMode&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InsertionMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Replace&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;burada dikkatimizi çekmesi gereken üç satır var. Bunlar; &lt;code&gt;UpdateTargetId&lt;/code&gt;, &lt;code&gt;OnFailure&lt;/code&gt; ve &lt;code&gt;OnSuccess&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;İsimlerinden de anlaşılacağı üzere :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;UpdateTargetId&lt;/strong&gt; : Api gelen sonucun yazdırılacağı html elementinin Id’si&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;OnSuccess&lt;/strong&gt; : Api işleminin başarılı olmasında çalışacak &lt;em&gt;callback&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;OnFailure&lt;/strong&gt; : Apiden bize html hatası döndüğünde çalışacak kısım&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Burada apiden gelen sonuçları kullanıcıya gösterebilmek için şöyle birşey gerekebilir.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onFailure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#result&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#result&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;removeClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-info&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-danger&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#result&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;removeClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-danger&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-info&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;tabiki bu &lt;em&gt;result&lt;/em&gt; nedir diye sorarsanız :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;alert alert-info&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;style=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;display: none&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;i&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;fa fa-info&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;result&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;use-case&quot;&gt;Use Case&lt;/h3&gt;
+&lt;p&gt;Bir &lt;em&gt;drop down&lt;/em&gt; üzerinden müşteri seçmek istiyorsunuz ve aradığınız müşteri orada yok diyelim. Drop down üzerine iliştirilmiş ‘Yeni Müşteri Ekle’ yazısına
+tıkladığınızda yukarıdaki ajax formu bir bootstrap modal’ı içinde çıkıyor ve siz müşteri eklediğinizde söz konusu drop down kendiliğinden güncellenerek
+ana formdan hiç çıkmadan kayıt işleminize devam edebiliyorsunuz. İşte bütün bu dandikliklere katlanma sebebim bu. :) Meyvesinin bu kadar lezzetli olması.&lt;/p&gt;
+
+&lt;h3 id=&quot;ana-form&quot;&gt;Ana Form&lt;/h3&gt;
+&lt;p&gt;Bahsettiğim &lt;code&gt;Ajax.BeginForm()&lt;/code&gt; ‘ların bir bootstrap modal’ı üzerinde çalıştığını ve başka bir formdaki drop downlardaki bilgilere bilgi eklemek için yardımcı olarak kullanıldığını tekrar edeyim.
+Bu ana formdaki tüm veriler ve hatta drop down verileri angular.js ile kontrol ediliyor ve modal kapatıldığında angular ile kontrol edilen bu drop downlar update olmak zorunda.&lt;/p&gt;
+
+&lt;h3 id=&quot;requiredjsnin-devreye-girii&quot;&gt;Required.js’nin devreye girişi&lt;/h3&gt;
+&lt;p&gt;Require.js nin bağlılıkları asenkron yüklemesi ve bizi global değişkenler kullanmamaya zorlaması, konsepte aykırı gibi duruyor.
+Demek istediğim :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#result&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;removeClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-danger&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-info&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;JQuery bağlılığını require.js bizzat yükleyeceği için sayfa yüklenirken &lt;code&gt;$&lt;/code&gt; tanımlayıcısını gören parser bize &lt;code&gt;undefined not a function&lt;/code&gt; hatasını verecek.
+Çünkü JQuery henüz yüklenmedi!&lt;/p&gt;
+
+&lt;h3 id=&quot;eller-masaya&quot;&gt;Eller masaya&lt;/h3&gt;
+&lt;p&gt;Angular.js güdümündeki formda tek bir drop down veya aynı drop down’ın kendini tekrar etmesi durumları olabilir. (Bende olduğu gibi).
+Bu durumda callback fonksiyonlarını require.js ile bir AMD modülü içerisinde tanımlayalım:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;use strict&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;define&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;jquery&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;angular&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;angular&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;modalHelper&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetHtml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;targetElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;multiple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetHtml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;removeClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-danger&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-info&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+                &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isMultiple&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;multiple&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;isMultiple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;each&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;innerScope&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;angular&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+                        &lt;span class=&quot;nx&quot;&gt;innerScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                            &lt;span class=&quot;nx&quot;&gt;innerScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;refresh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+                        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+                    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;angular&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                        &lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;refresh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+                    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+            &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;onFailure&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetHtml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetHtml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;removeClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-info&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-danger&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;modalHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Dosyanının &lt;code&gt;modalhelper.js&lt;/code&gt; verip common dizinine kopyaladım.&lt;/p&gt;
+
+&lt;p&gt;Ayrıca bu modülün içerisine işlem başarılı olduğunda angular.js kontrolündeki drop downların tazelenmesi için gerekli kodları da ekledim.&lt;/p&gt;
+
+&lt;p&gt;Tanımladığımız bu modülü ana formun bağlı olduğu sayfadan sorumlu require.js kodundan çağırmamız gerekiyor.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;&amp;#39;jquery&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;&amp;#39;ng-app&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;&amp;#39;./common/modalhelper&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// &amp;lt;- Yazdığım modül burada&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;&amp;#39;bootstrap&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;&amp;#39;app/controllers/product&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;&amp;#39;app/controllers/currency&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;&amp;#39;app/controllers/customer&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;&amp;#39;app/controllers/tax&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ngapp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;modalHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;application/controllers/invoice-create&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// Bind Ajax.BeginForm callbacks&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;customerHelper&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;modalHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#result&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;#customer&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;productHelper&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;modalHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#product_result&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;select[name=&amp;quot;product&amp;quot;]&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//&amp;lt;- multiple=true yaptık&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onFailure&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;customerHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onFailure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onSuccess&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;customerHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onProductSuccess&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;productHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onProductFailure&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;productHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onFailure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+
+      &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Modal tanımları aynı sayfada olduğu için farklı adlar veriyoruz. Aynı zamanda Ajax.BeginForm callback ler için global değişkenler
+istediğinden, window.onSuccess ve window.onFailure gibi global değişkenlere bağlıyoruz.&lt;/p&gt;
+
+&lt;p&gt;En iyi çözüm olmayabilir ama işleri aksatmadan yapılacak en hızlı çözüm bu.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;&lt;strong&gt;“Fazla mükemmelliyetçi olmayın; en iyisine sahip olacağım derken, hiçbir şeye sahip olamazsınız.”&lt;/strong&gt;&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Sat, 23 Aug 2014 00:00:00 +0300</pubDate>
+        <link>http://turhancoskun.com/blog/ajax-beginform-ve-requirejs/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/ajax-beginform-ve-requirejs/</guid>
+        
+        <category>JavaScript</category>
+        
+        <category>ASP.NET MVC</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Ruby ile TC Kimlik Doğrulama</title>
+        <description>&lt;p&gt;Bir süredir elimde olan bir kodu sizinle paylaşmak istiyorum. TC vatandaşlık numaralarının doğrulaması için Ruby ile yazdım.
+Aslında kodun orijinalini &lt;a href=&quot;http://muratcorlu.com/post/python-ile-tc-kimlik-numarasi-dogrulama/&quot;&gt;bu sayfada&lt;/a&gt; bulabilirsiniz.
+TC Kimlik numarasının doğrulamasının nasıl yapıldığının algoritması ve Phyton kodu paylaşılmış. Benim tek yaptığım buradan fikri almak ve Ruby dili ile biraz da deney maksatlı uyarlama yapmak oldu.&lt;/p&gt;
+
+&lt;p&gt;Bilindiği üzere TCKN kimlik numaraları belirli algoritmalar üzerine kurulu. Daha eski gazete haberlerinden hatırlar mısınız bilmiyorum ama bazı kişilerin sizin kimlik numaranızı elegeçirdikten sonra
+diğer aile bireylerinin bilgilerine de ulaşabilecekleri söyleniyordu. Tabiki bizim kodumuzun tek fonksiyonu konsol üzerinden verilen TCKN’nin geçerli bir kimlik no olup olmadığını kontrol etmekten ibaret.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/c9ad8e73780b1be5f130.js&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;İsterseniz program kodunu kullanıcıdan istediğiniz TCKN verileri doğrulamak için web projesi içinde de uyarlayabilirsiniz.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 19 Aug 2014 00:00:00 +0300</pubDate>
+        <link>http://turhancoskun.com/blog/ruby-ile-tc-kimlik-dorulama/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/ruby-ile-tc-kimlik-dorulama/</guid>
+        
+        <category>Ruby</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Newtonsoft.Json için Custom DateTime Converter</title>
+        <description>&lt;p&gt;Newtonsoft.Json en .NET içerinde artık standart Json kütüphanesi sayılabilir.&lt;/p&gt;
+
+&lt;p&gt;Çoğu zaman Json ile AJAX işlemleri yürüttüğümüzde tarih formatları başımızı ağrıtır. Bunun farklı kültürleri var, UTC’si haticesi uzayıp gider.&lt;/p&gt;
+
+&lt;p&gt;Mantıklı ve uygulaması kolay olan iki ayaklı bir çözümüm var :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Sunucudan veri okurken her zaman UTC olarak veri çek, formatlama işini JavaScript halletsin.&lt;/li&gt;
+  &lt;li&gt;Sunucuya veri yollamadan önce uygulama çapında DateTime girişi yapacak tüm kontroller standart bir format kullansın (örn : ‘dd-mm-yyyy’)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Sunucu ile yapılacak bilgi alışverişini serileştirecek custom sınıf:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Newtonsoft.Json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Newtonsoft.Json.Converters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;MyWebApplication.Converters&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CustomDateTimeConvertor&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DateTimeConverterBase&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;WriteJson&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JsonWriter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;writer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JsonSerializer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;serializer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;writer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WriteValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DateTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ToUniversalTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ReadJson&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JsonReader&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Type&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;objectType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;existingValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;JsonSerializer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;serializer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dateStr&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ToString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;parts&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dateStr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;DateTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Convert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ToInt32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Convert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ToInt32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Convert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ToInt32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]));&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Geriye artık web uygulamamızın Json’a veya Json’dan veri dönüşümlerinde bu sınıfı kullanabilmeleri için uygulamamıza sınıfı tanıtmak kalıyor.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Register&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpConfiguration&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// Web API configuration and services&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// Web API routes&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MapHttpAttributeRoutes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Routes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MapHttpRoute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;DefaultApi&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;routeTemplate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;api/{controller}/{id}&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RouteParameter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Optional&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Formatters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JsonFormatter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SerializerSettings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Converters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CustomDateTimeConvertor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// &amp;lt;-- Burada&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Formatters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JsonFormatter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SerializerSettings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ReferenceLoopHandling&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ReferenceLoopHandling&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Ignore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Formatters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Remove&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GlobalConfiguration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Formatters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;XmlFormatter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 16 Aug 2014 00:00:00 +0300</pubDate>
+        <link>http://turhancoskun.com/blog/newtonsoftjson-iin-custom-datetime-converter/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/newtonsoftjson-iin-custom-datetime-converter/</guid>
+        
+        <category>.NET</category>
+        
+        <category>C#</category>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
