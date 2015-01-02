@@ -6,9 +6,304 @@
 </description>
     <link>http://turhancoskun.com/</link>
     <atom:link href="http://turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 25 Dec 2014 05:40:56 +0200</pubDate>
-    <lastBuildDate>Thu, 25 Dec 2014 05:40:56 +0200</lastBuildDate>
+    <pubDate>Fri, 02 Jan 2015 07:32:54 +0200</pubDate>
+    <lastBuildDate>Fri, 02 Jan 2015 07:32:54 +0200</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Clojure&#39;da Basit Veri Türleri</title>
+        <description>&lt;p&gt;Clojure dilini anlamaya başlamak için öncelikle basit veri türlerini anlamaya başlamak gerek. Daha önce &lt;strong&gt;Clojure ile JVM ve Lisp dünyasına ‘Merhaba Dünya’&lt;/strong&gt; yazımda &lt;em&gt;Leiningen&lt;/em&gt; isimli bir uygulamadan da bahsetmiştim. Şimdi bu yazımda leiningen yardımıyla Clojure ile JVM ve Lisp dünyalarına dalışa devam edeceğiz. Eğer o yazımı okumadıysanız &lt;a href=&quot;http://turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/&quot;&gt;&lt;strong&gt;buraya&lt;/strong&gt;&lt;/a&gt; tıklayarak ulaşabilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;Clojure, bir LISP lehçesi olarak çekirdeği küçük tutulup makrolar ile genişletilmesi düşünülmüş bir dil olmasına rağmen, JVM tabanlı bir dil ve bu nedenle Java kütüphanelerine de erişimi var. Clojure öğrenmek için veri yapılarına ve makrolar gibi başka ileri düzey konulara ilerlemeden önce mutlaka öğrenilmesi gereken konu basit veri türleri ya da başka bir deyişle değişken türleridir. &lt;/p&gt;
+
+&lt;p&gt;Makelem boyunca bütün anlatımlarımı REPL üzerinden yapacağım. Leiningen ile REPL çalıştırmak için. &lt;code&gt;lein repl&lt;/code&gt; komutunu kullanabilirsiniz. Ayrıca tab ile otomatik tamamlama özelliği sayesinde ilgili kütüphaneki diğer fonksiyonları da görebilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;Clojure terminolojisinde değişkenlere atomlar da denilebiliyor. Clojure değişken tanımlarında birçok dile göre daha özgür.Türkçe karakterler dahil bir çok alfanumerik karakteri değişken isimlerinde kullanma izni veriyor. Örnek: &lt;code&gt;read-string&lt;/code&gt;, &lt;code&gt;is-saved?&lt;/code&gt; ve hatta &lt;code&gt;yağmur-yağıyor-mu?&lt;/code&gt; Clojure dilinde geçerli tanımlamalardır.&lt;/p&gt;
+
+&lt;p&gt;Clojure basit veri türlerini temel olarak aşağıdakiler gibi gruplandırabiliriz:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Boolean (true, false)&lt;/li&gt;
+  &lt;li&gt;String&lt;/li&gt;
+  &lt;li&gt;Sayısal Veriler&lt;/li&gt;
+  &lt;li&gt;Düzenli ifadeler (Regular Expressions)&lt;/li&gt;
+  &lt;li&gt;Anahtar Kelimeler (Keywords)&lt;/li&gt;
+  &lt;li&gt;Fonksiyonlar&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;balamadan-nce&quot;&gt;Başlamadan Önce&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;REPL’in açılımı Read, Eval, Print ve Loop dur. Bizim durumumuzda parantezler arasında kodu REPL’e gireriz ve program &lt;strong&gt;read&lt;/strong&gt; yani okuma işlemini gerçekleştirir, sonra arkaplanda &lt;strong&gt;eval&lt;/strong&gt; eder yani kodu çalıştırır. Örneklerde &lt;code&gt;; =&amp;gt;&lt;/code&gt; ile başlayan satırlar &lt;strong&gt;print&lt;/strong&gt; yani çıktıyı verir. Son olarak &lt;strong&gt;loop&lt;/strong&gt; yani döngü işlemi ile başa döner ve yeni bir satırda, sizden okumak üzere yeni komut bekler. Kısacası REPL olayı bundan ibarettir.&lt;/li&gt;
+  &lt;li&gt;REPL ekranı bazen çok kirlenip okunması zor hale gelebiliyor. Clojure, Ruby ya da Python herhangi bir dilde REPL ile çalışıyorsanız Ctrl-L kısayolu sayesinde kolayca ekranı temizleyebilirsiniz. &lt;/li&gt;
+  &lt;li&gt;Basit veri türlerinden bahsetmeden önce Clojure’da değişken nasıl tanımlanır onu bilmekte fayda var. Clojure ile değişken tanımlamak için kullanılan şablon en basit haliyle &lt;code&gt;(def &amp;lt;değişken adı&amp;gt; &amp;lt;değişken değeri&amp;gt;)&lt;/code&gt; şeklindedir.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;boolean-true-false&quot;&gt;1. Boolean (true, false)&lt;/h2&gt;
+&lt;p&gt;Boolean, gerçekten çok basit bir veri türüdür. Aynı zamanda bilgisayar biliminin en önemli veri türlerinden birisidir. İki değer alabilir: true ya da false.&lt;/p&gt;
+
+&lt;p&gt;Clojure’da veri türlerini öğrenmek için kullanılan fonksiyon &lt;code&gt;type&lt;/code&gt; fonksiyonudur. &lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; java.lang.Boolean&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; java.lang.Boolean&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;type&lt;/em&gt; ile boolean değerlerini incelediğimizde doğrudan Java’dan geldiğini görebilirsiniz. Java zaten mükemmel çalışan boolean türüne sahipken, Amerika’yı yeniden keşfetmemek adına, JVM üzerinde çalışan bir dilin yapacağı en mantıklı hareket bence de budur.&lt;/p&gt;
+
+&lt;p&gt;Boolean türü doğal olarak her dilde olduğu gibi, Clojure’da da if ifadelerinin gözdesi:&lt;/p&gt;
+
+&lt;p&gt;Örnek:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ya&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;ğ&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;mur-ya&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;ğı&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;yor?&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ya&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;ğ&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;mur-ya&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;ğı&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;yor?&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;println &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Şemsiye al&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;println &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Şemsiyeye gerek yok&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; Şemsiyeye gerek yok&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If koşulları yazarken bilinmesi gereken bazı hususlar var. Farklı diller farklı değerleri true ya da false kabul edebiliyor.&lt;/p&gt;
+
+&lt;p&gt;Clojure’da if içinde &lt;code&gt;false&lt;/code&gt; olarak çalışan atomlar sadece &lt;strong&gt;false&lt;/strong&gt; ve &lt;strong&gt;nil&lt;/strong&gt; ‘dir.
+Birçok dilin aksine &lt;strong&gt;”“&lt;/strong&gt;(boş string), &lt;strong&gt;()&lt;/strong&gt;(boş liste) ve &lt;strong&gt;0&lt;/strong&gt;(sıfır) &lt;code&gt;true&lt;/code&gt; olarak kabul edilir.&lt;/p&gt;
+
+&lt;h2 id=&quot;string&quot;&gt;2. String&lt;/h2&gt;
+
+&lt;p&gt;Clojure’da string veri türünün arkasında Java’nın UTF-16 stringleri yer alıyor ve durum pek çok dille uyumlu çalışması anlamına geliyor. JVM’den aldığı güçle Java’nın string genişletme metodlarını kullanabileceğiniz gibi fazla geniş olmasa da Clojure da kendi string kütüphanesine sahip.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Merhaba Dünya!&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; java.lang.String&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;string-ile-yaplabilecek-basit-ilemler&quot;&gt;String ile yapılabilecek basit işlemler&lt;/h3&gt;
+
+&lt;p&gt;Clojure ile Java’nın string fonksiyonlarını kullanabileceğiniz gibi Clojure bu işler için görece küçük bir kütüphane de barındırıyor.&lt;/p&gt;
+
+&lt;h4 id=&quot;bo-string-testi&quot;&gt;Boş string testi&lt;/h4&gt;
+
+&lt;p&gt;blank? fonksiyonunun arkasındaki soru işareti “?” bize biraz Ruby’yi hatırlatıyor. :)&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;clojure.string/blank?&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; true&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;clojure.string/blank?&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Foo&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; false&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Tabiki her seferinde clojure.string yazmak uzun olacağı için &lt;code&gt;alias&lt;/code&gt; tanımlamamız daha doğru bir yaklaşım olacaktır.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;clojure.string&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;as&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Bu durumda yukarıdaki örneği aşağıdaki gibi tekrar yazabiliriz.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;str/blank?&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;byk-kk-harf-evirme&quot;&gt;Büyük Küçük Harf Çevirme&lt;/h4&gt;
+
+&lt;p&gt;REPL Üzerinde deneylerimize devam edersek:&lt;/p&gt;
+
+&lt;p&gt;Büyük harfe çevirme:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;str/upper-case&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;küçük harfli yazı&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; &amp;quot;KÜÇÜK HARFLI YAZI&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Baş harfi büyütme:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;str/capitalize&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;küçük harfli yazı&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; &amp;quot;Küçük harfli yazı&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Küçük harfe çevirme:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;str/lower-case&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;BÜYÜK HARFLİ YAZI&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; &amp;quot;büyük harfli̇ yazi&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;string-krpma&quot;&gt;String Kırpma&lt;/h4&gt;
+
+&lt;p&gt;String veri türü ile ilgili olmazsa olmaz işlemlerden biri &lt;em&gt;trim&lt;/em&gt; yani kırpmadır. Birçok yerde yazılardan yeni satır(\n), tab(\t) ve &lt;em&gt;white space&lt;/em&gt; dediğimiz boşlukları temizlememiz gerekir.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;str/trim&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;\tMerhaba trim   \n&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; &amp;quot;Merhaba trim&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;trim ile string verilerinizin iki tarafınıda kırpabilirsiniz. Sadece sağ ve sol taraflarını kırpmak için &lt;code&gt;trimr&lt;/code&gt; ve &lt;code&gt;triml&lt;/code&gt; fonksiyonları kullanılır. Kullanış şekilleri normal trim metodu ile aynıdır.&lt;/p&gt;
+
+&lt;h4 id=&quot;stringi-ksmen-deitirme&quot;&gt;String’i kısmen değiştirme&lt;/h4&gt;
+
+&lt;p&gt;Başka programla dillerinden de bildiğimiz &lt;code&gt;replace&lt;/code&gt; fonksiyonu. String içinde eşleşen parçaları bizim istediğimiz başka bir string ile değiştirir.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;str/replace&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Merhaba world&amp;quot;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;world&amp;quot;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;dünya&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; &amp;quot;Merhaba dünya&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Gördüğünüz gibi replace fonksiyonu üç parametre alıyor. Yukarıdaki kod “Merhaba world” stringinde “world” gördüğü yeri “dünya” ile değiştirir. Dikkat edilmesi gereken nokta birinci parametrede geçen “world” gördüğü her eşleşmeyi “dünya” olarak değiştirecektir. Sadece ilk gördüğü noktayı değiştirmesini istersek:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;str/replace-first&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;world world world&amp;quot;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;world&amp;quot;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;dünya&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; &amp;quot;dünya world world&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;şeklinde kullanabiliriz.&lt;/p&gt;
+
+&lt;p&gt;Clojure string API’sinde bulunan tüm string metodlarını burada yazmayacağım. Diğerlerini görmek için &lt;a href=&quot;http://clojure.github.io/clojure/clojure.string-api.html&quot;&gt;http://clojure.github.io/clojure/clojure.string-api.html&lt;/a&gt; adresini ziyaret edebilirsiniz.&lt;/p&gt;
+
+&lt;h4 id=&quot;java-string-interop&quot;&gt;Java String Interop&lt;/h4&gt;
+
+&lt;p&gt;Clojure JVM tabanlı bir dil olduğu için Java kütüphanelerine doğal erişimi olduğunu söylemiştim. Clojure stringlerinin Java string türü olduğunu ise makalenin en başında &lt;code&gt;type&lt;/code&gt; fonksiyonu ile doğrulamıştık. Aşağıdaki örneklerle Java’nın string API’sinde bulunan instance metodlarına nasıl erişildiğini görebilirsiniz.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.indexOf&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Clojure&amp;quot;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;j&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 3&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.length&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Clojure&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 7&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.matches&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Clojure&amp;quot;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;clojure&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; false&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Örnekler bu şekilde çoğaltılabilir. java.lang.String API dokümantasyonu için &lt;a href=&quot;http://docs.oracle.com/javase/7/docs/api/java/lang/String.html&quot;&gt;buraya&lt;/a&gt; ve Clojure üzerinden Java kütüphanelerine erişim ile ilgili kaynak için &lt;a href=&quot;http://en.wikibooks.org/wiki/Learning_Clojure/Calling_Java&quot;&gt;buraya&lt;/a&gt; tıklayabilirsiniz.&lt;/p&gt;
+
+&lt;h2 id=&quot;saysal-veriler&quot;&gt;3. Sayısal Veriler&lt;/h2&gt;
+&lt;p&gt;Clojure sayıları ifade etmek için pek çok sayısal veri türü barındırır. Basitçe tam sayılar, ondalıklı sayılar ve kesirler) için farklı farklı veri türleri vardır. (int, long, double, BigInteger, BigDouble, BigDecimal, Ratio)&lt;/p&gt;
+
+&lt;p&gt;Bu veri türlerinin belleği nasıl kullandığı, en küçük ve en büyük değerlerinin neler olduğunu dokümantasyona bakarak öğrenebilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;Burada özellikle üstüne durmak istediğim veri türü &lt;code&gt;Ratio&lt;/code&gt; yani rasyonel sayı ve kesir olarak tabir ettiğimiz sayı türünü ifade etmek için kullanılır.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;/4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; clojure.lang.Ratio&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;type fonksiyonu ile veri türünü tespit etmeye çalıştığımızda veri türünün Ratio olduğunu ve Clojure’ın kendi kütüphanelerinde tanımlandığını görüyoruz.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.45&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;java.lang.Double&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ondalıklı bir sayı ile deney yaptığımızda ise Java’nın double sınıfına bağlı. Ondalıklı sayıları ifade eden double tipindeki değerleri kesir değerlerine dönüştürmek ise gerçekten çok kolay.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rationalize&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.45&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 9/20&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Uygulamalara kullanıcıdan gelen girdiler çoğunlukla string türünde olur ve bunlarla matematiksel işlem yapabilmek için sayısal türlere çevirmemiz gerekir. &lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Double/parseDouble&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;-0.45&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; -0.45&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Int/parseInt&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;45&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 45&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Sayısal verilerden bahsetmeye başlamışken, Math kütüphanesindeki statik fonksiyonlardan bahsetmeden olmaz.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; java.lang.Class&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Math/pow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 16.0&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Math/PI&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 3.141592653589793&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Math/round&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Math/PI&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 3&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;dzenli-fadeler-regular-expressions&quot;&gt;4. Düzenli İfadeler (Regular Expressions)&lt;/h2&gt;
+&lt;p&gt;Clojure düzenli ifade tanımlamak string tanımlamaya çok benziyor. String tanımının önüne &lt;strong&gt;#&lt;/strong&gt; eklemeniz yeterli. &lt;code&gt;#&quot;[a-Z]&quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Regex veri türünün hangi kütüphanede tanımlı olduğunu öğrenmek için:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;[a-z]&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; java.util.regex.Pattern&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Clojure’da regex işlemlerini yürütebileceğiniz “re-“ ön eki ile başlayan toplam 6 fonksiyon bulunur: re-find, re-groups, re-matcher, re-matches, re-pattern ve re-seq&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;re-seq &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;[0-9]&amp;quot;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;abc1d2ef3g&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; (&amp;quot;1&amp;quot; &amp;quot;2&amp;quot; &amp;quot;3&amp;quot;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;6 fonksiyonun tümü için açıklamaları &lt;a href=&quot;http://clojure.github.io/clojure/clojure.core-api.html#clojure.core/re-find&quot;&gt;burada&lt;/a&gt; bulabilirsiniz.&lt;/p&gt;
+
+&lt;h2 id=&quot;anahtar-kelimeler-keywords&quot;&gt;5. Anahtar Kelimeler (Keywords)&lt;/h2&gt;
+&lt;p&gt;Anahtar kelimeler deyince ilk anda insanın aklına birçok programlama dilindeki &lt;em&gt;token&lt;/em&gt; ifadeler geliyor. Yani &lt;code&gt;while, for, class&lt;/code&gt; gibi. Ama Clojure dilinde anahtar kelime yani &lt;strong&gt;keyword&lt;/strong&gt; deyince akla ilk gelen iki nokta üstüste(:) ile başlayan değerler. Bunları daha çok Ruby dilindeki sembollere benzetebiliriz. Örneğin &lt;code&gt;:foo, :bar&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; clojure.lang.Keyword&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Başka bir yazıda anlatmayı planladığım “Clojure’da Veri Yapıları” konusunda göstereceğim &lt;strong&gt;map&lt;/strong&gt; yapısında bolca kullanılırlar. Keyword kullanmanın en önemli avantajlarından birisi de if ile yapılan eşitlik testlerinde çok büyük hız avantajı sağlamalarıdır.&lt;/p&gt;
+
+&lt;p&gt;Keyword veri türü ile küçük deneyler:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;keyword? &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;foo&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; false&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;my-keyword&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;keyword &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;foo&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/my-keyword&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;println &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;my-keyword&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; :foo&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;keyword? &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;my-keyword&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;fonksiyonlar&quot;&gt;6. Fonksiyonlar&lt;/h2&gt;
+
+&lt;h3 id=&quot;birinci-snf-vatanda-fonksiyonlar&quot;&gt;Birinci sınıf vatandaş fonksiyonlar&lt;/h3&gt;
+&lt;p&gt;En güzel kısmı en sona bıraktım. Clojure bir fonksiyonel programlama dili ve bu da demek oluyor ki bu dilde fonksiyonlar birinci sınıf vatandaşlar. Bu tabiri ilk kim kullanmış bilmiyorum ama gerçekten cuk oturuyor. Aslında buraya kadar pek çok hazır fonksiyon kullanarak geldik. Örn: re-seq, println aslında hep birer fonksiyondu.&lt;/p&gt;
+
+&lt;h3 id=&quot;ekirdek-fonksiyonlar&quot;&gt;Çekirdek Fonksiyonları&lt;/h3&gt;
+&lt;p&gt;Şu ana type fonksiyonunu hep başka tanımlamalara karşı kullandık. Şimdi silahı kendisine çevirelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; clojure.core$type&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Çıktıyı not edelim ve irdelemeye devam edelim.&lt;/p&gt;
+
+&lt;p&gt;Bir çok programlama dilini öğrenirken bize topla(), cikar() gibi temel fonksiyonların operatör denilen özel ifadelerle nasıl uygulanabileceği öğretilir. Şimdi bu durum Clojure’da nasılmış ona bakalım.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;+ &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 10&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Yazım şekli bir yerlerden tanıdık geldi mi? Hadi bu “+” neymiş ona da bakalım?&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; clojure.core$_PLUS_&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;clojure.core$type&lt;/code&gt; ve &lt;code&gt;clojure.core$_PLUS_&lt;/code&gt; hmm bir yerlere geliyoruz sanırım.&lt;/p&gt;
+
+&lt;h3 id=&quot;kullanc-tanml-fonksiyonlar&quot;&gt;Kullanıcı Tanımlı Fonksiyonlar&lt;/h3&gt;
+&lt;p&gt;Kullanıcı tanımlı fonksiyonlar anonim ya da isimlendirilmiş olabilirler. Bir Lisp lehçesi olarak Clojure, fonksiyon tanımlayabilmek için öntanımlı makrolar kullanır. Makroların çağırılması ise diğer fonksiyonlar(+, type, vs) ve özel formlar(if, def) ile aynıdır. İlk parantezden sonra anahtar kelime gelir. Böyle yazınca karışık oldu biliyorum.&lt;/p&gt;
+
+&lt;p&gt;Şimdi aşağıdaki JavaScript örneğini inceleyelim:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selamla&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;isim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Merhaba, &amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;selamla&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;Turhan&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// =&amp;gt; &amp;quot;Merhaba, Turhan&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Aynı kodun Clojure versiyonu aşağıdaki gibi olacaktır.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;defn &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;selamla&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;isim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.concat&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Merhaba, &amp;quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;isim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;selamla&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Turhan&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; &amp;quot;Merhaba, Turhan&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;İsimlendirilmiş fonksiyon tanımlarını &lt;code&gt;defn&lt;/code&gt; makrosu ile yaptık. Peki ya anonim fonksiyonları nasıl tanımlıyoruz? Aşağıdaki JavaScript örneğine göz atalım.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selamla&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;isim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Merhaba, &amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;selamla&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;Turhan&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// =&amp;gt; &amp;quot;Merhaba, Turhan&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;JavaScript bilmeyipte bana küfür edenler için burada ne olduğunu açıklayayım. Teknik olarak bu kod ile daha önceki JavaScript kodu aynı işi yapıyor ancak tanımlamalarından gelen bir farklılık var. Biri doğrudan isimli bir fonksiyon olarak oluşturulmuş, diğeri ise &lt;strong&gt;anonim bir fonksiyon ve olduğu gibi bir değişkene atanmış&lt;/strong&gt;. &lt;/p&gt;
+
+&lt;p&gt;Fonksiyonel programlama dillerinde fonksiyonlar bir veri türü olarak iş görürler ve doğrudan değişkenlere atanabilir, isim vermeye bile gerek kalmadan yine bir veri türü olarak başka bir fonksiyona parametre olabilir, hatta başka bir fonksiyonun dönüş değeri de olabilirler. Bu durum Clojure için de geçerli.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;selamla&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;fn &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;isim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; 
+	&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.concat&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Merhaba, &amp;quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;isim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;selamla&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Turhan&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; &amp;quot;Merhaba, Turhan&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Son örneğimizde &lt;code&gt;fn&lt;/code&gt; Clojure dilinde anonim fonksiyon oluşturan makro. &lt;code&gt;def&lt;/code&gt; ise değişken tanımlayan &lt;em&gt;özel form&lt;/em&gt; ve bunların birleşimi ile anonim fonksiyonu değişkene bağlayarak kullanıcı tanımlı bir fonksiyon oluşturmuş olduk.&lt;/p&gt;
+
+&lt;p&gt;Basit veri türlerinin sonuna geldik. Başka bir yazımda bu basit veri türlerini bağlayan, bir araya getiren veri yapılarından bahsedeceğim. Şimdilik hoşçakalın.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 02 Jan 2015 00:00:00 +0200</pubDate>
+        <link>http://turhancoskun.com/blog/clojure-ile-basit-veri-turleri/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/clojure-ile-basit-veri-turleri/</guid>
+        
+        <category>Clojure</category>
+        
+        <category>Dersler</category>
+        
+        
+      </item>
     
       <item>
         <title>Ruby ve Shell ile kolay yoldan web server</title>
@@ -1378,28 +1673,6 @@ istediğinden, window.onSuccess ve window.onFailure gibi global değişkenlere b
         <category>JavaScript</category>
         
         <category>ASP.NET MVC</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Ruby ile TC Kimlik Doğrulama</title>
-        <description>&lt;p&gt;Bir süredir elimde olan bir kodu sizinle paylaşmak istiyorum. TC vatandaşlık numaralarının doğrulaması için Ruby ile yazdım.
-Aslında kodun orijinalini &lt;a href=&quot;http://muratcorlu.com/post/python-ile-tc-kimlik-numarasi-dogrulama/&quot;&gt;bu sayfada&lt;/a&gt; bulabilirsiniz.
-TC Kimlik numarasının doğrulamasının nasıl yapıldığının algoritması ve Phyton kodu paylaşılmış. Benim tek yaptığım buradan fikri almak ve Ruby dili ile biraz da deney maksatlı uyarlama yapmak oldu.&lt;/p&gt;
-
-&lt;p&gt;Bilindiği üzere TCKN kimlik numaraları belirli algoritmalar üzerine kurulu. Daha eski gazete haberlerinden hatırlar mısınız bilmiyorum ama bazı kişilerin sizin kimlik numaranızı elegeçirdikten sonra
-diğer aile bireylerinin bilgilerine de ulaşabilecekleri söyleniyordu. Tabiki bizim kodumuzun tek fonksiyonu konsol üzerinden verilen TCKN’nin geçerli bir kimlik no olup olmadığını kontrol etmekten ibaret.&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/c9ad8e73780b1be5f130.js&quot;&gt; &lt;/script&gt;
-
-&lt;p&gt;İsterseniz program kodunu kullanıcıdan istediğiniz TCKN verileri doğrulamak için web projesi içinde de uyarlayabilirsiniz.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 19 Aug 2014 00:00:00 +0300</pubDate>
-        <link>http://turhancoskun.com/blog/ruby-ile-tc-kimlik-dorulama/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/ruby-ile-tc-kimlik-dorulama/</guid>
-        
-        <category>Ruby</category>
         
         
       </item>
