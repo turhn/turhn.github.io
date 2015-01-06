@@ -43,7 +43,7 @@ h3 {
     margin: 0;
 }
 .brand-title {
-    text-transform: uppercase;
+    text-shadow: #130F0F 0px 1px 3px;
 }
 .brand-tagline {
     font-weight: 300;
@@ -96,6 +96,7 @@ h3 {
     font-size: 2em;
     color: #222;
     margin-bottom: 0.2em;
+    text-shadow: rgba(66, 184, 221, 0.19) 0px 1px 3px;
 }
 .post-avatar {
     border-radius: 150px;

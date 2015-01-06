@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Git ile Panik Yönetimi</title>
+    
+    <meta name="description" content="Ruby, JavaScript, Clojure ve diğer yazılım maceralarım
+">
+    
+    <link rel="canonical" href="http://turhancoskun.com/blog/git-ile-panik-yonetimi/">
+    <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+</head>
+
+
+<body class="showing-post">
+  <div class="pure-g">
+    <div class="content pure-u-1 pure-u-md-3-4">
+      <div>
+          <div class="post-nav-bar pure-g">
+            <div class="pure-u-1-3">
+              <figure>
+                <a href="/">
+                  <img class="post-avatar" src="/assets/profile200x200.jpg" alt="Turhan Coskun" />
+                </a>
+              </figure>
+            </div>
+            <div class="blog-name pure-u-1-3">
+              <div><a href="/">Turhan Coskun</a></div>
+            </div>
+            <div class="pure-u-1-3">
+            </div>
+          </div>
+
+        <div class="post">
+          <header class="post-header">
+            <h1 class="post-title">Git ile Panik Yönetimi</h1>
+            <div class="post-meta">Jan 5, 2015
+            <div>
+              
+              <a class="post-category" href="/tag/Dersler">Dersler</a>
+              
+              <a class="post-category" href="/tag/Git">Git</a>
+              
+            </div>
+            </div>
+          </header>
+
+          <article class="post-content">
+            <p>Uygulama geliştirirken bazen işler istediğimiz gibi gitmez ve bu durumda favori versiyon kontrol sistemine güveniriz. Yaptığımız değişiklikleri geri almamız ya da eski revizyonları kontrol etmemiz gerekebilir.</p>
+
+<p>Aklıma gelen muhtemel panik senaryoları ve kendimizi nasıl kurtarabileceğimize bakalım..</p>
+
+<p>Başlangıç olarak:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git init
+touch davet.md
+git add davet.md
+git commit -m <span class="s2">&quot;İlk commit&quot;</span>
+git log --oneline</code></pre></div>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">8d123a1 İlk commit</code></pre></div>
+
+<p>Şeklinde <em>commit</em> tarihimizi başlatalım.</p>
+
+<h2 id="yanl-dosyay-git-add-ile-ekledim-ne-yapmalym">Yanlış dosyayı <em>git add</em> ile ekledim ne yapmalıyım?</h2>
+
+<p><em>git add</em> komutu yerel repomuzdaki değişiklikleri, sıradaki <em>commit</em>‘e eklemek üzere <em>staging</em> dediğimiz indekse yüklemek için kullanılır.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">touch ceviz.md
+git add .</code></pre></div>
+
+<p>Ups. <strong>ceviz.md</strong> dosyasını <em>staging</em>‘e ekledik ama -eklememiz- gerekiyordu.</p>
+
+<h3 id="panik-yok">Panik Yok!</h3>
+
+<p>Çözümü çok basit.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git reset HEAD ceviz.md</code></pre></div>
+
+<p>İşte bu kadar. Artık dosyamız <em>git status</em> ile kontrol ettiğimizde orada olmayacak.</p>
+
+<h2 id="en-son-commiti-nasl-geri-alrm">En son commit’i nasıl geri alırım?</h2>
+
+<p>Aşağıdaki gibi <em>commit</em> eklediğimizi varsayarsak?</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git add .
+git commit -m <span class="s2">&quot;Ceviz Ekle&quot;</span>
+git log --oneline</code></pre></div>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">ce17f4d Ceviz ekle
+8d123a1 İlk commit</code></pre></div>
+
+<p>Aslında git ile <em>commit</em> geri almanın zilyon tane yolu var. En basitlerinden bazılarını açıklayalım.</p>
+
+<h3 id="git-revert">git revert</h3>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git revert HEAD</code></pre></div>
+
+<p>Bunu yaptığınız da editörünüz açılacak ve sizden bir commit mesajı girmenizi isteyecektir. Ve en son committe yaptığımız değişikleri geri alan yeni bir commit oluşturacaktır.</p>
+
+<p>Tabi ki bu yöntemin avantajları olduğu gibi dezavantajları da olacaktır. En önemli avantajı son derece güvenli olması yan etkilerinin kolaylıkla geri alınabilmesidir.</p>
+
+<p>Neler olduğuna şöyle bir göz atarsak:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git log --oneline</code></pre></div>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">e5f4c85 Revert <span class="s2">&quot;Ceviz ekle&quot;</span>
+ce17f4d Ceviz ekle
+8d123a1 İlk commit</code></pre></div>
+
+<p>Çıktıdan anladığımız kadarıyla <em>revert</em> komutu, aslında gerçek anlamda geri alma işlemi yapmıyor, aksine bir commitin etkilerini geri alan yeni bir commit oluşturuyor.</p>
+
+<p>Burada dikkat etmemiz gereken can alıcı nokta; <em>git revert</em> ile commit tarihi değişmedi ve aynen duruyor. Bu yaklaşım public olmuş branch’lar için başka kullanıcıların değişikliklerini yıkmamak adına ve proje tarihini takip edebilmek için oldukça mantıklı. Ancak lokal bir branch’ta çalışıyorsanız ve değişiklikleriniz henüz başkalarıyla paylaşılmamışsa aynı dosyalarla ilgili değişiklikleri içeren ekstra bir commit oldukça mantıksız olacaktır.</p>
+
+<h3 id="git-reset">git reset</h3>
+
+<p><strong><em>git reset</em></strong>, revert’e göre daha tehkileli bir yöntem. reset ile yaptığınız bazı işlemleri geri alamayabilirsiz. </p>
+
+<p>Şimdi senaryomuza geri dönelim ve lokal branchta çalışırken revert’in oluşturduğu ekstra committen duyduğumuz memnuniyetsizlikle son commit’i geri alalım.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git reset HEAD~1</code></pre></div>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">ce17f4d Ceviz ekle
+8d123a1 İlk commit</code></pre></div>
+
+<p>Gördüğünüz gibi revert komutunun oluşturduğu commit ve etkileri gitti. HEAD~1 diyerek kafayı bir commit geri çekmiş olduk, <strong><em>git reset HEAD~2</em></strong> deseydik doğrudan İlk Commit’e gelmiş olurduk. <strong><em>git status</em></strong> ile kontrol edersek revert commitinin yaptığı değişikliğin staging’e eklenmemiş olduğunu görürüz. Bu durum aslında <strong><em>git reset</em></strong> komutunun default davranışı ile alakalı bir durum.</p>
+
+<p><strong><em>git reflog</em></strong> komutu ile çıktıyı kontrol edin. Göreceksiniz ki <em>git</em>, yaptığımız her hareketi kayıt almış. Çalışma dizinimizi HEAD@{n} şeklinde ifade edilen konumlara resetleyebiliriz. bunun için e5f4 ile başlayan git revert işlemini yaptığımız kısma dönelim.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git reset HEAD@<span class="o">{</span>1<span class="o">}</span>
+git log --oneline</code></pre></div>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">e5f4c85 Revert <span class="s2">&quot;Ceviz ekle&quot;</span>
+ce17f4d Ceviz ekle
+8d123a1 İlk commit</code></pre></div>
+
+<p>Şimdi <strong><em>git reset</em></strong> kısmını farklı türlü denemek için <em>git reset HEAD~1</em> yapmadan önceki konumumuza geri döndük. git reset komutunu farklı bir parametre ile deneyelim.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git reset --hard HEAD~1
+git log --oneline</code></pre></div>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">ce17f4d Ceviz ekle
+8d123a1 İlk commit</code></pre></div>
+
+<p>Ve <strong><em>git status</em></strong> komutunu daha önce verdiğimizde ceviz.md dosyasının silinmek üzere staging’de beklediğini görmüştük. Şimdi tekrar kontrol ettiğimizde staging temiz ve ceviz.md olması gerektiği gibi dizinimizde duruyor ama daha önce stagingdeki değişikler uçmuş. Peki ne değişti?</p>
+
+<p><em>git reset</em>‘in farklı çalışma modları vardır ve bu modlardan ön tanımlı olan –mixed modunu ilk reset işleminde mod parametresi belirlemeyerek test etmiş olduk. Daha sonra ise –hard parametresini de ekleyerek tekrar denedik aradaki farkı anlamaya çalıştık. <strong><em>git help reset</em></strong> ile diğer modları kontrol ettiğimizde –mixed, –hard, –soft, –keep ve –merge olmak üzere 5 adet olduklarını görürüz. Bunlardan ilk üçünü daha sıklıkla kullanıldığı için açıklamaya çalışacağım.</p>
+
+<ul>
+  <li>
+    <p>–mixed, <em>git reset –mixed HEAD~1</em> : git reset komutunun öntanımlı davranışıdır ve geri aldığımızda değişikler staging’e otomatik eklenmemiştir. git status komutu ile dosyaların eklenmek üzere olduklarını görürüz.</p>
+  </li>
+  <li>
+    <p>–soft, <em>git reset –soft HEAD~1</em> : –mixed moduna çok benzer aradaki fark, değişiklikleri git status ile kontrol ettiğimizde, staginge eklendiklerini ve commit etmek için beklediklerini görürüz.</p>
+  </li>
+  <li>
+    <p>–hard, <em>git reset –hard HEAD~1</em> : Bu modun denemesini beraber yapmıştık. Değişikler stagingde değil doğru kaybolmuş olurlar. </p>
+  </li>
+</ul>
+
+<p>NOT: Public olmuş branchlarda reset kullanmayın. Aksine revert kullanmayı tercih edin. </p>
+
+<h2 id="eyvah-commit-mesajn-yanl-girdim">Eyvah! commit mesajını yanlış girdim</h2>
+
+<p>Bu çok olur. Saçma bir imla hatası ya da anlam kayması her ne sebepten olursa olsun commit mesajını yenilemek gerekebilir.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git commit --amend</code></pre></div>
+
+<p>Bu sayede commit mesajlarını düzenlediğiniz editör açılır ve siz commit mesajının yeni halini tekrar yayınlarsınız.</p>
+
+<p>Tek satırda halledebilmek için -m parametresini eklemek.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git commit --amend -m <span class="s2">&quot;Ceviz eklendi&quot;</span>
+git status</code></pre></div>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">719c938 Ceviz eklendi
+8d123a1 İlk commit</code></pre></div>
+
+<p>Gördüğünüz commit kodu değişmiş. Bu da demek oluyor ki commit tarihine müdahale etmişiz. Commit tarihini değiştiren bir komut olduğu için paylaşılan branchlarda <em>commit –amend</em> kullanmayın.</p>
+
+<h2 id="ben-bu-commite-baka-bir-dosya-daha-ekleyecektim">Ben bu commit’e başka bir dosya daha ekleyecektim!</h2>
+
+<p>Panik yapmanın alemi yok. Olur böyle şeyler. :) –amend komutu en son commit’te değişiklikler yapmamızı sağlıyordu. Yine yardımcı olabilir.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">touch foo.md
+touch bar.md
+git add foo.md
+git commit -m <span class="s2">&quot;foo ve bar ekle&quot;</span>
+git status</code></pre></div>
+
+<p>İyi de foo ve bar ekledik ama sadece foo ekledik bar olduğu gibi duruyor.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git add bar.md
+git commit --amend --no-edit
+git status</code></pre></div>
+
+<p>Görüldüğü üzere <em>–no-edit</em> ekleyerek commit mesajına dokunmadan eksik kalan dosyayı da ekleyerek son commit güncellendi.</p>
+
+<h2 id="gerilerde-yle-bir-commit-var-resmen-yz-karas-derhal-kurtulmalym">Gerilerde öyle bir commit var resmen yüz karası. Derhal kurtulmalıyım!</h2>
+
+<p>git ile tarihi baştan yazabileceğiniz çok önemli bir yardımcıya kavuşursunuz. O yardımcının adı <em>rebase</em>. <em>–interactive</em> veya kısaca <em>-i</em> parametresi ekleyerek geçmişe gidebilir, commit birleştirebilir, bölebilir, silebilir hatta yer değiştirebilirsiniz.</p>
+
+<p>Diyelim ki foo ve bar’ın projede yeri olmadığına ve tamamen gitmeleri gerektiğine karar verdiniz.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git rebase -i HEAD~3</code></pre></div>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">pick 719c938 Ceviz eklendi
+pick e1317b5 foo ve bar ekle 
+pick ba51761 Ceviz başlık eklendi</code></pre></div>
+
+<p>Açılan editöre bir takım ayarlar yapmalıyız. foo ve barı kaldıracağız ve ceviz dosyasını oluşturmak ve başlık eklemek için ayrı commitler olması da anlamsız. Şimdi düzenleyerek aşağıdaki hale getirelim:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">pick 719c938 Ceviz eklendi
+squash ba51761 Ceviz başlık eklendi</code></pre></div>
+
+<p>Commit mesajının ne olacağını sorduğunda “Ceviz eklendi” olanı seçiyoruz yani diğerini # ile yorum satırı yapıyoruz.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git log --oneline</code></pre></div>
+
+<p>Açıkçası bayağı bir temizlik olmuş gibi :)</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">549826e Ceviz eklendi
+8d123a1 İlk commit</code></pre></div>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">cat ceviz.md</code></pre></div>
+
+<p>ekranda “ceviz” çıktısını aldıysak herşey istediğimiz gitmiş başlık eklediğimiz commit ceviz oluşturduğumuz commit ile birleşmiş demektir.</p>
+
+<h2 id="ok-skntl-ilem-yaptm-gemie-dnmem-gerek">Çok sıkıntılı işlem yaptım geçmişe dönmem gerek</h2>
+<p>Git, bizim için yaptığımız işlemlere referans kaydı tutuyor. Yukarıda revert komutunu geri alırken kullandığımız gibi. <strong><em>git reflog</em></strong> ile HEAD@{n} ‘i takiben yapılan işlemle de ilgili açıklamalar. Tarihten bu kesitlere istediğiniz gibi ışınlanabilirsiniz tek yapmanız gereken git reset HEAD@{n} ile istediğiniz noktaya gidebiliriz. </p>
+
+<p>Örneğin:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git reset HEAD@<span class="o">{</span>1<span class="o">}</span></code></pre></div>
+
+<p>En temel panik yönetimi yöntemlerinden bahsetmiş olduk. Başka bir yazıda görüşmek üzere.</p>
+
+<p>NOT: Hata bulursanız ya da eklemek istediğiniz birşeyler olursa yorum bırakmayı unutmayın. </p>
+
+<p>Görüşmek üzere…</p>
+
+          </article>
+
+          <div class="social-share">
+            <span>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+            </span>
+            <span>
+              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              </div>
+            </span>
+          </div>
+
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_shortname = 'turhancoskunblog';
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          <div id="fb-root"></div>
+
+          <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/tr_TR/sdk.js#xfbml=1&appId=1469686916649684&version=v2.0";
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));</script>
+
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+          <p>
+            <a href="/">Ana Sayfaya Dön</a>
+          </p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <link rel="stylesheet" href="/css/framework/pure-min.css">
+  <link rel="stylesheet" href="/css/framework/grids-responsive-min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/site.css">
+
+  <script type="text/javascript" src="/js/post.js"></script>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-41396472-1', 'auto');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+
+  </script>
+
+</body>
+
+</html>

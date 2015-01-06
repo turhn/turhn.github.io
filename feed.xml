@@ -6,9 +6,215 @@
 </description>
     <link>http://turhancoskun.com/</link>
     <atom:link href="http://turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 02 Jan 2015 07:32:54 +0200</pubDate>
-    <lastBuildDate>Fri, 02 Jan 2015 07:32:54 +0200</lastBuildDate>
+    <pubDate>Tue, 06 Jan 2015 04:55:53 +0200</pubDate>
+    <lastBuildDate>Tue, 06 Jan 2015 04:55:53 +0200</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Git ile Panik Yönetimi</title>
+        <description>&lt;p&gt;Uygulama geliştirirken bazen işler istediğimiz gibi gitmez ve bu durumda favori versiyon kontrol sistemine güveniriz. Yaptığımız değişiklikleri geri almamız ya da eski revizyonları kontrol etmemiz gerekebilir.&lt;/p&gt;
+
+&lt;p&gt;Aklıma gelen muhtemel panik senaryoları ve kendimizi nasıl kurtarabileceğimize bakalım..&lt;/p&gt;
+
+&lt;p&gt;Başlangıç olarak:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git init
+touch davet.md
+git add davet.md
+git commit -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;İlk commit&amp;quot;&lt;/span&gt;
+git log --oneline&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;8d123a1 İlk commit&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Şeklinde &lt;em&gt;commit&lt;/em&gt; tarihimizi başlatalım.&lt;/p&gt;
+
+&lt;h2 id=&quot;yanl-dosyay-git-add-ile-ekledim-ne-yapmalym&quot;&gt;Yanlış dosyayı &lt;em&gt;git add&lt;/em&gt; ile ekledim ne yapmalıyım?&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;git add&lt;/em&gt; komutu yerel repomuzdaki değişiklikleri, sıradaki &lt;em&gt;commit&lt;/em&gt;‘e eklemek üzere &lt;em&gt;staging&lt;/em&gt; dediğimiz indekse yüklemek için kullanılır.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;touch ceviz.md
+git add .&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ups. &lt;strong&gt;ceviz.md&lt;/strong&gt; dosyasını &lt;em&gt;staging&lt;/em&gt;‘e ekledik ama -eklememiz- gerekiyordu.&lt;/p&gt;
+
+&lt;h3 id=&quot;panik-yok&quot;&gt;Panik Yok!&lt;/h3&gt;
+
+&lt;p&gt;Çözümü çok basit.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git reset HEAD ceviz.md&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;İşte bu kadar. Artık dosyamız &lt;em&gt;git status&lt;/em&gt; ile kontrol ettiğimizde orada olmayacak.&lt;/p&gt;
+
+&lt;h2 id=&quot;en-son-commiti-nasl-geri-alrm&quot;&gt;En son commit’i nasıl geri alırım?&lt;/h2&gt;
+
+&lt;p&gt;Aşağıdaki gibi &lt;em&gt;commit&lt;/em&gt; eklediğimizi varsayarsak?&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add .
+git commit -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;Ceviz Ekle&amp;quot;&lt;/span&gt;
+git log --oneline&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;ce17f4d Ceviz ekle
+8d123a1 İlk commit&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Aslında git ile &lt;em&gt;commit&lt;/em&gt; geri almanın zilyon tane yolu var. En basitlerinden bazılarını açıklayalım.&lt;/p&gt;
+
+&lt;h3 id=&quot;git-revert&quot;&gt;git revert&lt;/h3&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git revert HEAD&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Bunu yaptığınız da editörünüz açılacak ve sizden bir commit mesajı girmenizi isteyecektir. Ve en son committe yaptığımız değişikleri geri alan yeni bir commit oluşturacaktır.&lt;/p&gt;
+
+&lt;p&gt;Tabi ki bu yöntemin avantajları olduğu gibi dezavantajları da olacaktır. En önemli avantajı son derece güvenli olması yan etkilerinin kolaylıkla geri alınabilmesidir.&lt;/p&gt;
+
+&lt;p&gt;Neler olduğuna şöyle bir göz atarsak:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git log --oneline&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;e5f4c85 Revert &lt;span class=&quot;s2&quot;&gt;&amp;quot;Ceviz ekle&amp;quot;&lt;/span&gt;
+ce17f4d Ceviz ekle
+8d123a1 İlk commit&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Çıktıdan anladığımız kadarıyla &lt;em&gt;revert&lt;/em&gt; komutu, aslında gerçek anlamda geri alma işlemi yapmıyor, aksine bir commitin etkilerini geri alan yeni bir commit oluşturuyor.&lt;/p&gt;
+
+&lt;p&gt;Burada dikkat etmemiz gereken can alıcı nokta; &lt;em&gt;git revert&lt;/em&gt; ile commit tarihi değişmedi ve aynen duruyor. Bu yaklaşım public olmuş branch’lar için başka kullanıcıların değişikliklerini yıkmamak adına ve proje tarihini takip edebilmek için oldukça mantıklı. Ancak lokal bir branch’ta çalışıyorsanız ve değişiklikleriniz henüz başkalarıyla paylaşılmamışsa aynı dosyalarla ilgili değişiklikleri içeren ekstra bir commit oldukça mantıksız olacaktır.&lt;/p&gt;
+
+&lt;h3 id=&quot;git-reset&quot;&gt;git reset&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;git reset&lt;/em&gt;&lt;/strong&gt;, revert’e göre daha tehkileli bir yöntem. reset ile yaptığınız bazı işlemleri geri alamayabilirsiz. &lt;/p&gt;
+
+&lt;p&gt;Şimdi senaryomuza geri dönelim ve lokal branchta çalışırken revert’in oluşturduğu ekstra committen duyduğumuz memnuniyetsizlikle son commit’i geri alalım.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git reset HEAD~1&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;ce17f4d Ceviz ekle
+8d123a1 İlk commit&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Gördüğünüz gibi revert komutunun oluşturduğu commit ve etkileri gitti. HEAD~1 diyerek kafayı bir commit geri çekmiş olduk, &lt;strong&gt;&lt;em&gt;git reset HEAD~2&lt;/em&gt;&lt;/strong&gt; deseydik doğrudan İlk Commit’e gelmiş olurduk. &lt;strong&gt;&lt;em&gt;git status&lt;/em&gt;&lt;/strong&gt; ile kontrol edersek revert commitinin yaptığı değişikliğin staging’e eklenmemiş olduğunu görürüz. Bu durum aslında &lt;strong&gt;&lt;em&gt;git reset&lt;/em&gt;&lt;/strong&gt; komutunun default davranışı ile alakalı bir durum.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;git reflog&lt;/em&gt;&lt;/strong&gt; komutu ile çıktıyı kontrol edin. Göreceksiniz ki &lt;em&gt;git&lt;/em&gt;, yaptığımız her hareketi kayıt almış. Çalışma dizinimizi HEAD@{n} şeklinde ifade edilen konumlara resetleyebiliriz. bunun için e5f4 ile başlayan git revert işlemini yaptığımız kısma dönelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git reset HEAD@&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+git log --oneline&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;e5f4c85 Revert &lt;span class=&quot;s2&quot;&gt;&amp;quot;Ceviz ekle&amp;quot;&lt;/span&gt;
+ce17f4d Ceviz ekle
+8d123a1 İlk commit&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Şimdi &lt;strong&gt;&lt;em&gt;git reset&lt;/em&gt;&lt;/strong&gt; kısmını farklı türlü denemek için &lt;em&gt;git reset HEAD~1&lt;/em&gt; yapmadan önceki konumumuza geri döndük. git reset komutunu farklı bir parametre ile deneyelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git reset --hard HEAD~1
+git log --oneline&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;ce17f4d Ceviz ekle
+8d123a1 İlk commit&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ve &lt;strong&gt;&lt;em&gt;git status&lt;/em&gt;&lt;/strong&gt; komutunu daha önce verdiğimizde ceviz.md dosyasının silinmek üzere staging’de beklediğini görmüştük. Şimdi tekrar kontrol ettiğimizde staging temiz ve ceviz.md olması gerektiği gibi dizinimizde duruyor ama daha önce stagingdeki değişikler uçmuş. Peki ne değişti?&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;git reset&lt;/em&gt;‘in farklı çalışma modları vardır ve bu modlardan ön tanımlı olan –mixed modunu ilk reset işleminde mod parametresi belirlemeyerek test etmiş olduk. Daha sonra ise –hard parametresini de ekleyerek tekrar denedik aradaki farkı anlamaya çalıştık. &lt;strong&gt;&lt;em&gt;git help reset&lt;/em&gt;&lt;/strong&gt; ile diğer modları kontrol ettiğimizde –mixed, –hard, –soft, –keep ve –merge olmak üzere 5 adet olduklarını görürüz. Bunlardan ilk üçünü daha sıklıkla kullanıldığı için açıklamaya çalışacağım.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;–mixed, &lt;em&gt;git reset –mixed HEAD~1&lt;/em&gt; : git reset komutunun öntanımlı davranışıdır ve geri aldığımızda değişikler staging’e otomatik eklenmemiştir. git status komutu ile dosyaların eklenmek üzere olduklarını görürüz.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;–soft, &lt;em&gt;git reset –soft HEAD~1&lt;/em&gt; : –mixed moduna çok benzer aradaki fark, değişiklikleri git status ile kontrol ettiğimizde, staginge eklendiklerini ve commit etmek için beklediklerini görürüz.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;–hard, &lt;em&gt;git reset –hard HEAD~1&lt;/em&gt; : Bu modun denemesini beraber yapmıştık. Değişikler stagingde değil doğru kaybolmuş olurlar. &lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;NOT: Public olmuş branchlarda reset kullanmayın. Aksine revert kullanmayı tercih edin. &lt;/p&gt;
+
+&lt;h2 id=&quot;eyvah-commit-mesajn-yanl-girdim&quot;&gt;Eyvah! commit mesajını yanlış girdim&lt;/h2&gt;
+
+&lt;p&gt;Bu çok olur. Saçma bir imla hatası ya da anlam kayması her ne sebepten olursa olsun commit mesajını yenilemek gerekebilir.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git commit --amend&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Bu sayede commit mesajlarını düzenlediğiniz editör açılır ve siz commit mesajının yeni halini tekrar yayınlarsınız.&lt;/p&gt;
+
+&lt;p&gt;Tek satırda halledebilmek için -m parametresini eklemek.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git commit --amend -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;Ceviz eklendi&amp;quot;&lt;/span&gt;
+git status&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;719c938 Ceviz eklendi
+8d123a1 İlk commit&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Gördüğünüz commit kodu değişmiş. Bu da demek oluyor ki commit tarihine müdahale etmişiz. Commit tarihini değiştiren bir komut olduğu için paylaşılan branchlarda &lt;em&gt;commit –amend&lt;/em&gt; kullanmayın.&lt;/p&gt;
+
+&lt;h2 id=&quot;ben-bu-commite-baka-bir-dosya-daha-ekleyecektim&quot;&gt;Ben bu commit’e başka bir dosya daha ekleyecektim!&lt;/h2&gt;
+
+&lt;p&gt;Panik yapmanın alemi yok. Olur böyle şeyler. :) –amend komutu en son commit’te değişiklikler yapmamızı sağlıyordu. Yine yardımcı olabilir.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;touch foo.md
+touch bar.md
+git add foo.md
+git commit -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;foo ve bar ekle&amp;quot;&lt;/span&gt;
+git status&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;İyi de foo ve bar ekledik ama sadece foo ekledik bar olduğu gibi duruyor.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add bar.md
+git commit --amend --no-edit
+git status&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Görüldüğü üzere &lt;em&gt;–no-edit&lt;/em&gt; ekleyerek commit mesajına dokunmadan eksik kalan dosyayı da ekleyerek son commit güncellendi.&lt;/p&gt;
+
+&lt;h2 id=&quot;gerilerde-yle-bir-commit-var-resmen-yz-karas-derhal-kurtulmalym&quot;&gt;Gerilerde öyle bir commit var resmen yüz karası. Derhal kurtulmalıyım!&lt;/h2&gt;
+
+&lt;p&gt;git ile tarihi baştan yazabileceğiniz çok önemli bir yardımcıya kavuşursunuz. O yardımcının adı &lt;em&gt;rebase&lt;/em&gt;. &lt;em&gt;–interactive&lt;/em&gt; veya kısaca &lt;em&gt;-i&lt;/em&gt; parametresi ekleyerek geçmişe gidebilir, commit birleştirebilir, bölebilir, silebilir hatta yer değiştirebilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;Diyelim ki foo ve bar’ın projede yeri olmadığına ve tamamen gitmeleri gerektiğine karar verdiniz.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git rebase -i HEAD~3&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;pick 719c938 Ceviz eklendi
+pick e1317b5 foo ve bar ekle 
+pick ba51761 Ceviz başlık eklendi&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Açılan editöre bir takım ayarlar yapmalıyız. foo ve barı kaldıracağız ve ceviz dosyasını oluşturmak ve başlık eklemek için ayrı commitler olması da anlamsız. Şimdi düzenleyerek aşağıdaki hale getirelim:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;pick 719c938 Ceviz eklendi
+squash ba51761 Ceviz başlık eklendi&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Commit mesajının ne olacağını sorduğunda “Ceviz eklendi” olanı seçiyoruz yani diğerini # ile yorum satırı yapıyoruz.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git log --oneline&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Açıkçası bayağı bir temizlik olmuş gibi :)&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;549826e Ceviz eklendi
+8d123a1 İlk commit&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;cat ceviz.md&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;ekranda “ceviz” çıktısını aldıysak herşey istediğimiz gitmiş başlık eklediğimiz commit ceviz oluşturduğumuz commit ile birleşmiş demektir.&lt;/p&gt;
+
+&lt;h2 id=&quot;ok-skntl-ilem-yaptm-gemie-dnmem-gerek&quot;&gt;Çok sıkıntılı işlem yaptım geçmişe dönmem gerek&lt;/h2&gt;
+&lt;p&gt;Git, bizim için yaptığımız işlemlere referans kaydı tutuyor. Yukarıda revert komutunu geri alırken kullandığımız gibi. &lt;strong&gt;&lt;em&gt;git reflog&lt;/em&gt;&lt;/strong&gt; ile HEAD@{n} ‘i takiben yapılan işlemle de ilgili açıklamalar. Tarihten bu kesitlere istediğiniz gibi ışınlanabilirsiniz tek yapmanız gereken git reset HEAD@{n} ile istediğiniz noktaya gidebiliriz. &lt;/p&gt;
+
+&lt;p&gt;Örneğin:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git reset HEAD@&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;En temel panik yönetimi yöntemlerinden bahsetmiş olduk. Başka bir yazıda görüşmek üzere.&lt;/p&gt;
+
+&lt;p&gt;NOT: Hata bulursanız ya da eklemek istediğiniz birşeyler olursa yorum bırakmayı unutmayın. &lt;/p&gt;
+
+&lt;p&gt;Görüşmek üzere…&lt;/p&gt;
+</description>
+        <pubDate>Mon, 05 Jan 2015 00:00:00 +0200</pubDate>
+        <link>http://turhancoskun.com/blog/git-ile-panik-yonetimi/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/git-ile-panik-yonetimi/</guid>
+        
+        <category>Dersler</category>
+        
+        <category>Git</category>
+        
+        
+      </item>
     
       <item>
         <title>Clojure&#39;da Basit Veri Türleri</title>
@@ -1507,172 +1713,6 @@ sonuç karşımızda. :)&lt;/p&gt;
         <category>JavaScript</category>
         
         <category>Dersler</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Ajax.BeginForm ve Require.js</title>
-        <description>&lt;h3 id=&quot;arka-plan&quot;&gt;Arka Plan&lt;/h3&gt;
-&lt;p&gt;Geçenlerde ASP.NET MVC ile geliştirdiğim projemin çok büyüdüğünü ve javascript kodlarının artık kontrol edilemez bir hale geldiğini farkettim.
-Modüller ve bağlılıklar içinden çıkılmaz hale geldiğinde artık projenin Require.js ile söz kesmesinin zamanı geldiğine karar verdim.
-RequireJS gerçekten harika! Kullandıkça sizi düzene alıştırıyor ve gerçekten kod yazma alışkanlıklarınızı değiştiriyor. Aslında beklentim EcmaScript6 standart olarak tüm tarayıcılarda yerini aldığında çok daha iyi AMD ler görebilmek.&lt;/p&gt;
-
-&lt;p&gt;Proje backend olarak WebApi 2.0 ve frontend framework olarak da AngularJS kullanıyor. Ancak bazı yerlerde, bazı sorunları daha çabuk halletmek için, Razor’un html yardımcılarından Ajax.BeginForm() fonksiyonunu kullandım. Ajax formunu direkt backend e bağlayarak sızısız bir şekilde modal popuplardan backend’e veri kaydedebiliyordum. Bundan kolayca vazgeçme niyetim yoktu açıkçası. Aşama aşama başıma gelenleri paylaşmak istiyorum.&lt;/p&gt;
-
-&lt;p&gt;Peşinen söyleyeyim bu yazıda konu ile ilgili tutorial bulmayı bekleyenler bekleyenler burada sayfayı terketsinler :). Sadece bu örnekteki gibi birbirleriyle alakasız teknolojilerin kendi aralarında çatıştığı bir durumda, barış için bulduğum kendi çözümümü sunuyorum. Zaten benim gibi ASP.NET MVC, AngularJS ve RequireJS yi bir araya getirerek yılın abzürdlüğünü yapacak fazla da kişi olmayacağından bu konu hakkında tutorial yazma hakkımı gizli tutuyorum. :)
-Ancak ola ki yardım isteyen olursa seve seve ederim. Twitter’da @turhanco hesabım üzerinden ya da GitHub’da @turhancoskun hesaplarından bana ulaşabilirsiniz.&lt;/p&gt;
-
-&lt;h3 id=&quot;ajaxbeginform&quot;&gt;Ajax.BeginForm&lt;/h3&gt;
-&lt;p&gt;Şimdi Ajax formunun tanımına bakarsak :&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;n&quot;&gt;@using&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Ajax&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BeginForm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AjaxOptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;HttpMethod&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;POST&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;UpdateTargetId&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;result&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;Url&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;/api/customers&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;OnFailure&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;onFailure&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;OnSuccess&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;onSuccess&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;InsertionMode&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InsertionMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Replace&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;burada dikkatimizi çekmesi gereken üç satır var. Bunlar; &lt;code&gt;UpdateTargetId&lt;/code&gt;, &lt;code&gt;OnFailure&lt;/code&gt; ve &lt;code&gt;OnSuccess&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;İsimlerinden de anlaşılacağı üzere :&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;UpdateTargetId&lt;/strong&gt; : Api gelen sonucun yazdırılacağı html elementinin Id’si&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;OnSuccess&lt;/strong&gt; : Api işleminin başarılı olmasında çalışacak &lt;em&gt;callback&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;OnFailure&lt;/strong&gt; : Apiden bize html hatası döndüğünde çalışacak kısım&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Burada apiden gelen sonuçları kullanıcıya gösterebilmek için şöyle birşey gerekebilir.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onFailure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#result&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#result&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;removeClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-info&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-danger&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#result&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;removeClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-danger&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-info&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;tabiki bu &lt;em&gt;result&lt;/em&gt; nedir diye sorarsanız :&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;alert alert-info&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;style=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;display: none&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;i&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;fa fa-info&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;result&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;use-case&quot;&gt;Use Case&lt;/h3&gt;
-&lt;p&gt;Bir &lt;em&gt;drop down&lt;/em&gt; üzerinden müşteri seçmek istiyorsunuz ve aradığınız müşteri orada yok diyelim. Drop down üzerine iliştirilmiş ‘Yeni Müşteri Ekle’ yazısına
-tıkladığınızda yukarıdaki ajax formu bir bootstrap modal’ı içinde çıkıyor ve siz müşteri eklediğinizde söz konusu drop down kendiliğinden güncellenerek
-ana formdan hiç çıkmadan kayıt işleminize devam edebiliyorsunuz. İşte bütün bu dandikliklere katlanma sebebim bu. :) Meyvesinin bu kadar lezzetli olması.&lt;/p&gt;
-
-&lt;h3 id=&quot;ana-form&quot;&gt;Ana Form&lt;/h3&gt;
-&lt;p&gt;Bahsettiğim &lt;code&gt;Ajax.BeginForm()&lt;/code&gt; ‘ların bir bootstrap modal’ı üzerinde çalıştığını ve başka bir formdaki drop downlardaki bilgilere bilgi eklemek için yardımcı olarak kullanıldığını tekrar edeyim.
-Bu ana formdaki tüm veriler ve hatta drop down verileri angular.js ile kontrol ediliyor ve modal kapatıldığında angular ile kontrol edilen bu drop downlar update olmak zorunda.&lt;/p&gt;
-
-&lt;h3 id=&quot;requiredjsnin-devreye-girii&quot;&gt;Required.js’nin devreye girişi&lt;/h3&gt;
-&lt;p&gt;Require.js nin bağlılıkları asenkron yüklemesi ve bizi global değişkenler kullanmamaya zorlaması, konsepte aykırı gibi duruyor.
-Demek istediğim :&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#result&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;removeClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-danger&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-info&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;JQuery bağlılığını require.js bizzat yükleyeceği için sayfa yüklenirken &lt;code&gt;$&lt;/code&gt; tanımlayıcısını gören parser bize &lt;code&gt;undefined not a function&lt;/code&gt; hatasını verecek.
-Çünkü JQuery henüz yüklenmedi!&lt;/p&gt;
-
-&lt;h3 id=&quot;eller-masaya&quot;&gt;Eller masaya&lt;/h3&gt;
-&lt;p&gt;Angular.js güdümündeki formda tek bir drop down veya aynı drop down’ın kendini tekrar etmesi durumları olabilir. (Bende olduğu gibi).
-Bu durumda callback fonksiyonlarını require.js ile bir AMD modülü içerisinde tanımlayalım:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;use strict&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;define&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;jquery&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;angular&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;angular&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;modalHelper&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetHtml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;targetElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;multiple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetHtml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;removeClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-danger&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-info&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-                &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isMultiple&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;multiple&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;isMultiple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;each&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;innerScope&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;angular&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-                        &lt;span class=&quot;nx&quot;&gt;innerScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                            &lt;span class=&quot;nx&quot;&gt;innerScope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;refresh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-                        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-                    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;angular&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-                    &lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                        &lt;span class=&quot;nx&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;refresh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-                    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-            &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;onFailure&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetHtml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetHtml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;removeClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-info&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;alert-danger&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;modalHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Dosyanının &lt;code&gt;modalhelper.js&lt;/code&gt; verip common dizinine kopyaladım.&lt;/p&gt;
-
-&lt;p&gt;Ayrıca bu modülün içerisine işlem başarılı olduğunda angular.js kontrolündeki drop downların tazelenmesi için gerekli kodları da ekledim.&lt;/p&gt;
-
-&lt;p&gt;Tanımladığımız bu modülü ana formun bağlı olduğu sayfadan sorumlu require.js kodundan çağırmamız gerekiyor.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;
-        &lt;span class=&quot;s1&quot;&gt;&amp;#39;jquery&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;s1&quot;&gt;&amp;#39;ng-app&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;s1&quot;&gt;&amp;#39;./common/modalhelper&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// &amp;lt;- Yazdığım modül burada&lt;/span&gt;
-        &lt;span class=&quot;s1&quot;&gt;&amp;#39;bootstrap&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;s1&quot;&gt;&amp;#39;app/controllers/product&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;s1&quot;&gt;&amp;#39;app/controllers/currency&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;s1&quot;&gt;&amp;#39;app/controllers/customer&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;s1&quot;&gt;&amp;#39;app/controllers/tax&amp;#39;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ngapp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;modalHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;application/controllers/invoice-create&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-        &lt;span class=&quot;c1&quot;&gt;// Bind Ajax.BeginForm callbacks&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;customerHelper&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;modalHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#result&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;#customer&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;productHelper&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;modalHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#product_result&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;select[name=&amp;quot;product&amp;quot;]&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//&amp;lt;- multiple=true yaptık&lt;/span&gt;
-        &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onFailure&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;customerHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onFailure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onSuccess&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;customerHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onProductSuccess&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;productHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onProductFailure&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;productHelper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onFailure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-        &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
-
-      &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Modal tanımları aynı sayfada olduğu için farklı adlar veriyoruz. Aynı zamanda Ajax.BeginForm callback ler için global değişkenler
-istediğinden, window.onSuccess ve window.onFailure gibi global değişkenlere bağlıyoruz.&lt;/p&gt;
-
-&lt;p&gt;En iyi çözüm olmayabilir ama işleri aksatmadan yapılacak en hızlı çözüm bu.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;blockquote&gt;
-    &lt;p&gt;&lt;strong&gt;“Fazla mükemmelliyetçi olmayın; en iyisine sahip olacağım derken, hiçbir şeye sahip olamazsınız.”&lt;/strong&gt;&lt;/p&gt;
-  &lt;/blockquote&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Sat, 23 Aug 2014 00:00:00 +0300</pubDate>
-        <link>http://turhancoskun.com/blog/ajax-beginform-ve-requirejs/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/ajax-beginform-ve-requirejs/</guid>
-        
-        <category>JavaScript</category>
-        
-        <category>ASP.NET MVC</category>
         
         
       </item>
