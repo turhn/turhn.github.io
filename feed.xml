@@ -6,9 +6,60 @@
 </description>
     <link>http://turhancoskun.com/</link>
     <atom:link href="http://turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 06 Jan 2015 14:23:45 +0200</pubDate>
-    <lastBuildDate>Tue, 06 Jan 2015 14:23:45 +0200</lastBuildDate>
+    <pubDate>Wed, 07 Jan 2015 02:49:07 +0200</pubDate>
+    <lastBuildDate>Wed, 07 Jan 2015 02:49:07 +0200</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>JavaScript ile String&#39;den &amp;lt;a&amp;gt; Etiketi Üretmek</title>
+        <description>&lt;p&gt;JavaScript, string türünden nesneler için bir takım HTML yardımcıları içeriyor. &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#HTML_wrapper_methods&quot;&gt;MDN&lt;/a&gt; referanslarında gördüğümüz gibi çoğu fonksiyonun süresi geçmek üzere olarak işaretlenmiş. Ancak nedense ES6 öneri taslağında halen mevcutlar. Link yardımcısının bu fonksiyonların en önemlisi olduğunu düşündüğün için link yardımcısı ile ilgili birkaç örnek göstermek istiyorum.&lt;/p&gt;
+
+&lt;p&gt;Kullanılışı:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Burada parametre olarak girilen url &lt;strong&gt;&lt;em&gt;&amp;lt;a href=””…&lt;/em&gt;&lt;/strong&gt; href kısmı ve string’in kendisi ise linkin yazı kısmı olacak. Daha iyi anlamak için örnek vermek gerekirse:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;Google&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;http://www.google.com&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Döndüreceği Değer:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;http://www.google.com&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Google&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Daha başka örnekler:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;foo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Foo&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;barLink&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;http://foobar.com&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;writeln&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;barLink&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// &amp;lt;a href=&amp;quot;http://foobar.com&amp;quot;&amp;gt;Foo&amp;lt;/a&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Veri kaynağından aşağıdaki json verisinin döndüğünü varsayarsak:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Turhan Coşkun&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;&amp;#39;blog_url&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;http://turhancoskun.com&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getJSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;/bloggers/foo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#elem&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;blog_url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Kullanım alanına göre örnekler sayısız çoğaltılabilir. &lt;/p&gt;
+
+&lt;p&gt;Görüşmek Üzere. :)&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 07 Jan 2015 00:00:00 +0200</pubDate>
+        <link>http://turhancoskun.com/blog/javascript-ile-stringden-a-etiketi-uretmek/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/javascript-ile-stringden-a-etiketi-uretmek/</guid>
+        
+        <category>İpucu</category>
+        
+        <category>JavaScript</category>
+        
+        
+      </item>
     
       <item>
         <title>Git ile Panik Yönetimi</title>
@@ -1454,265 +1505,6 @@ tagları arasında bir eleman seçmeniz gerekiyor.&lt;/em&gt;&lt;/p&gt;
         <category>JavaScript</category>
         
         <category>AngularJs</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>JavaScript ile Call, Apply ve Bind Kullanımı</title>
-        <description>&lt;p&gt;Merhaba, sizlere JavaScript’te kullanılan &lt;code&gt;call()&lt;/code&gt;, &lt;code&gt;apply()&lt;/code&gt; ve &lt;code&gt;bind()&lt;/code&gt; fonksiyonlarından ve hayatımızı nasıl kolaylaştırdıklarından bahsetmek istiyorum.&lt;/p&gt;
-
-&lt;p&gt;JavaScript, her ne kadar çok çok iyi bildiğim bir dil olmasa da benim ilgilendiğim programlama dilleri içinde en zevkli bulduğum dil.
-Zaten bundan daha önceki yazılarımdan birinde bu sevgimden bahsettim sanıyorum.
-Yazıya başlamadan önce ayrıca belirtmek isterim ki JavaScript dünyadaki en yanlış anlaşılmış programlama dili olabilir.
-Ülkemizde bu konuda başarılı yazılımcılar olmasına rağmen yine de JavaScript deyince malesef hala çoğu arkadaşımızın aklına gelen JQuery ile iki &lt;code&gt;click&lt;/code&gt; olayı bağlamak ya da birşeyleri &lt;code&gt;toggle&lt;/code&gt;
-etmek oluyor.&lt;/p&gt;
-
-&lt;p&gt;JavaScript gerçekten çok enterasan bir dil. JavaScript ile çok derli toplu projeler yapabileceğiniz gibi, işin ucunu kaçırıp
-karmakarışık ama yine de bir şekilde çalışan spagetti projeler de yapabilirsiniz.
- (Benim de ilk başlarda yaptığım gibi.)
-Ama unutmayın web’in ana dili JavaScript’tir. Browser ile kullanıcının etkileşimi JavaScript ile olur
-ve siz bir web geliştiricisi olarak JavaScript’i hakkıyla bilmezseniz basit bir işlem için bile 100’er KB’lık frameworkler yükleyip, uygulama performansı ve
-yükleme zamanlarıyla kullanıcılarınızı çıldırtabilirsiniz.&lt;/p&gt;
-
-&lt;p&gt;JavaScript, hem nesneye dayalı(OOP) bir dil, hem de değil. Aslında bu biraz da sizin JavaScript’i nasıl kullandığınıza bağlı.
- JavaScript ile bir çok OOP konseptini yerine getirebiliriz ancak burada nesnelerimiz &lt;code&gt;class&lt;/code&gt; olarak değil &lt;code&gt;function&lt;/code&gt; olarak
- tanımlı olmak zorundalar. Bu da JavaScript’i ilginç ve kafa karıştırıcı yapan yönlerden birisi.
-Eğer herhangi bir nesneye dayalı bir programlama dili biliyorsanız yazıda bahsedeceğim; miras(inheritance) ve kurucu(constructor) gibi nesneye dayalı
- programlama terimlerine zaten aşina olmalısınız. JavaScript’in önemli farklılıklarından biri JS fonksiyonun gövde bloğu - yani &lt;code&gt;{&lt;/code&gt; ve &lt;code&gt;}&lt;/code&gt; arasında kalan kısımlar -
- nesnemizin kurucusunu oluşturuyor. İlk olarak bunu anlamak önemli.
-İkinci önemli farklılık ise, JavaScript’te nesneler arasındaki miras ilişkisini &lt;code&gt;prototype&lt;/code&gt; nesnesi ile kuruyoruz. (NOT: ECMAScript6
-standardıyla module ve import gibi terimler de JS hayatımıza girecek olsalar da bu yazıyı yazdığım gün itibariyle henüz ES6 tamamlanmadı.)&lt;/p&gt;
-
-&lt;p&gt;Size call, apply ve bind fonksiyonlarını anlatmadan önce context ve scope(kapsam) kavramlarını anlatmak istiyorum.&lt;/p&gt;
-
-&lt;h3 id=&quot;context-ve-scope&quot;&gt;Context ve Scope&lt;/h3&gt;
-&lt;p&gt;JavaScript’i tam anlamıyla anlamak için scope ve context gibi kavramları anlamak gerekir.
- Zaten bu kavramlar iyi anlaşılmazsa başlıkta bahsettiğim call, apply ve bind fonsiyonlarını anlamak pek mümkün olmaz.&lt;/p&gt;
-
-&lt;p&gt;Öncelikle belirtmeliyim ki bir çok programcının zannettiği gibi context ve scope aynı şeyler değiller.
-Basitçe:&lt;/p&gt;
-
-&lt;p&gt;context =&amp;gt; &lt;code&gt;this&lt;/code&gt; değeri ne ise context dediğimiz de odur.&lt;/p&gt;
-
-&lt;p&gt;scope =&amp;gt; bir değişkenin programın hangi kısımlarında erişilebilir olduğu ya da değişkenin yer aldığı kapsam alanı.&lt;/p&gt;
-
-&lt;p&gt;İki temel scope olduğunu söyleyebiliriz bunlar global scope ve yerel scope. Global scope’ta tanımladığımız bir değişken programın herhangi bir yerinden
-herhangi bir zaman erişilebilir durumdadır. Yerel scope ise sadece tanımlanan blok içinde etkindir.
-Bu blok bir döngü bloğu veya karar ifadesi bloğu olabilir (&lt;code&gt;for&lt;/code&gt;, &lt;code&gt;while&lt;/code&gt;, &lt;code&gt;switch&lt;/code&gt;) ya da
-yerel scope’un geçerli olacağı blok, bir fonsiyonun gövde bloğu da olabilir.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//Global Scope&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-  &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//Yerel Scope&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;a =&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;b =&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Çıktı : a = 1 b = 2 (Hem a hem de b değişkenleri erişilebilir durumda)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;fun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;a =&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;b =&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Çıktı : ReferenceError: b is not defined&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Gördüğünüz gibi fonksiyonun dışında &lt;em&gt;b&lt;/em&gt; değişkenine erişmek isterseniz hata alırsınız çünkü b değişkeni, fun1() fonksiyonunun yerel
-scope’unda tanımlı bir yerel değişken. &lt;em&gt;a&lt;/em&gt; ise global scope’da ve programın her yerinde kullanılabilir.&lt;/p&gt;
-
-&lt;p&gt;Daha da saçma bir &lt;strong&gt;Inception&lt;/strong&gt; örneğiyle pekiştirmek istersek aşağıdaki gibi fonksiyonları iç içe yazabiliriz:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;fun2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fun2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;fun3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fun3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;fun4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-            &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fun4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Çıktı : 1 2 3&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;fun1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Bu örnek içinde fonksiyon içinde fonksiyonlar tanımladık ve diğer tüm fonksiyonlar fun1 içinde tanımlı oldukları için
-fun2, fun3 ve fun4 ‘e fun1 in scope’unda ya da kapsamında diyebiliriz. Bu da şu demek oluyor; bütün bu alt kapsam
-fonksiyonları ait oldukları üst kapsamın değişkenlerine erişebilirler.&lt;/p&gt;
-
-&lt;p&gt;Aslında burada anlatılacak o kadar çok şey var ki ben sadece call, apply ve bind fonksiyonlarını anlamak için yeterli olacağını
-düşündüğüm kadarına değindim.&lt;/p&gt;
-
-&lt;h3 id=&quot;call-ve-apply&quot;&gt;Call ve Apply&lt;/h3&gt;
-&lt;p&gt;Bu iki fonksiyonu aynı başlıkta toplamamın sebebi, ikisinin de aynı işi yapmaları ancak kullanım şekillerinde ufak bir fark olması.
-call ve apply her fonksiyona otomatik olarak miras edilir. Bunun sebebi JavaScript’in native kodundaki tanımlama şekilleridir.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Function.prototype.call&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Function.prototype.apply&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Call ve apply çağırdığımız sınıfın context’ini değiştirir ve sağladığımız argumanlarla kurucu fonksiyonu çalıştırırlar.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Örnek :&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;lineno&quot;&gt; 1&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Otomobil&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;renk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 2&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 3&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;renk&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;renk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 4&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 5&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 6&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bmw&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;renk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 7&lt;/span&gt;   &lt;span class=&quot;nx&quot;&gt;Otomobil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;renk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 8&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;marka&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;bmw&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt; 9&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bmw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Otomobil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;11&lt;/span&gt; 
-&lt;span class=&quot;lineno&quot;&gt;12&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bmw316&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bmw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2005&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;siyah&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;lineno&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bmw316&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Beklenen Çıktı :&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-bmw {model: 2005, renk: &quot;beyaz&quot;, marka: &quot;bmw&quot;}
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Yukarıdaki örnek JavaScript ile OOP programlamayı ve call() kullanımını anlamak için oldukça can alıcı bir örnek. Bu yüzden size
-satır satır olanları anlatmak istiyorum.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Satır : Otomobil isimli kendini döndüren bir sınıf tasarladık. Burada dikkat etmemiz gereken, sınıf tanımımıza &lt;code&gt;function&lt;/code&gt; tanımlayıcımız ile
-başlamak. Bu sayede bu sınıfın prototype’ını başka sınıflardan miras alabiliriz.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Satır : &lt;em&gt;bmw&lt;/em&gt; isimli nesne oluşturduk. Bu nesneden başka nesneler miras almayacağımız için &lt;em&gt;var&lt;/em&gt; ile tanımlamakta sakınca görmedim.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Satır : &lt;em&gt;Otomobil&lt;/em&gt; sınıfının &lt;code&gt;call&lt;/code&gt; fonksiyonunu &lt;code&gt;this&lt;/code&gt;, &lt;code&gt;marka&lt;/code&gt;, &lt;code&gt;renk&lt;/code&gt; argümanlarıyla çağırdık.
-buradaki &lt;code&gt;this&lt;/code&gt;, &lt;em&gt;bmw&lt;/em&gt; nesnesi içinde olduğumuz için &lt;em&gt;bmw&lt;/em&gt; context’ini işaret ediyor. &lt;code&gt;model&lt;/code&gt; ve &lt;code&gt;renk&lt;/code&gt; argümanları da
-aynı şekilde &lt;em&gt;bmw&lt;/em&gt; sınıfının 6. satırdaki parametreleri.
-&lt;code&gt;call&lt;/code&gt; fonksiyonunun çağrılması tamamlandığında, &lt;em&gt;Otomobil&lt;/em&gt; sınıfının kurucusu model ve renk parametreleri ile çağırılıp Otomobil sınıfının
-context’indeki tanımlar (this.model, this.renk), bmw sınıfındaki aynı addaki alanların üzerine yazılıyor.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Satır : &lt;em&gt;bmw&lt;/em&gt; sınıfının context’inde &lt;code&gt;marka&lt;/code&gt; özelliğini “bmw” olarak belirledik.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Satır : &lt;em&gt;bmw&lt;/em&gt; sınıfının, &lt;em&gt;Otomobil&lt;/em&gt; sınıfının alt sınıfı olduğunu belirtlediğimiz satır. Yani &lt;em&gt;Otomobil&lt;/em&gt; sınıfının özelliklerini
-&lt;em&gt;bmw&lt;/em&gt; sınıfı tarafından miras alıyoruz.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Satır : &lt;em&gt;bmw&lt;/em&gt; sınıfından bir &lt;strong&gt;instance&lt;/strong&gt; yaratıp &lt;em&gt;bmw316&lt;/em&gt; isimli değişkene atıyoruz.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Satır : &lt;em&gt;bmw316&lt;/em&gt; isimli nesneyi ekrana yazdırarak kontrol ediyoruz.&lt;/p&gt;
-
-    &lt;p&gt;bmw {model: 2005, renk: “beyaz”, marka: “bmw”}&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;Toparlarsak&lt;/strong&gt; : 8. satırda bmw sınıfının sadece marka özelliği vardı. 10. satırda Otomobil’den miras alarak model ve renk
-özelliklerinin de eklenmesini sağladık. 7. satırda Otomobil’i çağırıp bmw context’ini güncelledik.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Kafanızı karıştırdım mı bilmiyorum ama internette incelediğim ve kitaplarda rastladığım örneklerde kodun mantığının ne
-olduğunun düzgünce açıklandığında pek rastlamıyorum. O yüzden bu şekilde bir anlatım yöntemi seçtim. Bu tarz bir anlatım konusunda
- olumlu-olumsuz eleştirilerinizi bana iletirseniz sevinirim. Böylece bu yönteme devam edip etmeme konusunda karar verebilirim.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Alt başlığın girişinde call ve apply’ın aynı işi yaptığını sadece çağrılma yöntemlerinde ufak bir farklılık olduğundan bahsetmiştik.
-Fark call fonksiyonu manuel olarak tek tek parametre girilmesine karşın, apply argümanları Array olarak istiyor.&lt;/p&gt;
-
-&lt;p&gt;Yukarıdaki örnekte 7. satırı:
-&lt;code&gt;Otomobil.apply(this, [model, renk]);&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Olarak güncellerseniz aynı sonucu aldığınızı görürsünüz.&lt;/p&gt;
-
-&lt;h5 id=&quot;call-apply-ve-anonim-fonksiyonlar&quot;&gt;Call, Apply ve Anonim Fonksiyonlar&lt;/h5&gt;
-&lt;p&gt;JavaScript’in en &lt;em&gt;şeker&lt;/em&gt; özelliklerinden birisi de şüphesiz anonim fonksiyonlar. Hani şu JQuery’de sürekli kullandığınız isimsiz
- fonksiyonlar.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-   &lt;span class=&quot;c1&quot;&gt;//..&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;İşte bu tarz anonim fonksiyonlar da &lt;code&gt;Function.prototype&lt;/code&gt; ‘dan türedikleri için call ve apply fonksiyonlarını kullanabilirsiniz.&lt;/p&gt;
-
-&lt;p&gt;Mozilla Developer Network’te konuyla ilgili &lt;em&gt;çokça&lt;/em&gt; paylaşılan örneği veriyorum :&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;animals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;species&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Lion&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;King&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;species&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Whale&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Fail&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;animals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39; &amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;species&lt;/span&gt;
-                  &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;: &amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;animals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Programın işleyişini anlamak açısından gerçekten harika bir örnek. Bunu beyin cimnastiği olması için satır satır açıklamıyorum
-ama bu örnekle ilgili herhangi bir sorusu olan olursa seve seve cevaplarım.&lt;/p&gt;
-
-&lt;h3 id=&quot;bind&quot;&gt;Bind&lt;/h3&gt;
-&lt;p&gt;Call ve Apply’yi anlatırken scope, context ve temel OOP kavramlarını da işlemiş olduk. Sırada bind() var, hayatımıza daha sonradan
-gelen bir özellik. Şu an anda bir çok tarayıcının kullandığı ECMAScript5 standardı ile hayatımıza girdi. Bilmiyorum hala bind()
-desteklemeyen tarayıcı kullanan amcalar var mıdır ama her ihtimale karşı :&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;bind&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)){&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;Function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bind&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;slice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;concat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;slice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)));&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Yukarıdaki kod ile uygulamanızın her koşulda bind() fonksiyonunu desteklemesini sağlayabilirsiniz. Aynı zamanda yukarıdaki
-koddan bind’ın arkaplanında yatan mantığı da anlayabiliriz.&lt;/p&gt;
-
-&lt;p&gt;İlk bakışta göze çarpan call ve apply de görüldüğü gibi ilk parametre olarak context alıyor diğer argümanları apply fonksiyonu
-uygulayarak bize bir fonksiyon döndürüyor. Call-Apply anında çalışırken bind’in bize döndürdüğü fonksiyonu sonra çağırarak
-context’i değiştirme şansı buluyoruz.&lt;/p&gt;
-
-&lt;p&gt;Bind’i uygulamadaki asıl amaç context’i değiştirmek yani farklı bir &lt;code&gt;this&lt;/code&gt; uygulamak.&lt;/p&gt;
-
-&lt;p&gt;Bu sefer MSDN’den Basit bir örnek uygularsak :&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// orijinal fonksiyon tanımı&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;checkNumericRange&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typeof&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;number&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;minimum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;maximum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// Callback fonksiyonunda &amp;#39;this&amp;#39; olacak nesne&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;range&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;minimum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;maximum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// checkNumericRange fonksiyonunu bind ile bağla&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;boundCheckNumericRange&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;checkNumericRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// Yeni oluşturduğumuz fonksiyonu 12 sayısı istediğimiz aralıkta mı diye kontrol için kullanalım.&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;boundCheckNumericRange&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// Çıktı: true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Yukarıdaki örnekte &lt;code&gt;checkNumericRange&lt;/code&gt; fonksiyonunun context’i için &lt;code&gt;this.minimum&lt;/code&gt; ve &lt;code&gt;this.maximum&lt;/code&gt; özellikleri
-tanımlanmamış dolayısıyla dışarıdan bir context yapıştırmamız gerekiyor. &lt;em&gt;range&lt;/em&gt; nesnesi minimum ve maximum alanlarına sahip.
-&lt;code&gt;var boundCheckNumericRange = checkNumericRange.bind(range);&lt;/code&gt; bu kod ile range nesnesini checkNumericRange fonksiyonuna
-context olarak yapıştırdık ve yeni bir değişkene fonksiyon tipinde atadık. Ve fonksiyonu uygun parametre ile çağırdığımızda
-sonuç karşımızda. :)&lt;/p&gt;
-
-&lt;p&gt;Yazım ve kod hatalırını bulursanız bana mutlaka bildirmenizi rica ediyorum.&lt;/p&gt;
-
-&lt;p&gt;Bir sonraki blog yazımda görüşmek üzere hoşçakalın.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 28 Aug 2014 00:00:00 +0300</pubDate>
-        <link>http://turhancoskun.com/blog/javascript-ile-call-apply-ve-bind-kullanimi/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/javascript-ile-call-apply-ve-bind-kullanimi/</guid>
-        
-        <category>JavaScript</category>
-        
-        <category>Dersler</category>
         
         
       </item>
