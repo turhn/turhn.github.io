@@ -9,9 +9,15 @@
       e = document.querySelector('.post-nav-bar');
       st = window.scrollY;
       if (st > lastScroll && st > 55) {
-        e.style['display'] = 'none';
+        if (!e.classList.contains('hide-panel')) {
+          e.classList.add('hide-panel');
+        }
+        e.classList.remove('show-panel');
       } else {
-        e.style['display'] = 'block';
+        if (!e.classList.contains('show-panel')) {
+          e.classList.add('show-panel');
+        }
+        e.classList.remove('hide-panel');
       }
       return lastScroll = st;
     };
