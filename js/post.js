@@ -1,7 +1,9 @@
 (function() {
-  var lastScroll;
+  var lastScroll, upward;
 
   lastScroll = 0;
+
+  upward = 0;
 
   window.onload = function() {
     return window.onscroll = function() {
@@ -9,15 +11,19 @@
       e = document.querySelector('.post-nav-bar');
       st = window.scrollY;
       if (st > lastScroll && st > 55) {
+        upward = 0;
         if (!e.classList.contains('hide-panel')) {
           e.classList.add('hide-panel');
         }
         e.classList.remove('show-panel');
       } else {
-        if (!e.classList.contains('show-panel')) {
-          e.classList.add('show-panel');
+        if (upward >= 20) {
+          if (!e.classList.contains('show-panel')) {
+            e.classList.add('show-panel');
+          }
+          e.classList.remove('hide-panel');
         }
-        e.classList.remove('hide-panel');
+        upward++;
       }
       return lastScroll = st;
     };
