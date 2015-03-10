@@ -6,9 +6,268 @@
 </description>
     <link>http://turhancoskun.com/</link>
     <atom:link href="http://turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 24 Jan 2015 02:12:06 +0200</pubDate>
-    <lastBuildDate>Sat, 24 Jan 2015 02:12:06 +0200</lastBuildDate>
+    <pubDate>Wed, 11 Mar 2015 00:36:49 +0200</pubDate>
+    <lastBuildDate>Wed, 11 Mar 2015 00:36:49 +0200</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Clojure&#39;da Veri Yapıları</title>
+        <description>&lt;p&gt;Bilgisayar bilimlerinin temel yapı taşlarından biri olan veri yapılarından bahsetmek istiyorum. Tanım olarak &lt;em&gt;veri yapısı&lt;/em&gt; verilerin bilgisayarlar tarafından etkili bir şekilde kullanılanılabilmeleri için belirli yollarda saklanması anlamına gelir. Önceki yazımda veri yapılarına temel teşkil eden bazı basit veri türlerinden bahsetmiştim. Bu yazımda ise Clojure dilinde önceden tanımlanmış olan veri yapılarını tanıyor olacağız.&lt;/p&gt;
+
+&lt;p&gt;Bu yazıyı okumadan önce serinin diğer yazılarından faydalanmak isteyebilirsiniz:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;http://turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/&quot;&gt; Clojure ile JVM ve Lisp dünyasına ‘Merhaba Dünya’&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://turhancoskun.com/blog/clojure-ile-basit-veri-turleri/&quot;&gt;Clojure’da Basit Veri Türleri&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Daha önce basit veri türlerini otopsi altına yatırmıştık, şimdi ise sıra biraz daha karmaşık veri türlerinde…&lt;/p&gt;
+
+&lt;p&gt;Clojure’ın yazım dili(syntax) özelliklerini Lisp’ten miras aldığı gibi &lt;em&gt;code-as-data&lt;/em&gt; yani veri olarak kod yapısını benimser. Bunu başarmak için aşağıda göstereceğim &lt;em&gt;map&lt;/em&gt; ve &lt;em&gt;vektor&lt;/em&gt; gibi veri yapılarını kullanır.&lt;/p&gt;
+
+&lt;p&gt;Clojure’da veri yapıları, Clojure dilinin fonksiyonel bir dil olması neticesinde tümü değiştirilemez(immutable) ve kalıcı(persistent)’dir. Bu yapılarda bir değişiklik yapmamız gerektiğinde modifiye edilmiş bir kopyalarını alır ve kopyalar üzerinde çalışırız. 
+Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - bazı ortak özellikler taşır. Koleksiyonda bulunan elemanların sayısını alabilmek için &lt;strong&gt;count&lt;/strong&gt;, ekleme yapabilmek için &lt;strong&gt;conj&lt;/strong&gt; ve koleksiyon üzerinde baştan sonra işlem yapabilmek için &lt;strong&gt;seq&lt;/strong&gt; gibi metotlardan yardım alırız. Bu metotlar farklı tip veri yapılarında küçük davranış farklılıkları gösterebilir.&lt;/p&gt;
+
+&lt;p&gt;Deneylere başlamak için repl’i açalım: &lt;code&gt;lein repl&lt;/code&gt; komutunu girelim. REPL’den gelen yanıtları &lt;code&gt;; =&amp;gt;&lt;/code&gt; ifadesi ile göstermeye devam edeceğim.&lt;/p&gt;
+
+&lt;h2 id=&quot;list&quot;&gt;List&lt;/h2&gt;
+
+&lt;p&gt;Listeler sıralı değerlerden oluşan bir koleksiyondur. Tanımlamak için &lt;code&gt;list&lt;/code&gt; fonksiyonu kullanılır. &lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;list &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; (1 2 3 4)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Görüldüğü gibi fonksiyon tanımlarında olduğu gibi parantezler kullanılıyor. Deneylerimize biraz daha davam edelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;list &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/a&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/b&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;= &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Burada a ve b isimlerinde iki liste tanımladık. a listesi list fonksiyonu ile b fonksiyonu ise parantez ifade ile tanımlandı. b listesinin önündeki tek tırnak(‘), Clojure’un liste parantezinin fonksiyon parantezi ile karıştırılmasını engellemek için kullanıldı. Eşitlik testinde ise bire bir aynı oldukları için true değeri döndürdü.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/c&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;= &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; false&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Görüyoruz ki list veri yapısında sıralama önemli ve a ile c birbirlerine eşit değiller.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/d&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;d&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; (4 4 3 1)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;d listesi ise bize çok önemli bir ipucu veriyor. İpucu ise listemizde birden fazla aynı değerin bulunabilmesi. &lt;/p&gt;
+
+&lt;p&gt;Aslında dikkat ederseniz Clojure’da list diğer dillerde kullanılan Array veri yapısından başka bir şey değil. Array veri yapısı basit olarak bir indeks ve değer ikililerinden oluşan basit veri yapılarıdır. a ve b listelerini hatırlayalım.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;nth &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 1&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;nth &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 3&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Yine görüldüğü üzere &lt;em&gt;nth&lt;/em&gt; fonksiyonu, diğer birçok dilden bildiğimiz indexOf’dan çok da farklı birşey değil.&lt;/p&gt;
+
+&lt;p&gt;Son olarak list veri yapısının Clojure’da nasıl bir değişken türünde tutulduğunu öğrenmek istersek:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; clojure.lang.PersistentList&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;listelere-stack-veri-yaps-gibi-davranmak&quot;&gt;Listelere Stack veri yapısı gibi davranmak&lt;/h3&gt;
+
+&lt;p&gt;List veri yapısının aslında bir Array veri yapısını olduğunu öğrendik. Clojure’da istersek listelere &lt;em&gt;Stack veri yapısı&lt;/em&gt; olarak davranabiliriz. &lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Stack(Yığın) Veri Yapısı&lt;/strong&gt;: Stack(yığın), bilgisayar bilimlerinde, elemanlarına sadece bir tarafından erişilebilen bir veri yapısıdır. Elemanların erişildiği tarafına üst denir. Bunu üstüste dizilmiş kutulardan oluşan bir yığın gibi düşünebiliriz. Yeni kutu eklemek istediğimizde yığının en üstüne koyarız, yığından kutu almak istediğimizde ise yığının en üstündeki kutuyu alırız.&lt;/p&gt;
+
+&lt;p&gt;Stack veri yapısını Clojure ile gerçekleştirmek için iki fonksiyon kullanırız. Bunlar peek ve pop.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;peek&lt;/strong&gt;: Yığının en üstündeki kutuyu almak için kullanılır. Geriye alınan kutunun döndürür.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;peek &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 1&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Görüldüğü gibi (1 2 3 4) listesinden 1 değerini döndürdü.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;pop&lt;/strong&gt;: Yığının en üstündeki değeri atarak yığının kalan elemanlarından oluşan veriyi döndürür.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pop &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; (2 3 4)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;vector&quot;&gt;Vector&lt;/h2&gt;
+
+&lt;p&gt;Vektörler de listeler gibi bir koleksiyon türüdür. Listelerden biraz daha gelişmiş özellikleri barındırırlar. Yazımın giriş bölümünde tüm koleksiyon türlerinin ortak bir özellik olarak, koleksiyonun tüm öğeleri üzerinde işlem yapmamızı yarayan &lt;strong&gt;seq&lt;/strong&gt; fonksiyonunu desteklediklerini söylemiştim. &lt;strong&gt;rseq&lt;/strong&gt; ise seq fonksiyonu ile aynı işlemi tersten yapar. &lt;strong&gt;reverse seq&lt;/strong&gt; olarak da düşünebiliriz. Vektör tanımlamak için &lt;code&gt;vector&lt;/code&gt; fonksiyonu kullanılır. Listelerden bir diğer farkı ise parantez(()) yerine köşeli parantezler([]) ile ifade edilirler.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;vector &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/a&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/b&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/c&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;= &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; false&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/d&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;d&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; [4 4 2 1]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Buradan çıkaracağımız sonuçlar. Vektörler için de listelerde olduğu gibi sıralama önemli ve bir vektörde aynı değerden birden fazla aynı değer olabilir.&lt;/p&gt;
+
+&lt;p&gt;Şimdi başka bir deney yapalım. Bir e listesi tanımlayalım.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/e&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;= &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; true&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;= &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; false&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Gördüğünüz gibi vektör ve liste yapıları birbirlerine oldukça benzediğinden eşitlik testinde sıralama ve değerleri tuttuğunda true değeri verebiliyorlar. Java’dan miras gelen hashCode metodu ile değerlerini kontrol edelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.hashCode&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 955331&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.hashCode&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 1045631&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.hashCode&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 955331&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;a vektörü ve e listesinin hashCode değerleri birbirlerine eşit. Bu da bize arkaplanda işlerin nasıl yürüdüğüne yönelik bir fikir veriyor olmalı.&lt;/p&gt;
+
+&lt;h2 id=&quot;map&quot;&gt;Map&lt;/h2&gt;
+&lt;p&gt;Map’lar da vektörler gibi bir koleksiyon türüdür. İndex değeri ve bir değer tutmak yerine bir anahtar değer ve veri değeri tutarlar. Bilgisayar bilimlerindeki sözlük(dictionary) veri yapısının bir temsilidirler. Maplar temel olarak ikiye ayrılırlar. Bunlar sorted(sıralı) ve hashed(karışık) maplardır. Karışık mapların anahtar değerleri temel olarak Java’dan gelen hashCode ve equals metotlarını desteklemelidir. Sıralı maplarda ise anahtar değerler bir Java Comparable implementasyonu olmalıdır.&lt;/p&gt;
+
+&lt;h3 id=&quot;hash-map&quot;&gt;hash-map&lt;/h3&gt;
+&lt;p&gt;Karışık mapların kullanımını daha iyi anlamak için aşağıdaki örneğe dikkat edin.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;hash-map &lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:tr&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;&amp;#39;T&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;ü&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rk&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;ç&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;e&lt;/span&gt;, &lt;span class=&quot;ss&quot;&gt;:en&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;İ&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ngilizce&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/a&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;get &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:tr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; Türkçe&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Anahtar-değer çiftleri oluşturmak için virgül(,) kullandık. Anahtarları önceki yazımda bahsettiğim &lt;em&gt;keyword&lt;/em&gt; veri türü ile tanımladım.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:en&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;İ&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ngilizce&lt;/span&gt;, &lt;span class=&quot;ss&quot;&gt;:tr&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;&amp;#39;T&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;ü&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rk&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;ç&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/b&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;= &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;hash-map tanımlamak için küme parantezi ‘{}’ kullanabiliriz. b hash-map’ının farklı sıralamada oluştuğunu ve yine de a ile eşit olduğuna dikkat etmişsinizdir. &lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:en&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;İ&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ngilizce&lt;/span&gt;, &lt;span class=&quot;ss&quot;&gt;:tr&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;&amp;#39;T&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;ü&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rk&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;ç&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;e&lt;/span&gt;, &lt;span class=&quot;ss&quot;&gt;:tr&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;&amp;#39;T&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;ü&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rk&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;ç&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; IllegalArgumentException Duplicate key: :tr clojure.lang.PersistentArrayMap.createWithCheck (PersistentArrayMap.java:70)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Bu hatadan anladığımız kadarıyla hash-map bize aynı anahtardan birden fazla sayıda sahip olmamıza izin vermiyor.&lt;/p&gt;
+
+&lt;h3 id=&quot;sorted-map&quot;&gt;sorted-map&lt;/h3&gt;
+&lt;p&gt;sorted-map yani sıralı map, Comparable sınıfından türemiş anahtar değerler kullanmalıdır. Bunlar numerik veya string tabanlı değerler olabilir. Tanımlamak için &lt;code&gt;sorted-map&lt;/code&gt; fonksiyonu kullanılır.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sorted-map &lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:a&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;ss&quot;&gt;:z&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;ss&quot;&gt;:b&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/a&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Burada anahtarlar keyword veri türü ile tanımlandı ve dolayısıyla Comparable’ın bir türevi olmak durumunda. Bunu test etmek için:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;instance? &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Comparable&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;bu şekilde doğrulayabiliriz.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sorted-map &lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:z&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;ss&quot;&gt;:b&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;ss&quot;&gt;:a&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/b&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;= &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Peki hash-map ve sorted-map’ı sıralamak istediğimizde ne ile karşılaşırız. c adında bir hash-map tanımlayalım.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;hash-map &lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:a&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;ss&quot;&gt;:z&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;ss&quot;&gt;:b&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/c&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;= &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; true&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;= &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; true&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.hashCode&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; -1253234181&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.hashCode&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; -1253234181&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.hashCode&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; -1253234181&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Gördüğünüz gibi hashCode değerleri aynı ve sorted-map a, b ve hash-map c değerleri birbilerine eşit.&lt;/p&gt;
+
+&lt;h3 id=&quot;struct-map&quot;&gt;Struct-Map&lt;/h3&gt;
+
+&lt;p&gt;Clojure’da map’ların anahtar-değer ikililerinden oluştuğunu söylemiştik. Bazı durumlarda anahtarları önceden tanımlayıp bunu başka koleksiyonlarla paylaşmamız gerekebilir. Bir başka deyişle Clojure struct-map yapıları, C tipi dillerdeki &lt;code&gt;struct&lt;/code&gt;‘lara benzetilebilir. Bu şekilde söyleyince karışık gelmiş olabilir o yüzden basit örnekle pekiştirelim.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;defstruct &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;employee&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:first-name&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:last-name&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:salary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/employee&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;john-doe&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;struct-map &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;employee&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:first-name&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;John&amp;quot;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:last-name&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Doe&amp;quot;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:salary&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/john-doe&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;jane-bazz&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;struct-map &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;employee&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:first-name&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Jane&amp;quot;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:last-name&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Bazz&amp;quot;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:salary&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3200&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/jane-bazz&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:salary&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;jane-bazz&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 3200&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;array-map&quot;&gt;Array-Map&lt;/h3&gt;
+
+&lt;p&gt;Mapların bazen list mantığında olduğu gibi anahtarlarının ayrıca bir indeks değeri tutmaları istenebilir ve böyle durumlarda array-map kullanılır. Array-Map oluşturmak için tahmin edileceği üzere &lt;code&gt;array-map&lt;/code&gt; fonksiyonu kullanılır.&lt;/p&gt;
+
+&lt;h2 id=&quot;set&quot;&gt;Set&lt;/h2&gt;
+
+&lt;p&gt;Set, matematikten bildiğimiz kümelerden farksızdır. Benzersiz değerlerden oluşur yani liste ve vektörlerdeki gibi aynı değerde birden fazla veri olamaz. Sıralı ve karışık olarak ikiye ayrılırlar. &lt;/p&gt;
+
+&lt;h3 id=&quot;hash-set&quot;&gt;hash-set&lt;/h3&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;hash-set &lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:a&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:b&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/a&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;hash-set &lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:b&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:a&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/b&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;user=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;= &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;sorted-set&quot;&gt;sorted-set&lt;/h3&gt;
+&lt;p&gt;Sorted-set oluşturabilmek küme elemanlarının aynı türden olması gerekir. Aksi halde Clojure .compareTo işlemi gerçekleştirirken hata verecektir.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sorted-set &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/c&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #{1 2 3 4}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;setler-yani-kmeler-ile-bilmemiz-gerekenler-nelerdir&quot;&gt;Set’ler yani kümeler ile bilmemiz gerekenler nelerdir?&lt;/h3&gt;
+&lt;p&gt;1.Her set aynı zamanda fonksiyondur.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; 1&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; :b&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;2.clojure.set isim uzayında bulunan küme fonksiyonlarını uygulayabilirsiniz. &lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;clojure.set/union&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #{1 4 3 2 :b :a}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;clojure.set/difference&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #{:b :a}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;3.hash-set tanımlamak için #{} yapısını kullanabilirsiniz.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;my-set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; #&amp;#39;user/my-set&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;my-set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;; =&amp;gt; clojure.lang.PersistentHashSet&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Clojure ile veri yapılarına giriş niteliğinde bir referans yazısı oldu. Bu konu hakkında anlatacak gerçekten çok şey var nasıl anlatacağıma ve ne kadarına anlatacağıma bir fikrim yoktu dolayısıyla &lt;a href=&quot;http://clojure.org/data_structures&quot;&gt;buradaki&lt;/a&gt; bağlantıdan faydalanarak yazıyı nasıl organize edeceğime karar verdim. Bazı kısımlar ise dandik birer çeviri niteliğinde oldu.&lt;/p&gt;
+
+&lt;p&gt;Başka bir yazımda görüşmek üzere. Hoşçakalın.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 10 Mar 2015 00:00:00 +0200</pubDate>
+        <link>http://turhancoskun.com/blog/clojureda-veri-yapilari/</link>
+        <guid isPermaLink="true">http://turhancoskun.com/blog/clojureda-veri-yapilari/</guid>
+        
+        <category>JavaScript</category>
+        
+        
+      </item>
     
       <item>
         <title>JavaScript ile Lambda Calculus</title>
@@ -1720,80 +1979,6 @@ git branch -d rspec-kurulum&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
         <category>TDD</category>
         
         <category>Dersler</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Masaüstü Linux Dünyası</title>
-        <description>&lt;p&gt;GNU/Linux hepimizin çok sevdiği, öve öve bitiremediği ama çoğunlukla sanal makinada
-ya da dual bot ile kullanmayı layık gördüğümüz bir işletim sistemi. Ancak bugün burada Linux’un
-sunucu bazında pazar payındaki tartışılmaz aslan payından, Android olarak ceplerde
-edindiği yerinden, mikro ölçekli milyonlarca cihazla dünyayı ele geçirmesinden
-bahsetmeyeceğim. Benim burada konuşacağım tek konu GNU/Linux dağıtımlarının masaüstü bilgisayarlarındaki durumu olacak.&lt;/p&gt;
-
-&lt;p&gt;Linux ile ilk tanışmam 2000 li yılların başında, ilk bilgisayara sahip olduğum
-zamanlarda, bir derginin yanında hediye verilen Mandrake Linux ile oldu. O zamanlardan aklımda kalan; sistemin sürekli çökmesi ve İngilizce
-bilmediğim bir dönemde işletim sistemindeki bir çok kısımın tercüme edilmemiş olmasından kaynaklanan
-sıkıntılar. Hafızamı daha da kurcaladığımda, o zamanda 56K internal faks modem ile internete
-bağlandığımı ve bu modemler için yazılmış ücretsiz bir sürücü olmamasından dolayı internete
-bağlanamamamdı. Sırf internetten paket yükleyebilmek için, bilgisayarımı Windows ile
- boot edip yüklemek istediğim paketi internetten yüklüyor, sonra yeniden Mandrake’den
-boot edip windows sürücülerine erişerek söz konusu paketleri Linux’a yüklüyordum.
-Bir süre sonra sıkılıp Linux’u sistemden tamamen uçurarak bir süre o zamanların efsanesi olan Windows XP’yi
-kullanarak yoluma devam ettim.&lt;/p&gt;
-
-&lt;p&gt;Bir süre sonra milli işletim sistemi Pardus duyuruldu. Pisi paket yöneticisi,
-şık KDE ve Gnome masaüstleri, Çomar vs. İlgi çekici ve başarılıydı. Artık ADSL teknolojisi
-evlere girmiş olduğundan internete bağlanmakta da sıkıntı çekmiyordu.Gel gör ki o fontlar,
-o çözünürlük hala Windows ayarında değildi ama sonuçta bu bir milli yazılımdı. Hayalimde; o ayda bir
-formatlamak zorunda olduğum Windows’tan kurtulmak olsa da, swf geliştirmek için
-Macromedia Flash’a olan ihtiyaç ve Linux yazıcı sürücülerinin berbat durumda olması bir taraftan
-sürekli Windows’u el altında tutmayı gerektiriyordu. E tabi bir de oyunlar meselesi
-var. Millet Fifa, NFS ve CS oynarken benim basit puzzle oyunlarıyle yetinmem de
-beklenmezdi(!) Yine de Pardus projesi -sıfırlanıncaya- dek kullanmaya devam ettim.&lt;/p&gt;
-
-&lt;p&gt;XP den 8’e kadar abidik gubudik bütün Windows sürümlerini kullandım ancak gel gör ki
-2013 te Macbook Pro Retina 15” alıp OS X ile tanışıncaya kadar aslında bir işletim sisteminin
-nasıl olması gerektiği ile ilgili yeterli fikre sahip olmadığımı fark ettim. Görüntü
-kalitesi ve font render özellikleri muhteşem. İçindeki donanım ile tam uyumlu ve
-malzeme olarak da çok kaliteli. Burada sabaha kadar ağzım sulana sulana Mac ve OS X övebilirim ancak mesele şu ki gönlüm içinde ne olduğunu bilmediğim yazılımlardan ziyade her zaman özgür yazılımdan yana.&lt;/p&gt;
-
-&lt;p&gt;Açık kaynak temelli web teknolojileri ile yazılım geliştiren birisi zaten sürekli
-Linux sunucularla haşır neşir olmak durumunda olsa da Torvalds’ın lafı hep aklımda
-‘I still want the desktop.’ yani ‘Hala masaüstünü istiyorum.’ Masaüstü için zaman
-zaman popüler olması sebebiyle Ubuntu’yu ara sıra yükleyip inceliyordum ve kabul ediyorum ki
-artık sıradan bir bilgisayar kullanıcısının bile rahatlıkla kullanabileceği noktalara geldi. Ancak
-Canonical kendi saçmalıklarını o kadar çok sisteme bulaştırmış ki şahsen bana Linux
-tadı vermiyor. Sisteme her büyük güncelleme gelişinde çöküyor ve bana ayar dosyalarını
-kurcalattırıyor. Artı ve eksileriyle çok şey yazılabilir ama aradığım tat kesinlikle
-Ubuntu değil.&lt;/p&gt;
-
-&lt;p&gt;En son kullanmaya başladığım Linux dağıtımı ise Mint. Başta görüntü ve fontlar çamur gibi gelmesine
-rağmen birkaç ayarla retina çözünürlüğüne uygun hale geldi ve şu an neredeyse OS X’i bile
-aratmayacak durumda olduğunu düşünüyorum. Ubuntu’dan çatallanan projenin masaüstü yöneticisi
-Cinnamon ise Gnome projesinden çatallanmış. Ubuntu’nun tüm iyi taraflarını üzerinde
-barındırmasına rağmen Canonical saçmalıklarından da arındırılmış durumda.&lt;/p&gt;
-
-&lt;p&gt;En büyük eksisi ise bence süresi geçmiş X Server ise hala arka planda çalışmaya devam ediyor olması. Bu konuda Wayland
-projesi X Server’in yerine almaya henüz uzak gibi duruyor. Görüntü sunucusu teknolojisi yenilenmeli ve
-ben bu gönderiyi yazarken sistem dondu ve yeniden başlatmam gerekti dolayısıyla görünen o ki
-OS X’e bir süre daha devam etmem gerekiyor.&lt;/p&gt;
-
-&lt;p&gt;Evet şu an masaüstü bilgisayarların çoğunluğu ele geçirilemedi ama yakın gelecekte
-işler değişebileceğe benziyor. Şimdilik bu konudaki en güçlü adayım Linux Mint.&lt;/p&gt;
-
-&lt;p&gt;Bir sonraki yazımda görüşmek üzere sağlıcakla kalın.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 01 Nov 2014 00:00:00 +0200</pubDate>
-        <link>http://turhancoskun.com/blog/masast-linux-dnyas/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/masast-linux-dnyas/</guid>
-        
-        <category>Unix</category>
-        
-        <category>Genel</category>
-        
-        <category>Linux</category>
         
         
       </item>
