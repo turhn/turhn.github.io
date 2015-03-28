@@ -4,10 +4,10 @@
     <title>Turhan Coskun</title>
     <description>Ruby, JavaScript, Clojure ve diğer yazılım maceralarım
 </description>
-    <link>http://turhancoskun.com/</link>
-    <atom:link href="http://turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 11 Mar 2015 01:08:10 +0200</pubDate>
-    <lastBuildDate>Wed, 11 Mar 2015 01:08:10 +0200</lastBuildDate>
+    <link>http://www.turhancoskun.com/</link>
+    <atom:link href="http://www.turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sun, 29 Mar 2015 01:51:13 +0200</pubDate>
+    <lastBuildDate>Sun, 29 Mar 2015 01:51:13 +0200</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -261,8 +261,8 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 
 </description>
         <pubDate>Tue, 10 Mar 2015 00:00:00 +0200</pubDate>
-        <link>http://turhancoskun.com/blog/clojureda-veri-yapilari/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/clojureda-veri-yapilari/</guid>
+        <link>http://www.turhancoskun.com/blog/clojureda-veri-yapilari/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/clojureda-veri-yapilari/</guid>
         
         <category>Clojure</category>
         
@@ -595,8 +595,8 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 &lt;/ul&gt;
 </description>
         <pubDate>Mon, 19 Jan 2015 00:00:00 +0200</pubDate>
-        <link>http://turhancoskun.com/blog/javascript-ile-lambda-calculus/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/javascript-ile-lambda-calculus/</guid>
+        <link>http://www.turhancoskun.com/blog/javascript-ile-lambda-calculus/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/javascript-ile-lambda-calculus/</guid>
         
         <category>JavaScript</category>
         
@@ -644,8 +644,8 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 
 </description>
         <pubDate>Wed, 07 Jan 2015 00:00:00 +0200</pubDate>
-        <link>http://turhancoskun.com/blog/javascript-ile-stringden-a-etiketi-uretmek/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/javascript-ile-stringden-a-etiketi-uretmek/</guid>
+        <link>http://www.turhancoskun.com/blog/javascript-ile-stringden-a-etiketi-uretmek/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/javascript-ile-stringden-a-etiketi-uretmek/</guid>
         
         <category>İpucu</category>
         
@@ -850,8 +850,8 @@ squash ba51761 Ceviz başlık eklendi&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Görüşmek üzere…&lt;/p&gt;
 </description>
         <pubDate>Mon, 05 Jan 2015 00:00:00 +0200</pubDate>
-        <link>http://turhancoskun.com/blog/git-ile-panik-yonetimi/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/git-ile-panik-yonetimi/</guid>
+        <link>http://www.turhancoskun.com/blog/git-ile-panik-yonetimi/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/git-ile-panik-yonetimi/</guid>
         
         <category>Dersler</category>
         
@@ -1145,8 +1145,8 @@ Birçok dilin aksine &lt;strong&gt;”“&lt;/strong&gt;(boş string), &lt;stron
 
 </description>
         <pubDate>Fri, 02 Jan 2015 00:00:00 +0200</pubDate>
-        <link>http://turhancoskun.com/blog/clojure-ile-basit-veri-turleri/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/clojure-ile-basit-veri-turleri/</guid>
+        <link>http://www.turhancoskun.com/blog/clojure-ile-basit-veri-turleri/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/clojure-ile-basit-veri-turleri/</guid>
         
         <category>Clojure</category>
         
@@ -1190,8 +1190,8 @@ servehere&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 </description>
         <pubDate>Fri, 26 Dec 2014 00:00:00 +0200</pubDate>
-        <link>http://turhancoskun.com/blog/ruby-ve-komut-satiri-ile-localhost/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/ruby-ve-komut-satiri-ile-localhost/</guid>
+        <link>http://www.turhancoskun.com/blog/ruby-ve-komut-satiri-ile-localhost/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/ruby-ve-komut-satiri-ile-localhost/</guid>
         
         <category>İpucu</category>
         
@@ -1301,8 +1301,8 @@ find .&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;İşte bu kadar.&lt;/p&gt;
 </description>
         <pubDate>Mon, 01 Dec 2014 00:00:00 +0200</pubDate>
-        <link>http://turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</guid>
+        <link>http://www.turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</guid>
         
         <category>Clojure</category>
         
@@ -1570,8 +1570,8 @@ bir versiyonunu GitHub reposundan her zaman inceleyebilirsiniz.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/turhancoskun/rails-ile-tdd&quot;&gt;https://github.com/turhancoskun/rails-ile-tdd&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 17 Nov 2014 00:00:00 +0200</pubDate>
-        <link>http://turhancoskun.com/blog/rails-ile-tdd--3-controllerlarn-test-edilmesi/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/rails-ile-tdd--3-controllerlarn-test-edilmesi/</guid>
+        <link>http://www.turhancoskun.com/blog/rails-ile-tdd--3-controllerlarn-test-edilmesi/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/rails-ile-tdd--3-controllerlarn-test-edilmesi/</guid>
         
         <category>Ruby</category>
         
@@ -1854,8 +1854,8 @@ git branch -d todo-model&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Burada kullandığımız subject adından da anlaşılacağı gibi test öznesi ve her context için ayrı ayrı özneler belirtilebilir. User.new ise gördüğünüz gibi bir fonksiyonun dönüş nesnesi oldu ve bu sayede kodumuz daha okunaklı hale gelebildi. Eğer siz de kendinizden birşey katıp kodu daha da sadeleştirmek isterseniz kendinizi bu konuda özgür hissedin çünkü yazdığımız testlerde ne beklediğimizi iyi belirledik ve koşullar yerine geldiği sürece kod içerisinde istersek at koştururuz :=) Bu da TDD programlamanın en avantajlı yanlarından birisi.&lt;/p&gt;
 </description>
         <pubDate>Sun, 16 Nov 2014 00:00:00 +0200</pubDate>
-        <link>http://turhancoskun.com/blog/rails-ile-tdd--2-modellerin-test-edilmesi/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/rails-ile-tdd--2-modellerin-test-edilmesi/</guid>
+        <link>http://www.turhancoskun.com/blog/rails-ile-tdd--2-modellerin-test-edilmesi/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/rails-ile-tdd--2-modellerin-test-edilmesi/</guid>
         
         <category>Ruby</category>
         
@@ -1971,8 +1971,8 @@ git branch -d rspec-kurulum&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Yazı serisinin giriş bölümü sona erdi. Devamı için &lt;a href=&quot;/blog/rails-ile-tdd--2-modellerin-test-edilmesi/&quot;&gt;buraya&lt;/a&gt; tıklayın.&lt;/p&gt;
 </description>
         <pubDate>Sat, 15 Nov 2014 00:00:00 +0200</pubDate>
-        <link>http://turhancoskun.com/blog/rails-ile-tdd-test-gdml-programlama--1/</link>
-        <guid isPermaLink="true">http://turhancoskun.com/blog/rails-ile-tdd-test-gdml-programlama--1/</guid>
+        <link>http://www.turhancoskun.com/blog/rails-ile-tdd-test-gdml-programlama--1/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/rails-ile-tdd-test-gdml-programlama--1/</guid>
         
         <category>Ruby</category>
         
