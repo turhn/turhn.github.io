@@ -6,9 +6,45 @@
 </description>
     <link>http://www.turhancoskun.com/</link>
     <atom:link href="http://www.turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 29 Mar 2015 01:54:12 +0200</pubDate>
-    <lastBuildDate>Sun, 29 Mar 2015 01:54:12 +0200</lastBuildDate>
+    <pubDate>Thu, 11 Jun 2015 04:43:45 +0300</pubDate>
+    <lastBuildDate>Thu, 11 Jun 2015 04:43:45 +0300</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Why I Want to Become a Contractor</title>
+        <description>&lt;h1 id=&quot;why-i-want-to-be-a-contractor&quot;&gt;Why I want to be a contractor&lt;/h1&gt;
+
+&lt;p&gt;Hello everyone,&lt;/p&gt;
+
+&lt;p&gt;This is my first English blog post. In this post, I will try to explain why I want to be a contractor and the way how I will become a contractor.&lt;/p&gt;
+
+&lt;p&gt;There is one thing in my life which is the key thing makes me ever happy is &lt;em&gt;continuous learning&lt;/em&gt; and what keeps me motivated is challenging. I was a child, I wanted to be a scientist. Which is not a good career path in my country. I chose software development. Somehow I found them similar.&lt;/p&gt;
+
+&lt;p&gt;I learnt programming before college and I even made money from it. It was a freelancing job and I had a good salary for a teenage boy. Then I co-founded a business with two of my best friends and it was even greater than freelancing. Even it was not a very successful business, we learnt a lot from it made lots of fun. During my career, by luck or my personal curiosity, I had to choose a different technology for each project I worked on and I had to learn each programming language or framework from scratch. Perhaps, It was the only way to take the control over my hunger for learning, trying and discovering new technologies.&lt;/p&gt;
+
+&lt;p&gt;During college and after college, I kept trying different technologies again and again. When I discovered &lt;em&gt;Ruby&lt;/em&gt; and &lt;em&gt;Ruby on Rails&lt;/em&gt;, I fell in love with them. The clean syntax and mature ecosystem helped to adapt very quickly. I built projects and had so much fun with RoR.&lt;/p&gt;
+
+&lt;p&gt;I tried various design patterns with various programming languages. I tried both object oriented programming and functional programming approaches. I developed desktop applications. I worked as both frontend and backend developer roles. I am not specialized on any specific technology. Luckily I have a taste of many software development technologies and that helped to become a very adaptive developer.&lt;/p&gt;
+
+&lt;p&gt;My dear friends, it has been more than 10 years since I started my first company. And I also worked as a regular employee in a couple of companies. Finally, I realized that there is no perfect world that I can find a company to work at that I can be fully qualified and become useful in a logical sense with my polyglot experiences(Of course I mean in my city.). That’s why I have decided to become a contractor. I want to share my skills and experiences with a company which really demands them from me.&lt;/p&gt;
+
+&lt;p&gt;Fortunately, I found TopTal as a chance to give a try to achieve my goal. To sustain my learning hunger, to help companies to digitize their ideas and to work at whereever I want. I want to become a contractor. Not just an ordinary contractor, also be one of the top Toptal Ruby on Rails Developers.&lt;/p&gt;
+
+&lt;p&gt;Thank you all for reading.&lt;/p&gt;
+
+&lt;p&gt;Turhan Coskun&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 11 Jun 2015 00:00:00 +0300</pubDate>
+        <link>http://www.turhancoskun.com/blog/why-i-want-to-become-a-contractor/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/why-i-want-to-become-a-contractor/</guid>
+        
+        <category>English</category>
+        
+        <category>Genel</category>
+        
+        
+      </item>
     
       <item>
         <title>Clojure&#39;da Veri Yapıları</title>
@@ -1856,123 +1892,6 @@ git branch -d todo-model&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
         <pubDate>Sun, 16 Nov 2014 00:00:00 +0200</pubDate>
         <link>http://www.turhancoskun.com/blog/rails-ile-tdd--2-modellerin-test-edilmesi/</link>
         <guid isPermaLink="true">http://www.turhancoskun.com/blog/rails-ile-tdd--2-modellerin-test-edilmesi/</guid>
-        
-        <category>Ruby</category>
-        
-        <category>Ruby on Rails</category>
-        
-        <category>TDD</category>
-        
-        <category>Dersler</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Rails ile TDD - 1 (Giriş)</title>
-        <description>&lt;p&gt;Merhaba, bugün ilk kez Rails ile ilgili bir konudan bahsetmek
-istiyorum: &lt;em&gt;Ruby on Rails uygulamalarının TDD ile geliştirilmesi.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Öncelikle yazı dizisinde yer alacak konu başlıklarına bakarsanız:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Giriş (Şu an okuduğunuz bölüm)&lt;/li&gt;
-  &lt;li&gt;Model’ler nasıl test edilir&lt;/li&gt;
-  &lt;li&gt;Controller’lar nasıl test edilir&lt;/li&gt;
-  &lt;li&gt;Json Api ve Integration Test nasıl gerçekleştirilir&lt;/li&gt;
-  &lt;li&gt;Capybara ile Acceptance testleri nasıl gerçekleştirilir&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Bu yazı dizisini bitirdiğinizde, kodlarının büyük çoğunluğu test edilebilen, tam teşekküllü bir Rails uygulaması nasıl yapılır ilk adımı atmış olacaksınız.&lt;/p&gt;
-
-&lt;p&gt;Yazı dizisinin bitiminde bonus olarak bir de JavaScript testlerinin de
-nasıl yapılacağını, özellikle AngularJS testlerinin nasıl yapılacağı konusuna da değinebilirim(Henüz karar vermedim).&lt;/p&gt;
-
-&lt;p&gt;Bütün anlatımlarımı bir GitHub reposunda paylaşacağım ve tüm commitleri ve kod değişimlerini oradan da takip edebilirsiniz.&lt;/p&gt;
-
-&lt;p&gt;Başlangıç olarak ve anlatılanları daha sağlıklı anlayabilmek açısından en azından başlangıç seviyesinde Ruby dili ve Rails bilmenizi öneririm yine de sıfırdan proje başlatacağım için hali hazırda herhangi bir MVC framework bilen birisi için uygulamanın gidişini takip etmek o kadar da zor olmayacaktır. Git bilmenizi mutlaka öneririm, eğer bilmiyorsanuz git ile ilgili kısımları görmezden gelebilirsiniz.&lt;/p&gt;
-
-&lt;p&gt;Örnekleri geliştirirken versiyon uyumsuzluğu olmaması için kullandığım sürümleri paylaşıyorum:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Rails: 4.1.6&lt;/li&gt;
-  &lt;li&gt;Ruby: 2.1.3&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Text editör olarak baştan sona Vim kullanacağım, belki bazı yerlerde Atom Editor kullanabilirim. (SublimeText’i oldum olası sevmedim.) Siz istediğiniz başka bir editör kullanabilirsiniz. Tavsiyem asla IDE kullanmayın, sağa sola saçma sapan dosyalar oluşturarak kafanızı karıştırabilir.&lt;/p&gt;
-
-&lt;h1 id=&quot;rails-projesinin-oluturulmas&quot;&gt;Rails Projesinin Oluşturulması&lt;/h1&gt;
-&lt;p&gt;Projenin bulunduğu reponun bağlantısı: &lt;a href=&quot;https://github.com/turhancoskun/rails-ile-tdd&quot;&gt;https://github.com/turhancoskun/rails-ile-tdd&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Yeni proje başlatmak için:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rails new rails-ile-tdd -T&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;burada rails-ile-tdd adında yeni bir proje oluşturduk ve -T parametresi ile rails’e herhangi bir testing framework kurmamasını söyledik çünkü herşeyi manuel olarak gerçekleştirmek istiyoruz.&lt;/p&gt;
-
-&lt;p&gt;Rails ile testlerimizi gerçekleştirmek için oldukça popüler olan &lt;a href=&quot;https://github.com/rspec/rspec&quot;&gt;Rspec&lt;/a&gt; kütüphanesini kullanacağız ama öncellikle rails uygulamamızı git ile commit edelim.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add --all
-git commit -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;Rails projesi oluşturuldu&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;rspec-kurulumu-ve-yaplandrlmas&quot;&gt;Rspec Kurulumu ve Yapılandırılması&lt;/h2&gt;
-&lt;p&gt;Rspec kurulumu yapmak için git üzerinde yeni bir dal açıyoruz:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git checkout -b rspec-kurulum&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Yukarıdaki komut kısaca rspec-kurulum adında bir dal oluşturacak ve bu dala geçiş yapacaktır. Proje akışının düzenli olması açısından ve işler ters gittiğinde bazen geriye dönmemiz gerektiğinde sıkıntı yaşamamak için git repolarımızı düzenli tutmaya özen göstermeliyiz.&lt;/p&gt;
-
-&lt;p&gt;Şimdi projemizin ana klasöründe bulunan Gemfile dosyasını açalım ve en altına:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;group&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:development&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:test&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rspec-rails&amp;#39;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Bu kod rspec’in geliştirme ve test aşamalarında projemizde kurulu olacağını ancak canlı ortamda kullanılmayacağını belirtiyor.&lt;/p&gt;
-
-&lt;p&gt;kodunu ekleyip kaydedin. Ardından konsolda:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;bundle install&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;komutunu vererek rails projemize gerekli rspec kütüphanelerimizi eklemiş olacağız.&lt;/p&gt;
-
-&lt;p&gt;şimdi konsolunuza aşağıdaki komutu girin:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rails generate rspec:install -p&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;alacağınız ekran görüntüsü aşağıdaki gibi olacaktır:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rails generate rspec:install -p
-      create  .rspec
-      create  spec
-      create  spec/spec_helper.rb
-      create  spec/rails_helper.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;komutumuzun arkasından gelen -p parametresi İngilizce pretend kelimesinin kısaltmasıdır, yani dilimize ‘gibi davranmak’ olarak çevrilebilir. &lt;em&gt;rails generate&lt;/em&gt; ya da kısaltması &lt;em&gt;rails g&lt;/em&gt; komutlarının arkasına koyduğumuz -p ifadesi komutun &lt;strong&gt;gibi davranmasını&lt;/strong&gt; ve aslında çalışınca neler değişeceğini ekrana göstermesi için kullanılan çok kullanışlı bir parametredir.&lt;/p&gt;
-
-&lt;p&gt;Oluşturulacak dosyaları tek tek incelediğimizde .rspec dosyası rspec komutu çalıştırıldığında arkasına otomatik gelecek parametrelerin listesinin bulunduğu bir basit bir yazı dosyası.&lt;/p&gt;
-
-&lt;p&gt;spec klasörü testlerimizin ve alakalı dosyalarının tutulacağı dizin. Burada bilmemiz gereken Rspec jargonlarında testlerin spec olarak anılmaları. spec_helper.rb dosyası tüm testlerde ortak kullanılacak yardımcı metotların tutulacağı dosya ve rails_helper ise bizim daha çoğunlukla kullanacağımız dosya ve aslında spec_helper’ın rails için özelleşmiş versiyonu da denebilir. Bu dosyayı tüm rails testlerinin üst kısımlarına ekleyeceğiz.&lt;/p&gt;
-
-&lt;p&gt;Artık rspec’in dosya yapısı hakkında genel bir kanıya sahip olduğumuza göre gerçek komutu çalıştırabiliriz.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rails generate rspec:install&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Şimdi Rails uygulamalarını test edebilmek için bize gereken rspec silahlarına sahibiz.&lt;/p&gt;
-
-&lt;p&gt;Son olarak yaptığımız değişiklikleri git repomuza yollamak için.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add --all
-git commit -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;Rspec kurulumu&amp;quot;&lt;/span&gt;
-git checkout master
-git merge rspec-kurulum
-git branch -d rspec-kurulum&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Yazı serisinin giriş bölümü sona erdi. Devamı için &lt;a href=&quot;/blog/rails-ile-tdd--2-modellerin-test-edilmesi/&quot;&gt;buraya&lt;/a&gt; tıklayın.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 15 Nov 2014 00:00:00 +0200</pubDate>
-        <link>http://www.turhancoskun.com/blog/rails-ile-tdd-test-gdml-programlama--1/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/rails-ile-tdd-test-gdml-programlama--1/</guid>
         
         <category>Ruby</category>
         
