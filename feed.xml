@@ -6,8 +6,8 @@
 </description>
     <link>http://www.turhancoskun.com/</link>
     <atom:link href="http://www.turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 15 Dec 2015 02:34:57 +0200</pubDate>
-    <lastBuildDate>Tue, 15 Dec 2015 02:34:57 +0200</lastBuildDate>
+    <pubDate>Tue, 15 Dec 2015 15:17:29 +0200</pubDate>
+    <lastBuildDate>Tue, 15 Dec 2015 15:17:29 +0200</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -33,10 +33,11 @@ setup.&lt;/p&gt;
 
 &lt;p&gt;Firstly clone the repository:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;
-git clone git://git.code.sf.net/p/sdrecover/git sdrecover-git
-cd sdrecover-git
-&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;```
+git clone git://git.code.sf.net/p/sdrecover/git sdrecover-git&lt;/p&gt;
+
+&lt;p&gt;cd sdrecover-git
+```&lt;/p&gt;
 
 &lt;p&gt;Then we need to compile it. It is not recommended installing the software in the
 documentation so we are just going to use the output of our build.&lt;/p&gt;
@@ -61,7 +62,7 @@ path.&lt;/p&gt;
 
 &lt;p&gt;I will use &lt;code&gt;jpgrecover&lt;/code&gt; to save my father’s corrupted jpeg pictures.&lt;/p&gt;
 
-&lt;p&gt;When you run &lt;code&gt;./jpgrevoer&lt;/code&gt;, you should see that it is asking the missing ‘bad_cardimage.img’ to
+&lt;p&gt;When you run &lt;code&gt;./jpgrecover&lt;/code&gt;, you should see that it is asking the missing ‘bad_cardimage.img’ to
 run. It is just a snapshot of your device. In order to get the snapshot, I am
 going to use the &lt;em&gt;dd&lt;/em&gt; command. But the &lt;em&gt;dd&lt;/em&gt; command requires an input source and an
 output target. The input source is going to be the device.&lt;/p&gt;
@@ -89,8 +90,8 @@ dd if=/dev/disk2 of=bad_cardimage.img
 &lt;p&gt;Congratulations. You saved the day.&lt;/p&gt;
 </description>
         <pubDate>Tue, 15 Dec 2015 00:00:00 +0200</pubDate>
-        <link>http://www.turhancoskun.com/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-devise/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-devise/</guid>
+        <link>http://www.turhancoskun.com/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-device/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-device/</guid>
         
         <category>English</category>
         

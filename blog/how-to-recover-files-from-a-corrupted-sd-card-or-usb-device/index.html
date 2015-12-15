@@ -11,7 +11,7 @@
     <meta name="description" content="Ruby, JavaScript, Clojure ve diğer yazılım maceralarım
 ">
     
-    <link rel="canonical" href="http://www.turhancoskun.com/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-devise/">
+    <link rel="canonical" href="http://www.turhancoskun.com/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-device/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/assets/app-df33cb29fd254918b7ed6f9e4ea3bb50.css">
 </head>
@@ -72,10 +72,11 @@ setup.</p>
 
 <p>Firstly clone the repository:</p>
 
-<p><code>
-git clone git://git.code.sf.net/p/sdrecover/git sdrecover-git
-cd sdrecover-git
-</code></p>
+<p>```
+git clone git://git.code.sf.net/p/sdrecover/git sdrecover-git</p>
+
+<p>cd sdrecover-git
+```</p>
 
 <p>Then we need to compile it. It is not recommended installing the software in the
 documentation so we are just going to use the output of our build.</p>
@@ -100,7 +101,7 @@ path.</p>
 
 <p>I will use <code>jpgrecover</code> to save my father’s corrupted jpeg pictures.</p>
 
-<p>When you run <code>./jpgrevoer</code>, you should see that it is asking the missing ‘bad_cardimage.img’ to
+<p>When you run <code>./jpgrecover</code>, you should see that it is asking the missing ‘bad_cardimage.img’ to
 run. It is just a snapshot of your device. In order to get the snapshot, I am
 going to use the <em>dd</em> command. But the <em>dd</em> command requires an input source and an
 output target. The input source is going to be the device.</p>
