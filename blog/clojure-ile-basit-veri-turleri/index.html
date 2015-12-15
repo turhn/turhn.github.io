@@ -13,7 +13,7 @@
     
     <link rel="canonical" href="http://www.turhancoskun.com/blog/clojure-ile-basit-veri-turleri/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-7b6ef52fde1161ca11ee182475dc0a7e.css">
+    <link rel="stylesheet" href="/assets/app-df33cb29fd254918b7ed6f9e4ea3bb50.css">
 </head>
 
 
@@ -53,7 +53,7 @@
           <article class="post-content">
             <p>Clojure dilini anlamaya başlamak için öncelikle basit veri türlerini anlamaya başlamak gerek. Daha önce <strong>Clojure ile JVM ve Lisp dünyasına ‘Merhaba Dünya’</strong> yazımda <em>Leiningen</em> isimli bir uygulamadan da bahsetmiştim. Şimdi bu yazımda leiningen yardımıyla Clojure ile JVM ve Lisp dünyalarına dalışa devam edeceğiz. Eğer o yazımı okumadıysanız <a href="http://turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/"><strong>buraya</strong></a> tıklayarak ulaşabilirsiniz.</p>
 
-<p>Clojure, bir LISP lehçesi olarak çekirdeği küçük tutulup makrolar ile genişletilmesi düşünülmüş bir dil olmasına rağmen, JVM tabanlı bir dil ve bu nedenle Java kütüphanelerine de erişimi var. Clojure öğrenmek için veri yapılarına ve makrolar gibi başka ileri düzey konulara ilerlemeden önce mutlaka öğrenilmesi gereken konu basit veri türleri ya da başka bir deyişle değişken türleridir. </p>
+<p>Clojure, bir LISP lehçesi olarak çekirdeği küçük tutulup makrolar ile genişletilmesi düşünülmüş bir dil olmasına rağmen, JVM tabanlı bir dil ve bu nedenle Java kütüphanelerine de erişimi var. Clojure öğrenmek için veri yapılarına ve makrolar gibi başka ileri düzey konulara ilerlemeden önce mutlaka öğrenilmesi gereken konu basit veri türleri ya da başka bir deyişle değişken türleridir.</p>
 
 <p>Makelem boyunca bütün anlatımlarımı REPL üzerinden yapacağım. Leiningen ile REPL çalıştırmak için. <code>lein repl</code> komutunu kullanabilirsiniz. Ayrıca tab ile otomatik tamamlama özelliği sayesinde ilgili kütüphaneki diğer fonksiyonları da görebilirsiniz.</p>
 
@@ -74,14 +74,14 @@
 
 <ul>
   <li>REPL’in açılımı Read, Eval, Print ve Loop dur. Bizim durumumuzda parantezler arasında kodu REPL’e gireriz ve program <strong>read</strong> yani okuma işlemini gerçekleştirir, sonra arkaplanda <strong>eval</strong> eder yani kodu çalıştırır. Örneklerde <code>; =&gt;</code> ile başlayan satırlar <strong>print</strong> yani çıktıyı verir. Son olarak <strong>loop</strong> yani döngü işlemi ile başa döner ve yeni bir satırda, sizden okumak üzere yeni komut bekler. Kısacası REPL olayı bundan ibarettir.</li>
-  <li>REPL ekranı bazen çok kirlenip okunması zor hale gelebiliyor. Clojure, Ruby ya da Python herhangi bir dilde REPL ile çalışıyorsanız Ctrl-L kısayolu sayesinde kolayca ekranı temizleyebilirsiniz. </li>
+  <li>REPL ekranı bazen çok kirlenip okunması zor hale gelebiliyor. Clojure, Ruby ya da Python herhangi bir dilde REPL ile çalışıyorsanız Ctrl-L kısayolu sayesinde kolayca ekranı temizleyebilirsiniz.</li>
   <li>Basit veri türlerinden bahsetmeden önce Clojure’da değişken nasıl tanımlanır onu bilmekte fayda var. Clojure ile değişken tanımlamak için kullanılan şablon en basit haliyle <code>(def &lt;değişken adı&gt; &lt;değişken değeri&gt;)</code> şeklindedir.</li>
 </ul>
 
 <h2 id="boolean-true-false">1. Boolean (true, false)</h2>
 <p>Boolean, gerçekten çok basit bir veri türüdür. Aynı zamanda bilgisayar biliminin en önemli veri türlerinden birisidir. İki değer alabilir: true ya da false.</p>
 
-<p>Clojure’da veri türlerini öğrenmek için kullanılan fonksiyon <code>type</code> fonksiyonudur. </p>
+<p>Clojure’da veri türlerini öğrenmek için kullanılan fonksiyon <code>type</code> fonksiyonudur.</p>
 
 <div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nf">type</span> <span class="nv">true</span><span class="p">)</span>
 <span class="c1">; =&gt; java.lang.Boolean</span>
@@ -211,7 +211,7 @@ Birçok dilin aksine <strong>”“</strong>(boş string), <strong>()</strong>(b
 <div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nf">rationalize</span> <span class="mf">0.45</span><span class="p">)</span>
 <span class="c1">; =&gt; 9/20</span></code></pre></div>
 
-<p>Uygulamalara kullanıcıdan gelen girdiler çoğunlukla string türünde olur ve bunlarla matematiksel işlem yapabilmek için sayısal türlere çevirmemiz gerekir. </p>
+<p>Uygulamalara kullanıcıdan gelen girdiler çoğunlukla string türünde olur ve bunlarla matematiksel işlem yapabilmek için sayısal türlere çevirmemiz gerekir.</p>
 
 <div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nf">Double/parseDouble</span> <span class="s">&quot;-0.45&quot;</span><span class="p">)</span>
 <span class="c1">; =&gt; -0.45</span>
@@ -318,7 +318,7 @@ Birçok dilin aksine <strong>”“</strong>(boş string), <strong>()</strong>(b
 
 <span class="c1">// =&gt; &quot;Merhaba, Turhan&quot;</span></code></pre></div>
 
-<p>JavaScript bilmeyipte bana küfür edenler için burada ne olduğunu açıklayayım. Teknik olarak bu kod ile daha önceki JavaScript kodu aynı işi yapıyor ancak tanımlamalarından gelen bir farklılık var. Biri doğrudan isimli bir fonksiyon olarak oluşturulmuş, diğeri ise <strong>anonim bir fonksiyon ve olduğu gibi bir değişkene atanmış</strong>. </p>
+<p>JavaScript bilmeyipte bana küfür edenler için burada ne olduğunu açıklayayım. Teknik olarak bu kod ile daha önceki JavaScript kodu aynı işi yapıyor ancak tanımlamalarından gelen bir farklılık var. Biri doğrudan isimli bir fonksiyon olarak oluşturulmuş, diğeri ise <strong>anonim bir fonksiyon ve olduğu gibi bir değişkene atanmış</strong>.</p>
 
 <p>Fonksiyonel programlama dillerinde fonksiyonlar bir veri türü olarak iş görürler ve doğrudan değişkenlere atanabilir, isim vermeye bile gerek kalmadan yine bir veri türü olarak başka bir fonksiyona parametre olabilir, hatta başka bir fonksiyonun dönüş değeri de olabilirler. Bu durum Clojure için de geçerli.</p>
 
@@ -389,7 +389,7 @@ Birçok dilin aksine <strong>”“</strong>(boş string), <strong>()</strong>(b
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-e3735e9638732d7a3306d3a8c6346e84.js"></script>
+  <script src="/assets/post-f32b1108835d5bc68ef3a020c760407d.js"></script>
 </body>
 
 </html>

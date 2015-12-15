@@ -13,7 +13,7 @@
     
     <link rel="canonical" href="http://www.turhancoskun.com/blog/clojureda-veri-yapilari/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-7b6ef52fde1161ca11ee182475dc0a7e.css">
+    <link rel="stylesheet" href="/assets/app-df33cb29fd254918b7ed6f9e4ea3bb50.css">
 </head>
 
 
@@ -71,7 +71,7 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 
 <h2 id="list">List</h2>
 
-<p>Listeler sıralı değerlerden oluşan bir koleksiyondur. Tanımlamak için <code>list</code> fonksiyonu kullanılır. </p>
+<p>Listeler sıralı değerlerden oluşan bir koleksiyondur. Tanımlamak için <code>list</code> fonksiyonu kullanılır.</p>
 
 <div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">)</span>
 <span class="c1">; =&gt; (1 2 3 4)</span></code></pre></div>
@@ -99,7 +99,7 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 <span class="nv">d</span>
 <span class="c1">; =&gt; (4 4 3 1)</span></code></pre></div>
 
-<p>d listesi ise bize çok önemli bir ipucu veriyor. İpucu ise listemizde birden fazla aynı değerin bulunabilmesi. </p>
+<p>d listesi ise bize çok önemli bir ipucu veriyor. İpucu ise listemizde birden fazla aynı değerin bulunabilmesi.</p>
 
 <p>Aslında dikkat ederseniz Clojure’da list diğer dillerde kullanılan Array veri yapısından başka bir şey değil. Array veri yapısı basit olarak bir indeks ve değer ikililerinden oluşan basit veri yapılarıdır. a ve b listelerini hatırlayalım.</p>
 
@@ -117,7 +117,7 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 
 <h3 id="listelere-stack-veri-yaps-gibi-davranmak">Listelere Stack veri yapısı gibi davranmak</h3>
 
-<p>List veri yapısının aslında bir Array veri yapısını olduğunu öğrendik. Clojure’da istersek listelere <em>Stack veri yapısı</em> olarak davranabiliriz. </p>
+<p>List veri yapısının aslında bir Array veri yapısını olduğunu öğrendik. Clojure’da istersek listelere <em>Stack veri yapısı</em> olarak davranabiliriz.</p>
 
 <p><strong>Stack(Yığın) Veri Yapısı</strong>: Stack(yığın), bilgisayar bilimlerinde, elemanlarına sadece bir tarafından erişilebilen bir veri yapısıdır. Elemanların erişildiği tarafına üst denir. Bunu üstüste dizilmiş kutulardan oluşan bir yığın gibi düşünebiliriz. Yeni kutu eklemek istediğimizde yığının en üstüne koyarız, yığından kutu almak istediğimizde ise yığının en üstündeki kutuyu alırız.</p>
 
@@ -192,7 +192,7 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 <span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
 <span class="c1">; =&gt; true</span></code></pre></div>
 
-<p>hash-map tanımlamak için küme parantezi ‘{}’ kullanabiliriz. b hash-map’ının farklı sıralamada oluştuğunu ve yine de a ile eşit olduğuna dikkat etmişsinizdir. </p>
+<p>hash-map tanımlamak için küme parantezi ‘{}’ kullanabiliriz. b hash-map’ının farklı sıralamada oluştuğunu ve yine de a ile eşit olduğuna dikkat etmişsinizdir.</p>
 
 <div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">c</span> <span class="p">{</span><span class="ss">:en</span> <span class="o">&#39;</span><span class="err">İ</span><span class="nv">ngilizce</span>, <span class="ss">:tr</span> <span class="ss">&#39;T</span><span class="err">ü</span><span class="nv">rk</span><span class="err">ç</span><span class="nv">e</span>, <span class="ss">:tr</span> <span class="ss">&#39;T</span><span class="err">ü</span><span class="nv">rk</span><span class="err">ç</span><span class="nv">e</span><span class="p">})</span>
 <span class="c1">; =&gt; IllegalArgumentException Duplicate key: :tr clojure.lang.PersistentArrayMap.createWithCheck (PersistentArrayMap.java:70)</span></code></pre></div>
@@ -253,7 +253,7 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 
 <h2 id="set">Set</h2>
 
-<p>Set, matematikten bildiğimiz kümelerden farksızdır. Benzersiz değerlerden oluşur yani liste ve vektörlerdeki gibi aynı değerde birden fazla veri olamaz. Sıralı ve karışık olarak ikiye ayrılırlar. </p>
+<p>Set, matematikten bildiğimiz kümelerden farksızdır. Benzersiz değerlerden oluşur yani liste ve vektörlerdeki gibi aynı değerde birden fazla veri olamaz. Sıralı ve karışık olarak ikiye ayrılırlar.</p>
 
 <h3 id="hash-set">hash-set</h3>
 
@@ -280,7 +280,7 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 <span class="p">(</span><span class="nf">a</span> <span class="ss">:b</span><span class="p">)</span>
 <span class="c1">; =&gt; :b</span></code></pre></div>
 
-<p>2.clojure.set isim uzayında bulunan küme fonksiyonlarını uygulayabilirsiniz. </p>
+<p>2.clojure.set isim uzayında bulunan küme fonksiyonlarını uygulayabilirsiniz.</p>
 
 <div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nf">clojure.set/union</span> <span class="nv">a</span> <span class="nv">c</span><span class="p">)</span>
 <span class="c1">; =&gt; #{1 4 3 2 :b :a}</span>
@@ -355,7 +355,7 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-e3735e9638732d7a3306d3a8c6346e84.js"></script>
+  <script src="/assets/post-f32b1108835d5bc68ef3a020c760407d.js"></script>
 </body>
 
 </html>

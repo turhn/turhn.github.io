@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="0emXjEbk_ZIziWSlcEWaCEaOIivGlP2tiGnQPLvZKNE" />
-    <title>ADO.NET provider for Firebird 2.7 çıktı</title>
+    <title>How to recover files from a corrupted SD Card or USB device.</title>
     
     <meta name="description" content="Ruby, JavaScript, Clojure ve diğer yazılım maceralarım
 ">
     
-    <link rel="canonical" href="http://www.turhancoskun.com/blog/ado-net-provider-for-firebird-2-7-cikti/">
+    <link rel="canonical" href="http://www.turhancoskun.com/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-devise/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/assets/app-df33cb29fd254918b7ed6f9e4ea3bb50.css">
 </head>
@@ -38,41 +38,94 @@
 
         <div class="post">
           <header class="post-header">
-            <h1 class="post-title">ADO.NET provider for Firebird 2.7 çıktı</h1>
-            <div class="post-meta">Dec 19, 2011
+            <h1 class="post-title">How to recover files from a corrupted SD Card or USB device.</h1>
+            <div class="post-meta">Dec 15, 2015
             <div>
               
-              <a class="post-category" href="/tag/Firebird">Firebird</a>
+              <a class="post-category" href="/tag/English">English</a>
               
-              <a class="post-category" href="/tag/.NET">.NET</a>
+              <a class="post-category" href="/tag/Unix">Unix</a>
               
             </div>
             </div>
           </header>
 
           <article class="post-content">
-            <p>Birçok projemde Firebird kullandığımı zaten bloguma bir göz atan herkes rahatlıkla anlayabilir. Embed özelliği ile projelerime gömebilmem, sadece birkaç mb alan kaplamasıyla gerçekten küçük kurulum dosyaları oluşturabilmem tüm bunların yanında .net ile Entity Framework desteklemesi benim için çok güzel artılar. Her ne kadar Microsoft SQL Server Compact Edition yayınlamış olsa da, özellikleri gerçek bir projenin ihtiyaçlarını karşılamaktan uzak. Bakalım belki SQL Server 2012 sürümü, SQL Server ürününe kanımın ısınmasını sağlayabilir.</p>
+            <p>In this post, I am going to show you how to use OS X command line to recover corrupted
+jpg files from an SD card or a USB disk.</p>
 
-<p>Bu sürüm ile gelen değişikler :</p>
+<p>Flash storage devices might be cheap. But they are not known for their
+reliability. Sometimes their file systems get corrupted. There is a jungle of
+small and paid recovery software across the internet. The problem is, I never
+ trust them, I am never going to buy one them.</p>
+
+<p>I made a research and met with an open source software called <em>SD Recover</em>. I
+checked the source code and it was surprisingly simple and comprehensive. I
+wanted to give a try on my father’s corrupted 2 GB SD card. He wanted to recover
+photos from his latest Balkans tour.</p>
+
+<h2 id="installation">Installation:</h2>
+
+<p>Since the software is distributed as a source code form. We need to compile it.
+I use Mac and OS X and I already have all the required tools with my XBuild
+setup.</p>
+
+<p>Firstly clone the repository:</p>
+
+<p><code>
+git clone git://git.code.sf.net/p/sdrecover/git sdrecover-git
+cd sdrecover-git
+</code></p>
+
+<p>Then we need to compile it. It is not recommended installing the software in the
+documentation so we are just going to use the output of our build.</p>
+
+<h2 id="compile">Compile</h2>
+
+<p><code>
+xcodebuild
+</code></p>
+
+<p><code>xcodebuild</code> command should compile the required executable files into the project
+path.</p>
+
+<p>The compiled tools are:</p>
 
 <ul>
-  <li><a href="http://tracker.firebirdsql.org/browse/DNET-316">Giderilen bir takım hatalar</a></li>
-  <li><a href="http://blog.cincura.net/232603-improved-command-logging-in-ado-net-provider-for-firebird-part-2/">Logging konusunda iyileştirmeler</a></li>
+  <li>jpgrecover - extracts JPEG image files</li>
+  <li>avirecover - extracts AVI files</li>
+  <li>sdrecover - currently just lists information about the SD card</li>
+  <li>sdsearch - searches for file signatures and other data structures</li>
 </ul>
 
-<p>app.config dosyasına :</p>
+<p>I will use <code>jpgrecover</code> to save my father’s corrupted jpeg pictures.</p>
 
-<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;system.diagnostics&gt;</span>
-    <span class="nt">&lt;sources&gt;</span>
-        <span class="nt">&lt;source</span> <span class="na">name=</span><span class="s">&quot;FirebirdSql.Data.FirebirdClient&quot;</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;listeners&gt;</span>
-                <span class="nt">&lt;clear</span> <span class="nt">/&gt;</span>
-                <span class="nt">&lt;add</span> <span class="na">name=</span><span class="s">&quot;console&quot;</span> <span class="na">type=</span><span class="s">&quot;System.Diagnostics.ConsoleTraceListener&quot;</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;/add&gt;&lt;/listeners&gt;</span>
-        <span class="nt">&lt;/source&gt;</span>
-     <span class="nt">&lt;/sources&gt;</span>
-<span class="nt">&lt;/system.diagnostics&gt;</span></code></pre></div>
+<p>When you run <code>./jpgrevoer</code>, you should see that it is asking the missing ‘bad_cardimage.img’ to
+run. It is just a snapshot of your device. In order to get the snapshot, I am
+going to use the <em>dd</em> command. But the <em>dd</em> command requires an input source and an
+output target. The input source is going to be the device.</p>
 
+<p><code>
+diskutil list
+</code></p>
+
+<p>Enter the command above to list the connected storage devices. We will see the path to the
+device. In my case, it is <code>/dev/disk2</code>. Literally, the output target is going to be
+‘bad_cardimage.img’ file.</p>
+
+<p><code>
+dd if=/dev/disk2 of=bad_cardimage.img
+</code></p>
+
+<p>Wait for a while to copy the entire device into the ‘bad_cardimage.img’ file.</p>
+
+<p>Once it is finished, you have to run:</p>
+
+<p><code>
+./jpgrecover
+</code></p>
+
+<p>Congratulations. You saved the day.</p>
 
           </article>
 
