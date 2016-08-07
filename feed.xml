@@ -6,9 +6,78 @@
 </description>
     <link>http://www.turhancoskun.com/</link>
     <atom:link href="http://www.turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 17 Feb 2016 23:30:57 +0200</pubDate>
-    <lastBuildDate>Wed, 17 Feb 2016 23:30:57 +0200</lastBuildDate>
+    <pubDate>Sun, 07 Aug 2016 15:12:44 +0300</pubDate>
+    <lastBuildDate>Sun, 07 Aug 2016 15:12:44 +0300</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>How to create a dynamic DNS server using CloudFlare</title>
+        <description>&lt;p&gt;Some of us use dynamic IPs at home and want to serve a web server, a security cam or a VPN server at home. IP addresses keep changing on connection resets or power cuts. This is a big problem and we should update DNS records according to the changes.&lt;/p&gt;
+
+&lt;p&gt;I personally use CloudFlare DNS services for almost anything related to my servers and I want the CF to keep protecting my home servers as well. I thought I could write a tool which checks current machine’s IP address and the IP address defined at CloudFlare, then updates CloudFlare DNS’s A record if both addresses do not match.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-you-need&quot;&gt;What you need?&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A Linux distro running a SystemD as init system(I am using Ubuntu 16.04)&lt;/li&gt;
+  &lt;li&gt;A CloudFlare account&lt;/li&gt;
+  &lt;li&gt;Ruby or Docker installed on your server&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I prefer the Docker way to run applications on my Linux servers because, neither I want to pollute my servers with different versions of software nor mutate the current states of the servers. Anyway, you can install latest Ruby version and run the application as you wish.&lt;/p&gt;
+
+&lt;p&gt;I wrote a small CloudFlare API Client in order to purge caches programmatically for a while ago, I used it as a base for my project. I admit that, it is a bit dirty code, but it works like a charm.&lt;/p&gt;
+
+&lt;h2 id=&quot;code&quot;&gt;Code&lt;/h2&gt;
+
+&lt;p&gt;For the code you can visit. &lt;a href=&quot;https://github.com/turhn/cloudflare-client&quot;&gt;https://github.com/turhn/cloudflare-client&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git clone https://github.com/turhn/cloudflare-client.git&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;cloudflare-client
+docker build -t cloudflare .&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And create a file at &lt;code&gt;/etc/systemd/system/docker-dns&lt;/code&gt; and paste the content below. (Do not forget to change &lt;email&gt; and &lt;api key=&quot;&quot;&gt; sections.)&lt;/api&gt;&lt;/email&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ini&quot; data-lang=&quot;ini&quot;&gt;&lt;span class=&quot;k&quot;&gt;[Unit]&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Docker Application Service&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;Requires&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;docker.service&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;After&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;docker.service&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;[Service]&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;Restart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/usr/bin/docker run --rm -e &amp;quot;CLOUD_FLARE_API_KEY=&amp;lt;API KEY&amp;gt;&amp;quot; -e &amp;quot;CLOUD_FLARE_EMAIL=&amp;lt;EMAIL&amp;gt;&amp;quot; --name cloudflare cloudflare:latest bin/update_dns example.com test&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;ExecStop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/usr/bin/docker stop -t 2 cloudflare&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;ExecStopPost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/usr/bin/docker rm -f cloudflare&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;[Install]&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;WantedBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;default.target&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sudo systemctl daemon-reload
+sudo systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;docker-dns
+sudo service start docker-dns&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Thus you created a system service that is running in the background.&lt;/p&gt;
+
+&lt;p&gt;When we check the Docker processes with &lt;code&gt;docker ps&lt;/code&gt;, we should see that our service is running. By default, it should check IP addresses every minute. If you wish to change the default interval value, i.e. you can add &lt;code&gt;-e INTERVAL=120&lt;/code&gt; variable in ExecStart section for 120 seconds.&lt;/p&gt;
+
+&lt;p&gt;You can easily create an upstart script for upstart using distros.&lt;/p&gt;
+
+&lt;p&gt;I hope this helps you.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 07 Aug 2016 13:46:15 +0300</pubDate>
+        <link>http://www.turhancoskun.com/blog/how-to-create-a-dynamic-dns-server-using-cloudflare/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/how-to-create-a-dynamic-dns-server-using-cloudflare/</guid>
+        
+        <category>English</category>
+        
+        <category>Docker</category>
+        
+        <category>Unix</category>
+        
+        <category>SystemD</category>
+        
+        
+      </item>
     
       <item>
         <title>How to recover files from a corrupted SD Card or USB device.</title>
@@ -1402,558 +1471,75 @@ find .&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
       </item>
     
       <item>
-        <title>Rails ile TDD - 3 (Controller&#39;ların test edilmesi)</title>
-        <description>&lt;p&gt;Yazı dizimizin üçüncü bölünme MVC’nin C’si yani Controller testlerinin nasıl
-yapıldığını öğreneceğiz.&lt;/p&gt;
-
-&lt;p&gt;Controller testleri aslında birçok yönden model testlerinden farklı değiller.
-Controller testlerinin en büyük faydalarından biri de kodumuzda büyük ölçekli
-refactor işlemleri uyguladığımızda, uygulamamızda  meydana gelen davranış şekillerinin
-zamanında farkedilerek can simidi vazifesi görmeleri olacaktır.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Peki controller üzerinde neleri test edeceğiz?&lt;/strong&gt;
-Bu sorunun yanıtı biraz geliştiriciye ve uygulamaya bağlı olsa da bazı temel
-şeyleri mutlaka test etmenizi öneririm.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Mime Type: Dönen yanıt istediğimiz formatta mı? html, json, xml vs.&lt;/li&gt;
-  &lt;li&gt;Http Status: Dönen http yanıt kodu doğru mu? 201, 200, 400, 403 vs&lt;/li&gt;
-  &lt;li&gt;Template: Bizim istediğimiz şablon mu gösteriliyor? new, edit vs.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;TDD ile geliştirme yaparken sürekli editör ile konsol arasında gidip gelmek yorucu
-olabilir. Böyle bir durumda eğer benim gibi text editör olarak vim kullanıyorsanız
-tmux adındaki terminal çoklayıcı kullanarak ekranı bölebilir ve hatta guard gibi
-bazı ruby gemleri yardımıyla test dosyalarınız değiştikçe otomatik çalışmalarını
-sağlayabilirsiniz. Daha sonra Rails geliştirme ortamları hakkında ayrı bir yazı yazarak,
-kıyaslamalar yapmayı ve bu konu hakkında fikirler paylaşmayı düşünüyorum.&lt;/p&gt;
-
-&lt;p&gt;Yazının bu kısmından itibaren controller yerine denetleyici tanımını kullanacağım. O yüzden
-bu denetleyici nereden çıktı diye şaşırmayın derim.&lt;/p&gt;
-
-&lt;h2 id=&quot;users-denetleyicisi&quot;&gt;Users Denetleyicisi&lt;/h2&gt;
-
-&lt;p&gt;Öncelikle User denetleyicisi için test yazacağız ve bu sefer herşeyi manuel gerçekleştirelim.
-Yani rails generate komutu kullanmak yerine dosyaları bir bir kendimiz oluşturalım.
-Rails ile denetleyici testlerini manuel yoldan geçirebilirseniz bu işin mantığını büyük çoğunlukla
-anlamışsınız demektir.&lt;/p&gt;
-
-&lt;p&gt;Genel Beklentilerimiz:
-1. User email adresini girdiğinde email, daha önce kayıtlı ise doğrudan Todo listesine yönlenecek
-2. Email adresi kayıtlı değilse, email adresi veri tabanına kaydedilip, todo listesine yönlececek&lt;/p&gt;
-
-&lt;p&gt;Model testlerimizin spec klasörü altında models isimli dizinde tutulduğunu önceki bölümden
-hatırlayın. Şimdi ise bize gereken bir controllers/ dizini.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git checkout -b users-controller
-mkdir spec/requests&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Şimdi ise yeni oluşturduğumuz controllers dizininde users_spec.rb isimli bir dosya oluşturun.
-Denetleyici tanımları çoğul eki ile yapıldığı için onun test edileceği spec dosyasını da
-bu kurala uygun olarak oluşturduk. Daha önce Rails’in birçok önkabul ile işlediğini söylemiştim.
-Denetleyici isimlerinin çoğul takısı ile yapılması da bunlardan birisi.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rails_helper&amp;#39;&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;UsersController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:controller&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;GET #new&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;assigns a user to @user class variable&amp;#39;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;POST #create&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;when valid&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;saves the user to database&amp;#39;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;when invalid&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rerenders the :new template&amp;#39;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Yazım dili olarak model testlerinden çok da farklı değil gördüğünüz gibi. Tanımlarken
-kullandığımız :type artık :model yerine :controller oldu. Testlerde büyük harflerle
-http metotlarını ve # karakterinin ardın hangi ‘action’ çağrılacağını belirttik. Okunaklı
-testler yazmak açısından bu stil kurallarını takip etmek önemli. Bu konuda daha fazla
-bilgiye ulaşmak için &lt;a href=&quot;http://betterspecs.org/&quot;&gt;Better Specs&lt;/a&gt; sitesini incelemenizi tavsiye ederim.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rspec spec/controllers/users_spec.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Kodunu çalıştırdığımızda, doğal olarak UsersController diye bir tanım olmadığını söyleyecek.
-İlk önce denetleyici tanımını yapmak için app/controllers/users_controller.rb dosyasını oluşturun ve
-içeriğini aşağıdaki gibi doldurup kaydedin.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UsersController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Testi tekrar çalıştırdığınızda sarı renkte bekleyen testlerin listelendiğini göreceksiniz.&lt;/p&gt;
-
-&lt;p&gt;Şimdi users_spec.rb dosyasını tekrar açalım ve aşağıdaki düzenlemeleri yapalım.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;assigns a user to @user class variable&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:new&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;assigns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_a_new&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Test kodumuzu çalıştırdığımızda bize Users#new ile eşleşen bir rota olmadığı hatasını verecek.&lt;/p&gt;
-
-&lt;p&gt;config/routes.rb dosyasını açıp gerekli rota eklemesini yapalım. İçerisinde yorum satırı
-yapılmış bir sürü örnek rota göreceksiniz. Onları daha sonra incelemeniz için silmiyorum.
-Aşağıdaki gibi olacak şekilde koda ekleme yapın.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;draw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;only&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:new&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Şimdi test kodumuzu tekrar çağırıp kontrol edelim. Aldığımız hata çıktısı :
-&lt;em&gt;The action ‘new’ could not be found for UsersController&lt;/em&gt; Yani bu hatadan sıyrılmak için
-UsersController sınıfında :new adında bir metot oluşturmamız gerekecek. Bunun için
-app/controllers/users_controller.rb dosyasını açıyoruz va aşağıdaki gibi düzenliyoruz.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UsersController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Testi çalıştırdığınızda MissingTemplate hatası alacaksınız. Bu hatanın sebebi artık Rails
-uygulamamız /users/new url’si çağrıldığında hangi kod dilimini çağırması gerektiğini biliyor
-ancak html içeriğinin yerini bulamıyor. Sadece hatanın geçmesini sağlamak için app/views/users/new.html.erb
-dosyasını oluşturmanız yeterli.&lt;/p&gt;
-
-&lt;p&gt;Unix tabanlı bir sistemde kısaca aşağıdaki komutu yazabilirsiniz.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mkdir app/views/users
-touch app/views/users/new.html.erb
-rspec spec/requests/users_spec.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Artık testimizi geçirmek için sona geldik. Gerekli alt yapının hazırlanması tamamlandı. Şu an
-ekranda gördüğünüz hata eksik bir dosya ya da tanımlanmamış bir sınıftan ziyade karşılanılmamış
-bir beklenti olması gerekiyor. Yani @user değişkenine yeni bir user atamak. Denetleyici dosyasını
-app/controllers/users_controller.rb adresinden tekrar açıp aşağıdaki düzenlemeyi yapın.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UsersController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;
-    &lt;span class=&quot;vi&quot;&gt;@user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;  
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Testi çalıştırdığınızda bir yeşilimiz olacak.&lt;/p&gt;
-
-&lt;p&gt;spec/controllers/users_spec.rb dosyasını tekrar açarak testlerimizi yazmayı sürdürelim.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;when valid&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;saves the user to database&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;person@example.com&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attributes&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Gördüğünüz gibi burada farklı bir except yapısı kullandık. Rspec belgelendirmelerini
-incelerseniz bu tip farklı yaklaşımlarla karşılaşabilirsiniz. Burada post metodunun
-kullanı sayısını 1 arttırmasını bekliyoruz.&lt;/p&gt;
-
-&lt;p&gt;Testi çalıştırın. No route yazısı ile karşılaştıysanız nereden başlamamız gerektiğini
-tahmin edersiniz diye umuyorum.&lt;/p&gt;
-
-&lt;p&gt;Hemen config/routes.rb dosyasını tekrar açıp daha önce yazdığımız satırı aşağıdaki gibi
-dikkatlice düzenleyin.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;only&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Not: Burada only: kısmının artık bir array (dizi değişkeni) olduğuna dikkat edin.&lt;/p&gt;
-
-&lt;p&gt;Testi çalıştırın ve göreceksiniz ki :
-&lt;em&gt;The action ‘create’ could not be found for UsersController&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Post olayı için yazdığımız beklentilere bakarsanız, veri tabanına başarı ile kaydetmesini
-hata olması halinde ise yeniden :new şablonunu görüntülemesini istiyoruz. Denetleyici
-dosyası açıp aşağıdaki gibi düzenleyin.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UsersController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;
-    &lt;span class=&quot;vi&quot;&gt;@user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;  
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;
-    &lt;span class=&quot;vi&quot;&gt;@user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:user_id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;redirect_to&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:todos&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;render&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:new&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;user_params&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;permit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Burada değinmem gereken birkaç nokta olduğunu düşünüyorum. Öncelikle user_params
-diyerek izin verilen parametreleri tek tek bildirmemiz gerekiyor. Rails’in bu özelliğine
-&lt;em&gt;Strong Parameters&lt;/em&gt; deniliyor. Uygulamaların güvenliği açısında müthiş bir özellik. Daha
-ayrıntılı bilgiyi &lt;a href=&quot;http://edgeapi.rubyonrails.org/classes/ActionController/StrongParameters.html&quot;&gt;buraya&lt;/a&gt;
-tıklayarak bulabilirsiniz.&lt;/p&gt;
-
-&lt;p&gt;session ile kullanıcı id’sini depoladık. Bu basitçe bize Todos kısımlarına girdiğimizde
-yetkilendirme yapmamızı sağlayacak. redirect_to :todos kısmı kodu çalıştırdığınız anda
-öyle bir rota tanımı olmadığı için hata verecektir. Bu kısmı kestirme geçmek için config/routes.rb
-dosyasında daha önce User tanımı için yaptığımız rota tanımının hemen altına&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:todos&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;satırını ekleyin. Bu gerekli tanımların oluşmasını otomatik olarak sağlayacaktır.
-@user.save ifadesi bize bir boolean yani true-false yanıtı döndürüyor. Bunu koşullandırma
-ifadesi içine alırken bir hata oluşması durumunda tekrar :new şablonunu göstermesi gereken
-kısmı da boş geçmedik.&lt;/p&gt;
-
-&lt;p&gt;Son tanımladığımız rotadan sonra rotaların ne durumda olduğunu test etmek için terminal
-ekranına&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rake routes&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;komutunu girerek otomatik oluşturan rota yardımcı metotlarını inceleyebilirsiniz.&lt;/p&gt;
-
-&lt;p&gt;Şimdi test kodumuzu çalıştırdığımızda testimizin geçmesi gerekiyor.&lt;/p&gt;
-
-&lt;p&gt;Test dosyamızı açarak düzenlemeye devam edelim:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;when invalid&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rerenders the :new template&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;wrong email&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attributes&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;render_template&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:new&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Gördüğün gibi testlerimiz artık hatalı bir email adresi olduğunu da farkedebiliyor.&lt;/p&gt;
-
-&lt;p&gt;User denetleyici ile yazılan testlerin sonuna geldik. Burada dikkat ederseniz bütün adımları
-elle oluşturarak geldik. TDD öğrenmek için bu şekilde basit bir denetleyici oluşturup
-olabildiğince çok adıma yaymam gerekiyordu. Tabiki pratikte bu kadar basit adımları manuel
-yapmak çok da efektif olmayabilir. Denetleyici için mutlaka test yazın ama bu testleri
-rails generator kullandıktan sonra da yazabilirsiniz. Tıpkı TodosController oluşturduktan sonra
-yapacağımız gibi. Değişiklikleri git repomuza kaydedip devam edelim.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add --all
-git commit -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;Users Controller ve Testleri&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;todos-denetleyicisi&quot;&gt;Todos Denetleyicisi&lt;/h2&gt;
-
-&lt;p&gt;TDD mantığını büyük ölçüde anladığımıza göre artık işleri biraz daha hızladırmak adına
-Todos denetleyicinin tüm yapım aşamalarını burada tek tek açıklamayacağım. Ancak çalışan
-bir versiyonunu GitHub reposundan her zaman inceleyebilirsiniz.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/turhancoskun/rails-ile-tdd&quot;&gt;https://github.com/turhancoskun/rails-ile-tdd&lt;/a&gt;&lt;/p&gt;
+        <title>Masaüstü Linux Dünyası</title>
+        <description>&lt;p&gt;GNU/Linux hepimizin çok sevdiği, öve öve bitiremediği ama çoğunlukla sanal makinada
+ya da dual bot ile kullanmayı layık gördüğümüz bir işletim sistemi. Ancak bugün burada Linux’un
+sunucu bazında pazar payındaki tartışılmaz aslan payından, Android olarak ceplerde
+edindiği yerinden, mikro ölçekli milyonlarca cihazla dünyayı ele geçirmesinden
+bahsetmeyeceğim. Benim burada konuşacağım tek konu GNU/Linux dağıtımlarının masaüstü bilgisayarlarındaki durumu olacak.&lt;/p&gt;
+
+&lt;p&gt;Linux ile ilk tanışmam 2000 li yılların başında, ilk bilgisayara sahip olduğum
+zamanlarda, bir derginin yanında hediye verilen Mandrake Linux ile oldu. O zamanlardan aklımda kalan; sistemin sürekli çökmesi ve İngilizce
+bilmediğim bir dönemde işletim sistemindeki bir çok kısımın tercüme edilmemiş olmasından kaynaklanan
+sıkıntılar. Hafızamı daha da kurcaladığımda, o zamanda 56K internal faks modem ile internete
+bağlandığımı ve bu modemler için yazılmış ücretsiz bir sürücü olmamasından dolayı internete
+bağlanamamamdı. Sırf internetten paket yükleyebilmek için, bilgisayarımı Windows ile
+ boot edip yüklemek istediğim paketi internetten yüklüyor, sonra yeniden Mandrake’den
+boot edip windows sürücülerine erişerek söz konusu paketleri Linux’a yüklüyordum.
+Bir süre sonra sıkılıp Linux’u sistemden tamamen uçurarak bir süre o zamanların efsanesi olan Windows XP’yi
+kullanarak yoluma devam ettim.&lt;/p&gt;
+
+&lt;p&gt;Bir süre sonra milli işletim sistemi Pardus duyuruldu. Pisi paket yöneticisi,
+şık KDE ve Gnome masaüstleri, Çomar vs. İlgi çekici ve başarılıydı. Artık ADSL teknolojisi
+evlere girmiş olduğundan internete bağlanmakta da sıkıntı çekmiyordu.Gel gör ki o fontlar,
+o çözünürlük hala Windows ayarında değildi ama sonuçta bu bir milli yazılımdı. Hayalimde; o ayda bir
+formatlamak zorunda olduğum Windows’tan kurtulmak olsa da, swf geliştirmek için
+Macromedia Flash’a olan ihtiyaç ve Linux yazıcı sürücülerinin berbat durumda olması bir taraftan
+sürekli Windows’u el altında tutmayı gerektiriyordu. E tabi bir de oyunlar meselesi
+var. Millet Fifa, NFS ve CS oynarken benim basit puzzle oyunlarıyle yetinmem de
+beklenmezdi(!) Yine de Pardus projesi -sıfırlanıncaya- dek kullanmaya devam ettim.&lt;/p&gt;
+
+&lt;p&gt;XP den 8’e kadar abidik gubudik bütün Windows sürümlerini kullandım ancak gel gör ki
+2013 te Macbook Pro Retina 15” alıp OS X ile tanışıncaya kadar aslında bir işletim sisteminin
+nasıl olması gerektiği ile ilgili yeterli fikre sahip olmadığımı fark ettim. Görüntü
+kalitesi ve font render özellikleri muhteşem. İçindeki donanım ile tam uyumlu ve
+malzeme olarak da çok kaliteli. Burada sabaha kadar ağzım sulana sulana Mac ve OS X övebilirim ancak mesele şu ki gönlüm içinde ne olduğunu bilmediğim yazılımlardan ziyade her zaman özgür yazılımdan yana.&lt;/p&gt;
+
+&lt;p&gt;Açık kaynak temelli web teknolojileri ile yazılım geliştiren birisi zaten sürekli
+Linux sunucularla haşır neşir olmak durumunda olsa da Torvalds’ın lafı hep aklımda
+‘I still want the desktop.’ yani ‘Hala masaüstünü istiyorum.’ Masaüstü için zaman
+zaman popüler olması sebebiyle Ubuntu’yu ara sıra yükleyip inceliyordum ve kabul ediyorum ki
+artık sıradan bir bilgisayar kullanıcısının bile rahatlıkla kullanabileceği noktalara geldi. Ancak
+Canonical kendi saçmalıklarını o kadar çok sisteme bulaştırmış ki şahsen bana Linux
+tadı vermiyor. Sisteme her büyük güncelleme gelişinde çöküyor ve bana ayar dosyalarını
+kurcalattırıyor. Artı ve eksileriyle çok şey yazılabilir ama aradığım tat kesinlikle
+Ubuntu değil.&lt;/p&gt;
+
+&lt;p&gt;En son kullanmaya başladığım Linux dağıtımı ise Mint. Başta görüntü ve fontlar çamur gibi gelmesine
+rağmen birkaç ayarla retina çözünürlüğüne uygun hale geldi ve şu an neredeyse OS X’i bile
+aratmayacak durumda olduğunu düşünüyorum. Ubuntu’dan çatallanan projenin masaüstü yöneticisi
+Cinnamon ise Gnome projesinden çatallanmış. Ubuntu’nun tüm iyi taraflarını üzerinde
+barındırmasına rağmen Canonical saçmalıklarından da arındırılmış durumda.&lt;/p&gt;
+
+&lt;p&gt;En büyük eksisi ise bence süresi geçmiş X Server ise hala arka planda çalışmaya devam ediyor olması. Bu konuda Wayland
+projesi X Server’in yerine almaya henüz uzak gibi duruyor. Görüntü sunucusu teknolojisi yenilenmeli ve
+ben bu gönderiyi yazarken sistem dondu ve yeniden başlatmam gerekti dolayısıyla görünen o ki
+OS X’e bir süre daha devam etmem gerekiyor.&lt;/p&gt;
+
+&lt;p&gt;Evet şu an masaüstü bilgisayarların çoğunluğu ele geçirilemedi ama yakın gelecekte
+işler değişebileceğe benziyor. Şimdilik bu konudaki en güçlü adayım Linux Mint.&lt;/p&gt;
+
+&lt;p&gt;Bir sonraki yazımda görüşmek üzere sağlıcakla kalın.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 17 Nov 2014 00:00:00 +0200</pubDate>
-        <link>http://www.turhancoskun.com/blog/rails-ile-tdd--3-controllerlarn-test-edilmesi/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/rails-ile-tdd--3-controllerlarn-test-edilmesi/</guid>
+        <pubDate>Sat, 01 Nov 2014 00:00:00 +0200</pubDate>
+        <link>http://www.turhancoskun.com/blog/masast-linux-dnyas/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/masast-linux-dnyas/</guid>
         
-        <category>Ruby</category>
+        <category>Unix</category>
         
-        <category>Ruby on Rails</category>
+        <category>Genel</category>
         
-        <category>TDD</category>
-        
-        <category>Dersler</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Rails ile TDD - 2 (Modellerin test edilmesi)</title>
-        <description>&lt;p&gt;Rails ile TDD serisinin ikinci bölümünde sizlere bir MVC framework olan Ruby on Rails’in
-M’i yani model kısmının nasıl test edileceğini anlatmak istiyorum. Hello World’den sonra
-ikinci seviye sayılabilecek bir ToDo yani yapılacaklar listesi uygulaması geliştirelim.&lt;/p&gt;
-
-&lt;p&gt;Uygulamada tüm değişken, sınıf, modül vs istisnasız tüm tanımlamalarınızı İngilizce
-olarak yapın. Rails’te çok fazla önkabul bulunur ve tüm bu önkabuller İngilizce
-dil kurallarına göre çalışır. Bunun faydasından yararlanmak dururken boşuna buna karşı
-savaşmayın.&lt;/p&gt;
-
-&lt;p&gt;Gevezeliği bırakırsak örnek uygulamamızın yapısından bahsetmek istiyorum.&lt;/p&gt;
-
-&lt;h2 id=&quot;projenin-planlanmas&quot;&gt;Projenin Planlanması&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Kullanıcı mail adresini girip kendi yapılacaklar listesine giriş yapar (Şifre olmayacak)&lt;/li&gt;
-  &lt;li&gt;Yapılacak listesine öğe ekleyip silebilir ya da tamamlandı, tamamlanmadı tercihi yapabilir. Tamamlandı seçeneği seçildiğinde completed_at alanı güncellenir. Tamamlanmadı seçeneği seçildiğinde complete_at seçeneği nil olarak ayarlanır.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Bunu gerçekleştirebilmek için bize iki model gerekiyor bunlar User ve Todo&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;User&lt;/span&gt;
-  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;email&lt;/span&gt;
-&lt;span class=&quot;l-Scalar-Plain&quot;&gt;Todo&lt;/span&gt;
-  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;User&lt;/span&gt;
-  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;String&lt;/span&gt;
-  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;complete_at&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;DateTime&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;user-modelinin-oluturulmas&quot;&gt;User modelinin oluşturulması&lt;/h2&gt;
-
-&lt;p&gt;TDD yani test güdümlü programlama dediğimize göre demekki öncelikle test yazılması gerekiyor. Önce test yazmak bizi hatalardan koruduğu gibi büyük kod blokları yazarken de bizi motive edip bizi yönlendirecek. Göreceksiniz ki doğru kod yazım yaklaşımı önce test kodu yazmaktır.&lt;/p&gt;
-
-&lt;p&gt;Kısaca TDD’den bahsedersek yapacağımız işlem sırası RED-GREEN-REFACTOR. Bu konu hakkında araştırma yapmayı ve en iyi pratik seviyelerine ulaşmayı size bırakıyorum. R-G-R ‘yi bizim User modelimize uygularsak:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Önce User model testi için gerekli spec/models/user_spec.rb dosyasına beklentilerimizi yazacağız.&lt;/li&gt;
-  &lt;li&gt;User modelinin beklentileri karşılaması için beklentileri yazacağız. ( email alanı boş olamaz ve geçerli bir email adresi olmalı gibi )&lt;/li&gt;
-  &lt;li&gt;En son testi çalıştıracağız ve kırmızı spec’ler yeşil olana kadar modelimizi geliştireceğiz.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Hadi başlayalım:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git checkout -b user-model&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Konsol ekranımıza aşağıdaki komutu girelim:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rails g model User email&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Aslında burada önce test prensibini kısmen çiğnemiş olduk ama bu koşullarda bizim çıkarımıza bu şekilde ilerlemek daha hızlı. (Pragmatist Programmer kitabını okumanızı şiddetle öneririm)&lt;/p&gt;
-
-&lt;p&gt;Ekran çıktısından gördüğünüz üzere spec/models/user_spec.rb otomatik olarak oluşturuldu. Hemen bu dosyayı açıp inceleyelim.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rails_helper&amp;#39;&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:model&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;pending&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;add some examples to (or delete) &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;__FILE__&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Daha önce bahsettiğimiz rails_helper dosyası en başa gelmiş. User için model tipinde bir spec tanımlanmış. Bu dosyayı birlikte beklentilerimizi karşılayacak şekilde düzenleyeceğiz ama öncelikle olduğu gibi çalıştırıp bir duman testi yapalım. Duman testi, test framework’unun çalışır durumda olduğunu tespit etmek için yaptığımız basit testlere verdiğimiz bir isim.&lt;/p&gt;
-
-&lt;p&gt;İlk testi çalıştırmadan önce akıl sağlımız için ana dizindeki .rspec dosyasını açıp içinden –warning satırını silmenizi öneririm. Aksi halde ekranınızda uyarıdan başka birşey gözükmüyor. Daha sonra konsol ekranında:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rake db:migrate
-rspec spec/models/user_spec.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;rake komutu ruby make deyiminin bir kısaltması. Konsolda açık kaynak programların kodlarını derlerken kullandığımız make komutunun ruby versiyonu. db:migrate ise User oluşturulurken otomatik olarak oluşturulan veri tabanı migration dosyasını çalıştırıyor.&lt;/p&gt;
-
-&lt;p&gt;rspec komutunun ardından ekranda&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Not yet implemented&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# ./spec/models/user_spec.rb:4&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;çıktılarını gördüyseniz duman testini geçmişsiniz demektir. Artık testimizi icra etmeye başlayabiliriz.&lt;/p&gt;
-
-&lt;p&gt;Öncelikle git repomuza değişiklikleri kaydedelim.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add --all
-git commit &lt;span class=&quot;s2&quot;&gt;&amp;quot;User model oluşturulması&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;tekrar user_spec.rb dosyasını açalım. (Artık yerini biliyoruz değil mi?)&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rails_helper&amp;#39;&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:model&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;is invalid without email&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_invalid&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;is invalid without a valid email address&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;foo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_invalid&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;email&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;foo@example.com&amp;#39;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_valid&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Dosyamızı yukarıdaki gibi düzenleyelim. Kodun kendi kendini yeterince iyi açıkladığını düşünüyorum.&lt;/p&gt;
-
-&lt;p&gt;Testler it komutuyla başlıyor ve beklentiler block içinde belirtiyoruz. Beklentilerin yazımı expect metodo parametre olarak karşılaştıracağımız elimizdeki öğeyi alıyor. Ardından gelen .to veya olumsuz hali .not_to ve matcher dediğimiz be_invalid ve be_valid gibi eşleştiriciler izliyor. Rspec eşleştiricileri ile daha ayrıntılı bilgi için rspec dokümantasyonunu incelemenizi öneririm.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rspec spec/models/user_spec.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Mevcut durumda her iki spec de kırmızı durumda ve bizim görevimiz bunları yeşile çevirmemiz gerekiyor. Aksi halde kullanıcılar boş email adresleri ekleyebilecek veya aslında email adresi olmayan verileri email alanına yazabilecekler.&lt;/p&gt;
-
-&lt;p&gt;app/models/user.rb dosyasını açalım. Burası User modelinin tanımlandığı yer ve doğrulama işlemlerini burada gerçekleştireceğiz.&lt;/p&gt;
-
-&lt;p&gt;mevcut haliyle user.rb dosyası&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;gibi gözükecektir. Bizim yapacağımız aşağıdaki gibi düzenleyip testi tekrar çalıştırmak.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rspec spec/models/user_spec.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Bingo! Hata sayımız 1’e düştü ve beklentilerden biri yeşil ancak diğeri hala kırmızı. Şimdi diğer testi geçirelim.&lt;/p&gt;
-
-&lt;p&gt;Ekran çıktısını incelediğimizde anlıyoruz ki ‘foo’ hatalı bir email adresi olmak zorundayken modelimiz bunun hatalı olduğunu düşünmüyor öyleyse bunu sağlayalım.&lt;/p&gt;
-
-&lt;h4 id=&quot;email-dorulamas&quot;&gt;Email doğrulaması&lt;/h4&gt;
-&lt;p&gt;Email doğrulaması için basit gem kullanılabileceği gibi regex de yazılabilir. Dışarıya bağımlılığı minimum düzeyde tutabilmek için regex yolunu tercih ediyorum. Dilerseniz küçük bir araştırmayla email_validator nasıl kullanılır bulabilirsiniz.&lt;/p&gt;
-
-&lt;p&gt;User model dosyamızı tekrar açarak aşağıdaki gibi güncelleyelim:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;validates_format_of&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:with&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rspec spec/models/user_spec.rb&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Ve bütün testlerimiz geçti. TDD ile spec dosyamızda User için beklentilerimizi belirledik ve testleri çalıştırdıkca aldığımız ekran çıktılarmı bizi yönlendirdi. Şimdilik User modeli ile işimiz bitti artık git repomuza gereken değişiklikleri kaydedip Todo modeline geçebiliriz.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add --all
-git commit &lt;span class=&quot;s2&quot;&gt;&amp;quot;User model testleri geçti&amp;quot;&lt;/span&gt;
-git checkout master
-git merge user-model
-git branch -d user-model&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;todo-modelinin-oluturulmas&quot;&gt;Todo Modelinin Oluşturulması&lt;/h2&gt;
-
-&lt;p&gt;Todo modelimiz biraz daha karışık. Temelleri zaten User modeli için anlattığımdan burada bazı kısımları kestirme geçebilirim. Örneğin model dosyasını düzenleyin deyince size tam adresini vermeyebilirim ya da test komutunu çalıştırın dediğimde siz rspec komutunun ardından spec dosyasının yolunun geleceğini bilirsiniz diye varsayıyorum.&lt;/p&gt;
-
-&lt;p&gt;Şimdi User modelinde yaptığımız gibi yeni model oluşturalım.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git checkout -b todo-model
-rails g model Todo title complete_at:date user:belongs_to
-rake db:migrate&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;user:belongs_to kısmı Todo modelinin user ile bire çok ilişki içinde olduğunu belirtmek için eklendi.&lt;/p&gt;
-
-&lt;p&gt;Şimdi todo_spec.rb dosyasını açarak beklentilerimizi programa belirtelim.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rails_helper&amp;#39;&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:model&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;is invalid without&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;a user&amp;#39;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;a title&amp;#39;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Şimdi konsol ekranından testi çalıştırarak sonuca birlikte inceleyelim.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;Pending:
-  Todo is invalid without a user
-    &lt;span class=&quot;c&quot;&gt;# Not yet implemented&lt;/span&gt;
-    &lt;span class=&quot;c&quot;&gt;# ./spec/models/todo_spec.rb:5&lt;/span&gt;
-  Todo is invalid without a title
-    &lt;span class=&quot;c&quot;&gt;# Not yet implemented&lt;/span&gt;
-    &lt;span class=&quot;c&quot;&gt;# ./spec/models/todo_spec.rb:6&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;İki pending testimiz var ve rspec yazdığımız kod yapısını bizim için dokümantasyona dönüştürdü. Block yani do..end eki almamış it tanımları gördüğünüz gibi pending olarak işliyor. Projelerde bu özellikten sıklıkla faydalanabiliriz.&lt;/p&gt;
-
-&lt;p&gt;Şimdi testimizin içini doldurmaya başlayalım isterseniz. Tekrar todo_spec.rb dosyasını açarak aşağıdaki gibi düzenleyelim.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rails_helper&amp;#39;&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:model&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;is invalid without&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;a user&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Kodlar refactor edilecek.&amp;#39;&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_invalid&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;foo@example.com&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_valid&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;a title&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;foo@example.com&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_invalid&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Konsoldan testi çalıştırıp sonuca baktığımızda istediğimiz iki koşulun da model tarafından yerine getirilmediğini görüyoruz. Şimdi kırmızıları yeşil yapmak için Todo modelini açıp aşağıdaki gibi kodları ekliyoruz.
-belongs_to :user satırının altına:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;kaydedip testi tekrar çalıştırın. Göreceksiniz ki yerine getirilmesi tek bir koşul kaldı.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;rspec ile testi çalıştırıp tekrar sonucu kontrol ettiğimiz iki yeşilimiz olduğunu göreceksiniz. Ekranda görmeniz gereken sonuç: &lt;em&gt;2 examples, 0 failures&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Şimdi Todo ile yaptığımız değişikliklerin programın başka kısımlarında kalan bölümleri bozup bozmadığını görmek için konsola sadece rspec yazın. Bu komut spec dizininde sonu ‘*_spec.rb’ ile biten tüm dosyaları otomatik çalıştıracaktır.&lt;/p&gt;
-
-&lt;p&gt;Eğer bütün testlerimiz geçiyorsa artık git repomuza kaydedebiliriz.&lt;/p&gt;
-
-&lt;p&gt;Unutmadan:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git add --all
-git commit -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;Todo model testleri geçti&amp;quot;&lt;/span&gt;
-git checkout master
-git merge todo-model
-git branch -d todo-model&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;bonus-refactor&quot;&gt;Bonus: Refactor&lt;/h3&gt;
-&lt;p&gt;TDD çalışırken izleyeceğimiz yolun Red-Green-Refactor olduğunu daha önce belirtmiştim. Aslında refactor yani kodun yeniden düzenlenip toparlanması her zaman yapılması gereken birşey olsa da testler yeşil olduktan sonra başka bir kod bölümüne geçmeden önce mutlaka elden geçirmek gerekiyor. User sınıfında refactor ihtiyacı olup olmadığı kanaatini size bırakıyorum. Todo test dosyasını açıp inceleyelim.&lt;/p&gt;
-
-&lt;p&gt;Kendini tekrar eden iki satır görünüyor bunlar:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;foo@example.com&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Kod tekrarları DIY - Don’t repeat yourself! yani kendini &lt;em&gt;tekrarlama&lt;/em&gt; prensibine aykırı. Bu sebeple hemen bu kısımları refactor edelim.&lt;/p&gt;
-
-&lt;p&gt;todo_spec dosyasını aşağıdaki gibi tekrar düzenleyin&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;rails_helper&amp;#39;&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;RSpec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:model&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;is invalid without&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;a user&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Kodlar refactor edilecek.&amp;#39;&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_invalid&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fake_user&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_valid&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;a title&amp;#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fake_user&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be_invalid&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fake_user&lt;/span&gt;
-      &lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;foo@example.com&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Burada kullandığımız subject adından da anlaşılacağı gibi test öznesi ve her context için ayrı ayrı özneler belirtilebilir. User.new ise gördüğünüz gibi bir fonksiyonun dönüş nesnesi oldu ve bu sayede kodumuz daha okunaklı hale gelebildi. Eğer siz de kendinizden birşey katıp kodu daha da sadeleştirmek isterseniz kendinizi bu konuda özgür hissedin çünkü yazdığımız testlerde ne beklediğimizi iyi belirledik ve koşullar yerine geldiği sürece kod içerisinde istersek at koştururuz :=) Bu da TDD programlamanın en avantajlı yanlarından birisi.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 16 Nov 2014 00:00:00 +0200</pubDate>
-        <link>http://www.turhancoskun.com/blog/rails-ile-tdd--2-modellerin-test-edilmesi/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/rails-ile-tdd--2-modellerin-test-edilmesi/</guid>
-        
-        <category>Ruby</category>
-        
-        <category>Ruby on Rails</category>
-        
-        <category>TDD</category>
-        
-        <category>Dersler</category>
+        <category>Linux</category>
         
         
       </item>

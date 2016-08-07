@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://www.turhancoskun.com/blog/how-to-create-a-dynamic-dns-server-using-cloudflare/</loc>
+    <lastmod>2016-08-07T13:46:15+03:00</lastmod>
+  </url>
+  <url>
     <loc>http://www.turhancoskun.com/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-device/</loc>
     <lastmod>2015-12-15T00:00:00+02:00</lastmod>
   </url>
@@ -31,18 +35,6 @@
   <url>
     <loc>http://www.turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</loc>
     <lastmod>2014-12-01T00:00:00+02:00</lastmod>
-  </url>
-  <url>
-    <loc>http://www.turhancoskun.com/blog/rails-ile-tdd--3-controllerlarn-test-edilmesi/</loc>
-    <lastmod>2014-11-17T00:00:00+02:00</lastmod>
-  </url>
-  <url>
-    <loc>http://www.turhancoskun.com/blog/rails-ile-tdd--2-modellerin-test-edilmesi/</loc>
-    <lastmod>2014-11-16T00:00:00+02:00</lastmod>
-  </url>
-  <url>
-    <loc>http://www.turhancoskun.com/blog/rails-ile-tdd-test-gdml-programlama--1/</loc>
-    <lastmod>2014-11-15T00:00:00+02:00</lastmod>
   </url>
   <url>
     <loc>http://www.turhancoskun.com/blog/masast-linux-dnyas/</loc>
@@ -203,15 +195,15 @@
     <loc>http://www.turhancoskun.com/tag/Linux/</loc>
   </url>
   <url>
-    <loc>http://www.turhancoskun.com/tag/Ruby%20on%20Rails/</loc>
-  </url>
-  <url>
-    <loc>http://www.turhancoskun.com/tag/TDD/</loc>
-  </url>
-  <url>
     <loc>http://www.turhancoskun.com/tag/Clojure/</loc>
   </url>
   <url>
     <loc>http://www.turhancoskun.com/tag/English/</loc>
+  </url>
+  <url>
+    <loc>http://www.turhancoskun.com/tag/Docker/</loc>
+  </url>
+  <url>
+    <loc>http://www.turhancoskun.com/tag/SystemD/</loc>
   </url>
 </urlset>

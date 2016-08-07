@@ -88,56 +88,6 @@
     <section class="post">
       <header>
         <h2 class="post-title">
-          <a class="post-link" href="/blog/mac-os-x-rar-kurulumu/">Mac OS X Rar Kurulumu</a>
-        </h2>
-        <p class="post-meta">
-        24 Dec 2013
-        
-        <a class="post-category" href="/tag/Unix">Unix</a>
-        
-        <a class="post-category" href="/tag/Komut Satırı">Komut Satırı</a>
-        
-        <a class="post-category" href="/tag/Dersler">Dersler</a>
-        
-        </p>
-      </header>
-      <div class="post-description">
-        <summary>
-          <p>
-            Yeni bir Mac kullanıcısı olarak yeni tanıştığım bu harika işletim sisteminde sürekli yeni şeyler keşfetmek bana heyecan veriyor. Windows kullanıcısı iken severek kullandığım WinRAR'ın komut satırı araçlarını neden OS X'te de kullanmayayım dedim. Bildiğim kadarıyla OS X'te varsayılan bir rar açıcısı bulunmuyor. Öncelikli olarak sitesinden programı indirelim: curl -O http://www.rarlab.com/rar/rarosx-5.0.1.tar.gz Daha sonra arşivimizi klasöre çıkartalım için girelim: tar -zxvf rarosx-5.0.1.tar.gz cd rar/ install komutu yardımı ile programı kuralım: sudo install -c -o $USER unrar /usr/bin...
-          </p>
-          <a class="continue-reading-button pure-button" href="/blog/mac-os-x-rar-kurulumu/">Devamını Oku</a>
-        </summary>
-      </div>
-    </section>
-    
-    <section class="post">
-      <header>
-        <h2 class="post-title">
-          <a class="post-link" href="/blog/node-js-nedir-goz-gezdirme/">Node.js Nedir? - Göz Gezdirme</a>
-        </h2>
-        <p class="post-meta">
-        06 Nov 2013
-        
-        <a class="post-category" href="/tag/JavaScript">JavaScript</a>
-        
-        <a class="post-category" href="/tag/Nodejs">Nodejs</a>
-        
-        </p>
-      </header>
-      <div class="post-description">
-        <summary>
-          <p>
-            Ne? Merhaba, bu yazımda size Node.js’ten bahsetmek istiyorum. Node.js’i merak edenler ve bir yerden başlamak isteyenlere giriş niteliğinde fazla kafa karıştırmayan bir yazı yazmak istedim. Herkesin öncelikle sorduğu Node.js nedir sorusunun cevabını zihinlerde aydınlatmak istiyorum. Node.js deyince aklımıza sanki jquery.js, knockout.js, underscore.js gibi birşey geliyor ama neyse ki değil. En azından şimdilik ne değildir onu biliyoruz. Node.js, Google tarafında Chrome için yapılmış olan V8 JavaScript derleyicisini temel alan bir JavaScript derleyicisidir. Karışık oldu değil mi?...
-          </p>
-          <a class="continue-reading-button pure-button" href="/blog/node-js-nedir-goz-gezdirme/">Devamını Oku</a>
-        </summary>
-      </div>
-    </section>
-    
-    <section class="post">
-      <header>
-        <h2 class="post-title">
           <a class="post-link" href="/blog/pagify-mvc-jquery-plugin/">Pagify.Mvc JQuery Plugin</a>
         </h2>
         <p class="post-meta">
@@ -331,6 +281,57 @@
             Bazen yaptığımız web uygulamaları büyür büyür, dallanıp budaklanıp aradığınızı zor bulmanıza sebep olabilir. Böyle durumlarda sitenizde mini bir arama motoru olmasını isteyebilirsiniz. ASP.NET MVC 4 ile bunun nasıl yapılabileceğini göstermek istiyorum. Öncelikle uygulamanızda “MvcSiteProvider” nuGet paketini ekliyoruz. Arama Sonuçlarını Göstermek İhtiyacımız olan ViewModel : public class SearchResults { public string Title { get; set; } public string ControllerName { get; set; } public string Description { get; set; } } HomeController’ımıza Arama Yapacak Action’ı ekliyoruz:...
           </p>
           <a class="continue-reading-button pure-button" href="/blog/asp-net-mvc-4-ile-mvc-sitemap-dosyasi-icinde-linq-sorgusu-ile-arama-yapma/">Devamını Oku</a>
+        </summary>
+      </div>
+    </section>
+    
+    <section class="post">
+      <header>
+        <h2 class="post-title">
+          <a class="post-link" href="/blog/c-4-0-async-await-ile-ilgili-genel-sorunlar-ve-nasil-kullanilirlar/">C# 4.0 async ve await ile ilgili genel sorunlar ve nasıl kullanılırlar</a>
+        </h2>
+        <p class="post-meta">
+        17 Apr 2013
+        
+        <a class="post-category" href="/tag/.NET">.NET</a>
+        
+        <a class="post-category" href="/tag/C#">C#</a>
+        
+        </p>
+      </header>
+      <div class="post-description">
+        <summary>
+          <p>
+            C# ta asenkron programlamada kullanılan c# async await anahtar kelimelerinden bahsetmek istiyorum. Öncelikle “Cannot find all types required by the ‘async’ modifier. Are you targeting the wrong framework version, or missing a reference to an assembly?” hatası alıyorsanız C# 5.0 ile gelen bu özellikleri C# 4.0 da kullanmaya çalışıyorsunuz demektir. Çözüm için Microsoft.CompilerServices.AsyncTargetingPack isimli NuGet paketini projeye dahil etmeniz yeterli. Daha sonra “This async method lacks ‘await’ operators and will run synchronously. Consider using the...
+          </p>
+          <a class="continue-reading-button pure-button" href="/blog/c-4-0-async-await-ile-ilgili-genel-sorunlar-ve-nasil-kullanilirlar/">Devamını Oku</a>
+        </summary>
+      </div>
+    </section>
+    
+    <section class="post">
+      <header>
+        <h2 class="post-title">
+          <a class="post-link" href="/blog/firebird-embeded-charset-problemi/">Firebird Embeded Charset Problemi</a>
+        </h2>
+        <p class="post-meta">
+        22 Feb 2012
+        
+        <a class="post-category" href="/tag/Firebird">Firebird</a>
+        
+        </p>
+      </header>
+      <div class="post-description">
+        <summary>
+          <p>
+            
+“Bad Parameters on attach or create databes. CHARACTER SET XXX is not defined”
+ Projenizde Firebird Embeded kullanıyorsunuz ve yukarıdaki hatayı alıyorsanız ihtiyacınız olan karakter seti Firebird tarafından tanınmıyor demektir. Bu sorunu çözebilmek için yapmanız gereken şey ihtiyacınız olan Firebird sürümünün tam kurulumunun olduğu dizinden “intl” isimli dizini içindeki “fbintl.conf” ve “fbintl.dll” dosyalarıyla beraber, programınızın olduğunu dizine kopyalamanız.
+Artık aynı hatayı almayacaksınız.
+
+
+          </p>
+          <a class="continue-reading-button pure-button" href="/blog/firebird-embeded-charset-problemi/">Devamını Oku</a>
         </summary>
       </div>
     </section>
