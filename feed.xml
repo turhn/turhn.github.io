@@ -6,9 +6,210 @@
 </description>
     <link>http://www.turhancoskun.com/</link>
     <atom:link href="http://www.turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 07 Aug 2016 22:57:22 +0300</pubDate>
-    <lastBuildDate>Sun, 07 Aug 2016 22:57:22 +0300</lastBuildDate>
+    <pubDate>Wed, 12 Jul 2017 21:45:49 +0300</pubDate>
+    <lastBuildDate>Wed, 12 Jul 2017 21:45:49 +0300</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>A Reactive To-Do Application with Spring Boot 2</title>
+        <description>&lt;p&gt;Spring MVC is one of my favorite web frameworks. Next major release of the popular web framework brings some
+interesting features. Along with Spring MVC, Spring Web Flux is coming later this year and it is coming here to stay.
+Spring Web Flux will help us to build high throughput functional reactive microservices.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-is-reactive-programming&quot;&gt;What is reactive programming?&lt;/h2&gt;
+
+&lt;p&gt;Reactive programming is programming with asynchronous streams [&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;]. The magic two words here are &lt;em&gt;asynchronous&lt;/em&gt; and &lt;em&gt;stream&lt;/em&gt;. In reactive programming, everything is a stream. Unlike pull-centric Java 8 stream, reactive streams are push-centric. It uses the well known &lt;em&gt;Observer Patern&lt;/em&gt;. Reactive programming is a wide topic and details are beyond the scope of this blog post. You can check the &lt;a href=&quot;http://www.reactive-streams.org/&quot; title=&quot;Reactive Streams&quot;&gt;Reactive Streams&lt;/a&gt;, &lt;a href=&quot;http://www.reactivemanifesto.org/&quot; title=&quot;Reactive Manifesto&quot;&gt;Reactive Manifesto&lt;/a&gt;, &lt;a href=&quot;https://github.com/ReactiveX/RxJava&quot; title=&quot;RxJava&quot;&gt;RxJava&lt;/a&gt; and &lt;a href=&quot;https://spring.io/blog/2016/07/28/reactive-programming-with-spring-5-0-m1&quot; title=&quot;Reactive Programming with Spring 5&quot;&gt;this blog post&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;get-started&quot;&gt;Get Started&lt;/h2&gt;
+
+&lt;p&gt;Prerequisites:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Java 8&lt;/li&gt;
+  &lt;li&gt;MongoDB&lt;/li&gt;
+  &lt;li&gt;Maven&lt;/li&gt;
+  &lt;li&gt;IDE&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In order to generate the project skeleton, go to http://start.spring.io address and choose “Generate a “maven” project with “Java” and Spring Boot “2.0.x”. As of writing this blog post, the latest version was 2.0.0 M2. In dependencies, section, choose Reactive Web and Reactive MongoDB. Then unzip the downloaded file and open with your favorite IDE. My personal preference is IntelliJ.&lt;/p&gt;
+
+&lt;p&gt;Currently, only MongoDB, Cassandra, and Redis are supported as reactive data stores. In this blog post, I will go with MongoDB.&lt;/p&gt;
+
+&lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
+
+&lt;p&gt;In order to make use of MongoDB’s async API’s, we need to enable the reactive MongoDB repositories. The default configuration will connect you to the local MongoDB instance on the default port.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@EnableReactiveMongoRepositories&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MongoDBConfiguration&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AbstractReactiveMongoConfiguration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Bean&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MongoClient&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mongoClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MongoClients&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getDatabaseName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;reactive_todos&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;model&quot;&gt;Model&lt;/h2&gt;
+
+&lt;p&gt;Our Todo model will consist of an id field, title, creation and completion dates and a boolean completion flag.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@Document&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Todo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Id&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BigInteger&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;completed&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Date&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;createdDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Date&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;completedDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Getters ...&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Setters ...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You can check out Project Lombok in order to create clean data models. It can magically create constructors, getters, and setters.&lt;/p&gt;
+
+&lt;h2 id=&quot;data-layer&quot;&gt;Data Layer&lt;/h2&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TodoRepository&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ReactiveCrudRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BigInteger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Creating this interface will magically generate common CRUD methods for us. The first generic argument is our domain model and the second is the type of the &lt;em&gt;@Id&lt;/em&gt; annotated field. For MongoDB documents it can a String or a BigInteger.&lt;/p&gt;
+
+&lt;h2 id=&quot;web-layer&quot;&gt;Web Layer&lt;/h2&gt;
+
+&lt;p&gt;The controller will be annotated with &lt;em&gt;@RestController&lt;/em&gt;. Just like nonreactive rest applications.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@RestController&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@RequestMapping&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;/todos&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TodoController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TodoRepository&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;todoRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;TodoController&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TodoRepository&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;todoRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;todoRepository&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;todoRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Spring can inject dependencies in a constructor without &lt;em&gt;@Autowired&lt;/em&gt; annotation but I prefer to declaring it explicitly.&lt;/p&gt;
+
+&lt;h3 id=&quot;creating-a-todo&quot;&gt;Creating a Todo&lt;/h3&gt;
+
+&lt;p&gt;In order to create a To-Do, we will use the following method.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@PostMapping&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Mono&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@RequestBody&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Todo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setCreatedDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;todoRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Start the application by using the IDE or from the command line with &lt;code&gt;mvn spring-boot:run&lt;/code&gt; command.
+Using the command line you can add some todos:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;curl -H &lt;span class=&quot;s2&quot;&gt;&amp;quot;Content-Type: application/json&amp;quot;&lt;/span&gt; -X POST -d &lt;span class=&quot;s1&quot;&gt;&amp;#39;{&amp;quot;title&amp;quot;: &amp;quot;Create a REST API&amp;quot;}&amp;#39;&lt;/span&gt; http://localhost:8080/todos
+curl -H &lt;span class=&quot;s2&quot;&gt;&amp;quot;Content-Type: application/json&amp;quot;&lt;/span&gt; -X POST -d &lt;span class=&quot;s1&quot;&gt;&amp;#39;{&amp;quot;title&amp;quot;: &amp;quot;Write a blog post&amp;quot;}&amp;#39;&lt;/span&gt; http://localhost:8080/todos
+curl -H &lt;span class=&quot;s2&quot;&gt;&amp;quot;Content-Type: application/json&amp;quot;&lt;/span&gt; -X POST -d &lt;span class=&quot;s1&quot;&gt;&amp;#39;{&amp;quot;title&amp;quot;: &amp;quot;Learn some Java and Functional Programming&amp;quot;}&amp;#39;&lt;/span&gt; http://localhost:8080/todos&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;listing-all-todos&quot;&gt;Listing all Todos&lt;/h3&gt;
+
+&lt;p&gt;In order to list all todos, we will use the &lt;em&gt;Flux&lt;/em&gt; class. Flux is just like &lt;em&gt;Mono&lt;/em&gt; but there is a fundamental difference. A Mono can contain 0 or 1 elements in contrast to Flux can contain 0 to N elements. Flux is similar to a standard Java Stream or a List in that manner.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@GetMapping&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Flux&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;todoRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findAll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;filter-todos-by-title&quot;&gt;Filter ToDos by Title&lt;/h3&gt;
+
+&lt;p&gt;We are going to add a custom query to our TodoRepository. It will query our
+MongoDB database and return results as a Reactive Stream.&lt;/p&gt;
+
+&lt;p&gt;Add the following line to TodoRepository.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;n&quot;&gt;Flux&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;findAllByTitleContains&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Mono&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Do not try to implement&lt;/strong&gt; this method. Just leave it as it is. Spring data package will automatically implement the required method from the meaning.&lt;/p&gt;
+
+&lt;p&gt;And add the following handler method to the controller.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@GetMapping&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;search/title/{key}&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Flux&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;findByTitle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@PathVariable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;key&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;todoRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findAllByTitleContains&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Mono&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;just&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we can search Todos which contain the string in their titles.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;curl localhost:8080/todos/search/title/blog&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;curl localhost:8080/todos/search/title/java&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;completing-a-todo&quot;&gt;Completing a ToDo&lt;/h3&gt;
+
+&lt;p&gt;I have always liked the domain driven approach. So let’s add a complete method to our domain object.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Todo.java&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Todo&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;complete&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setCompleted&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setCompletedDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We need to add a handler method to our controller.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@PatchMapping&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;complete/{id}&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Mono&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Todo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;complete&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@PathVariable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BigInteger&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;todoRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findById&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                         &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;Todo:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;complete&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                         &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;flatMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;todoRepository:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As you see, we are following the functional programming fashion.&lt;/p&gt;
+
+&lt;p&gt;In order to test the endpoint, you can use the following command.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;curl -H &lt;span class=&quot;s2&quot;&gt;&amp;quot;Content-Type: application/json&amp;quot;&lt;/span&gt; -X PATCH http://localhost:8080/todos/complete/27667845079056742421533148010&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Just do not forget to replace the id section with one of your own todo ids.&lt;/p&gt;
+
+&lt;h3 id=&quot;removing-a-todo&quot;&gt;Removing a Todo&lt;/h3&gt;
+
+&lt;p&gt;It is very similar what we have done in the previous example. We will use &lt;code&gt;flatMap&lt;/code&gt; function to call the &lt;code&gt;delete&lt;/code&gt; method of the reactive repository.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@DeleteMapping&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;{id}&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Mono&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@PathVariable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BigInteger&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;todoRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findById&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;flatMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;todoRepository:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For testing:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;curl -H &lt;span class=&quot;s2&quot;&gt;&amp;quot;Content-Type: application/json&amp;quot;&lt;/span&gt; -X DELETE http://localhost:8080/todos/27667845079056742421533148010&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;Spring Boot 2.0 is coming with bunch of new features such as Functional Reactive Programming concepts. I am very excited to see what comes next. I hope this article helped to understand the basics of the reactive data repositories and reactive web applications.&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;https://gist.github.com/staltz/868e7e9bc2a7b8c1f754 &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Wed, 12 Jul 2017 16:37:04 +0300</pubDate>
+        <link>http://www.turhancoskun.com/blog/a-reactive-todo-application-with-spring-boot-2/</link>
+        <guid isPermaLink="true">http://www.turhancoskun.com/blog/a-reactive-todo-application-with-spring-boot-2/</guid>
+        
+        
+      </item>
     
       <item>
         <title>How to create a dynamic DNS server using CloudFlare</title>
@@ -1466,80 +1667,6 @@ find .&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
         <category>Clojure</category>
         
         <category>Dersler</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Masaüstü Linux Dünyası</title>
-        <description>&lt;p&gt;GNU/Linux hepimizin çok sevdiği, öve öve bitiremediği ama çoğunlukla sanal makinada
-ya da dual bot ile kullanmayı layık gördüğümüz bir işletim sistemi. Ancak bugün burada Linux’un
-sunucu bazında pazar payındaki tartışılmaz aslan payından, Android olarak ceplerde
-edindiği yerinden, mikro ölçekli milyonlarca cihazla dünyayı ele geçirmesinden
-bahsetmeyeceğim. Benim burada konuşacağım tek konu GNU/Linux dağıtımlarının masaüstü bilgisayarlarındaki durumu olacak.&lt;/p&gt;
-
-&lt;p&gt;Linux ile ilk tanışmam 2000 li yılların başında, ilk bilgisayara sahip olduğum
-zamanlarda, bir derginin yanında hediye verilen Mandrake Linux ile oldu. O zamanlardan aklımda kalan; sistemin sürekli çökmesi ve İngilizce
-bilmediğim bir dönemde işletim sistemindeki bir çok kısımın tercüme edilmemiş olmasından kaynaklanan
-sıkıntılar. Hafızamı daha da kurcaladığımda, o zamanda 56K internal faks modem ile internete
-bağlandığımı ve bu modemler için yazılmış ücretsiz bir sürücü olmamasından dolayı internete
-bağlanamamamdı. Sırf internetten paket yükleyebilmek için, bilgisayarımı Windows ile
- boot edip yüklemek istediğim paketi internetten yüklüyor, sonra yeniden Mandrake’den
-boot edip windows sürücülerine erişerek söz konusu paketleri Linux’a yüklüyordum.
-Bir süre sonra sıkılıp Linux’u sistemden tamamen uçurarak bir süre o zamanların efsanesi olan Windows XP’yi
-kullanarak yoluma devam ettim.&lt;/p&gt;
-
-&lt;p&gt;Bir süre sonra milli işletim sistemi Pardus duyuruldu. Pisi paket yöneticisi,
-şık KDE ve Gnome masaüstleri, Çomar vs. İlgi çekici ve başarılıydı. Artık ADSL teknolojisi
-evlere girmiş olduğundan internete bağlanmakta da sıkıntı çekmiyordu.Gel gör ki o fontlar,
-o çözünürlük hala Windows ayarında değildi ama sonuçta bu bir milli yazılımdı. Hayalimde; o ayda bir
-formatlamak zorunda olduğum Windows’tan kurtulmak olsa da, swf geliştirmek için
-Macromedia Flash’a olan ihtiyaç ve Linux yazıcı sürücülerinin berbat durumda olması bir taraftan
-sürekli Windows’u el altında tutmayı gerektiriyordu. E tabi bir de oyunlar meselesi
-var. Millet Fifa, NFS ve CS oynarken benim basit puzzle oyunlarıyle yetinmem de
-beklenmezdi(!) Yine de Pardus projesi -sıfırlanıncaya- dek kullanmaya devam ettim.&lt;/p&gt;
-
-&lt;p&gt;XP den 8’e kadar abidik gubudik bütün Windows sürümlerini kullandım ancak gel gör ki
-2013 te Macbook Pro Retina 15” alıp OS X ile tanışıncaya kadar aslında bir işletim sisteminin
-nasıl olması gerektiği ile ilgili yeterli fikre sahip olmadığımı fark ettim. Görüntü
-kalitesi ve font render özellikleri muhteşem. İçindeki donanım ile tam uyumlu ve
-malzeme olarak da çok kaliteli. Burada sabaha kadar ağzım sulana sulana Mac ve OS X övebilirim ancak mesele şu ki gönlüm içinde ne olduğunu bilmediğim yazılımlardan ziyade her zaman özgür yazılımdan yana.&lt;/p&gt;
-
-&lt;p&gt;Açık kaynak temelli web teknolojileri ile yazılım geliştiren birisi zaten sürekli
-Linux sunucularla haşır neşir olmak durumunda olsa da Torvalds’ın lafı hep aklımda
-‘I still want the desktop.’ yani ‘Hala masaüstünü istiyorum.’ Masaüstü için zaman
-zaman popüler olması sebebiyle Ubuntu’yu ara sıra yükleyip inceliyordum ve kabul ediyorum ki
-artık sıradan bir bilgisayar kullanıcısının bile rahatlıkla kullanabileceği noktalara geldi. Ancak
-Canonical kendi saçmalıklarını o kadar çok sisteme bulaştırmış ki şahsen bana Linux
-tadı vermiyor. Sisteme her büyük güncelleme gelişinde çöküyor ve bana ayar dosyalarını
-kurcalattırıyor. Artı ve eksileriyle çok şey yazılabilir ama aradığım tat kesinlikle
-Ubuntu değil.&lt;/p&gt;
-
-&lt;p&gt;En son kullanmaya başladığım Linux dağıtımı ise Mint. Başta görüntü ve fontlar çamur gibi gelmesine
-rağmen birkaç ayarla retina çözünürlüğüne uygun hale geldi ve şu an neredeyse OS X’i bile
-aratmayacak durumda olduğunu düşünüyorum. Ubuntu’dan çatallanan projenin masaüstü yöneticisi
-Cinnamon ise Gnome projesinden çatallanmış. Ubuntu’nun tüm iyi taraflarını üzerinde
-barındırmasına rağmen Canonical saçmalıklarından da arındırılmış durumda.&lt;/p&gt;
-
-&lt;p&gt;En büyük eksisi ise bence süresi geçmiş X Server ise hala arka planda çalışmaya devam ediyor olması. Bu konuda Wayland
-projesi X Server’in yerine almaya henüz uzak gibi duruyor. Görüntü sunucusu teknolojisi yenilenmeli ve
-ben bu gönderiyi yazarken sistem dondu ve yeniden başlatmam gerekti dolayısıyla görünen o ki
-OS X’e bir süre daha devam etmem gerekiyor.&lt;/p&gt;
-
-&lt;p&gt;Evet şu an masaüstü bilgisayarların çoğunluğu ele geçirilemedi ama yakın gelecekte
-işler değişebileceğe benziyor. Şimdilik bu konudaki en güçlü adayım Linux Mint.&lt;/p&gt;
-
-&lt;p&gt;Bir sonraki yazımda görüşmek üzere sağlıcakla kalın.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 01 Nov 2014 00:00:00 +0200</pubDate>
-        <link>http://www.turhancoskun.com/blog/masast-linux-dnyas/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/masast-linux-dnyas/</guid>
-        
-        <category>Unix</category>
-        
-        <category>Genel</category>
-        
-        <category>Linux</category>
         
         
       </item>

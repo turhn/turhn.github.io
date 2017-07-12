@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="0emXjEbk_ZIziWSlcEWaCEaOIivGlP2tiGnQPLvZKNE" />
+    <title>A Reactive To-Do Application with Spring Boot 2</title>
+    
+    <meta name="description" content="Ruby, JavaScript, Clojure ve diğer yazılım maceralarım
+">
+    
+    <link rel="canonical" href="http://www.turhancoskun.com/blog/a-reactive-todo-application-with-spring-boot-2/">
+    <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+</head>
+
+
+<body class="showing-post">
+  <div class="pure-g">
+    <div class="content pure-u-1 pure-u-md-3-4">
+      <div>
+          <header class="post-nav-bar pure-g">
+            <div class="pure-u-1-3">
+              <figure>
+                <a href="/">
+                  <img class="post-avatar" src="/assets/profile200x200.jpg" alt="Turhan Coskun" />
+                </a>
+              </figure>
+            </div>
+            <div class="blog-name pure-u-1-3">
+              <div><a href="/">Turhan Coskun</a></div>
+            </div>
+            <div class="pure-u-1-3">
+            </div>
+          </header>
+
+        <div class="post">
+          <header class="post-header">
+            <h1 class="post-title">A Reactive To-Do Application with Spring Boot 2</h1>
+            <div class="post-meta">Jul 12, 2017
+            <div>
+              
+            </div>
+            </div>
+          </header>
+
+          <article class="post-content">
+            <p>Spring MVC is one of my favorite web frameworks. Next major release of the popular web framework brings some
+interesting features. Along with Spring MVC, Spring Web Flux is coming later this year and it is coming here to stay.
+Spring Web Flux will help us to build high throughput functional reactive microservices.</p>
+
+<h2 id="what-is-reactive-programming">What is reactive programming?</h2>
+
+<p>Reactive programming is programming with asynchronous streams [<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>]. The magic two words here are <em>asynchronous</em> and <em>stream</em>. In reactive programming, everything is a stream. Unlike pull-centric Java 8 stream, reactive streams are push-centric. It uses the well known <em>Observer Patern</em>. Reactive programming is a wide topic and details are beyond the scope of this blog post. You can check the <a href="http://www.reactive-streams.org/" title="Reactive Streams">Reactive Streams</a>, <a href="http://www.reactivemanifesto.org/" title="Reactive Manifesto">Reactive Manifesto</a>, <a href="https://github.com/ReactiveX/RxJava" title="RxJava">RxJava</a> and <a href="https://spring.io/blog/2016/07/28/reactive-programming-with-spring-5-0-m1" title="Reactive Programming with Spring 5">this blog post</a>.</p>
+
+<h2 id="get-started">Get Started</h2>
+
+<p>Prerequisites:</p>
+
+<ul>
+  <li>Java 8</li>
+  <li>MongoDB</li>
+  <li>Maven</li>
+  <li>IDE</li>
+</ul>
+
+<p>In order to generate the project skeleton, go to http://start.spring.io address and choose “Generate a “maven” project with “Java” and Spring Boot “2.0.x”. As of writing this blog post, the latest version was 2.0.0 M2. In dependencies, section, choose Reactive Web and Reactive MongoDB. Then unzip the downloaded file and open with your favorite IDE. My personal preference is IntelliJ.</p>
+
+<p>Currently, only MongoDB, Cassandra, and Redis are supported as reactive data stores. In this blog post, I will go with MongoDB.</p>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>In order to make use of MongoDB’s async API’s, we need to enable the reactive MongoDB repositories. The default configuration will connect you to the local MongoDB instance on the default port.</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@EnableReactiveMongoRepositories</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MongoDBConfiguration</span> <span class="kd">extends</span> <span class="n">AbstractReactiveMongoConfiguration</span> <span class="o">{</span>
+
+    <span class="nd">@Bean</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">MongoClient</span> <span class="nf">mongoClient</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">MongoClients</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="n">String</span> <span class="nf">getDatabaseName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">&quot;reactive_todos&quot;</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<h2 id="model">Model</h2>
+
+<p>Our Todo model will consist of an id field, title, creation and completion dates and a boolean completion flag.</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Document</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Todo</span> <span class="o">{</span>
+
+    <span class="nd">@Id</span>
+    <span class="kd">private</span> <span class="n">BigInteger</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">title</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">completed</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">Date</span> <span class="n">createdDate</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">Date</span> <span class="n">completedDate</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Todo</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="c1">// Getters ...</span>
+    <span class="c1">// Setters ...</span>
+<span class="o">}</span></code></pre></div>
+
+<p>You can check out Project Lombok in order to create clean data models. It can magically create constructors, getters, and setters.</p>
+
+<h2 id="data-layer">Data Layer</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">TodoRepository</span> <span class="kd">extends</span> <span class="n">ReactiveCrudRepository</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">,</span> <span class="n">BigInteger</span><span class="o">&gt;</span> <span class="o">{</span>
+<span class="o">}</span></code></pre></div>
+
+<p>Creating this interface will magically generate common CRUD methods for us. The first generic argument is our domain model and the second is the type of the <em>@Id</em> annotated field. For MongoDB documents it can a String or a BigInteger.</p>
+
+<h2 id="web-layer">Web Layer</h2>
+
+<p>The controller will be annotated with <em>@RestController</em>. Just like nonreactive rest applications.</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&quot;/todos&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TodoController</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="n">TodoRepository</span> <span class="n">todoRepository</span><span class="o">;</span>
+
+  <span class="nd">@Autowired</span>
+  <span class="kd">public</span> <span class="nf">TodoController</span><span class="o">(</span><span class="n">TodoRepository</span> <span class="n">todoRepository</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">todoRepository</span> <span class="o">=</span> <span class="n">todoRepository</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>Spring can inject dependencies in a constructor without <em>@Autowired</em> annotation but I prefer to declaring it explicitly.</p>
+
+<h3 id="creating-a-todo">Creating a Todo</h3>
+
+<p>In order to create a To-Do, we will use the following method.</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@PostMapping</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">(</span><span class="nd">@RequestBody</span> <span class="n">Todo</span> <span class="n">todo</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">todo</span><span class="o">.</span><span class="na">setCreatedDate</span><span class="o">(</span><span class="k">new</span> <span class="nf">Date</span><span class="o">());</span>
+    <span class="k">return</span> <span class="n">todoRepository</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">todo</span><span class="o">);</span>
+<span class="o">}</span></code></pre></div>
+
+<p>Start the application by using the IDE or from the command line with <code>mvn spring-boot:run</code> command.
+Using the command line you can add some todos:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST -d <span class="s1">&#39;{&quot;title&quot;: &quot;Create a REST API&quot;}&#39;</span> http://localhost:8080/todos
+curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST -d <span class="s1">&#39;{&quot;title&quot;: &quot;Write a blog post&quot;}&#39;</span> http://localhost:8080/todos
+curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST -d <span class="s1">&#39;{&quot;title&quot;: &quot;Learn some Java and Functional Programming&quot;}&#39;</span> http://localhost:8080/todos</code></pre></div>
+
+<h3 id="listing-all-todos">Listing all Todos</h3>
+
+<p>In order to list all todos, we will use the <em>Flux</em> class. Flux is just like <em>Mono</em> but there is a fundamental difference. A Mono can contain 0 or 1 elements in contrast to Flux can contain 0 to N elements. Flux is similar to a standard Java Stream or a List in that manner.</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@GetMapping</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">Flux</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;</span> <span class="nf">index</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">todoRepository</span><span class="o">.</span><span class="na">findAll</span><span class="o">();</span>
+<span class="o">}</span></code></pre></div>
+
+<h3 id="filter-todos-by-title">Filter ToDos by Title</h3>
+
+<p>We are going to add a custom query to our TodoRepository. It will query our
+MongoDB database and return results as a Reactive Stream.</p>
+
+<p>Add the following line to TodoRepository.</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">Flux</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;</span> <span class="nf">findAllByTitleContains</span><span class="o">(</span><span class="kd">final</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">title</span><span class="o">);</span></code></pre></div>
+
+<p><strong>Do not try to implement</strong> this method. Just leave it as it is. Spring data package will automatically implement the required method from the meaning.</p>
+
+<p>And add the following handler method to the controller.</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@GetMapping</span><span class="o">(</span><span class="s">&quot;search/title/{key}&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">Flux</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;</span> <span class="nf">findByTitle</span><span class="o">(</span><span class="nd">@PathVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;key&quot;</span><span class="o">)</span> <span class="n">String</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">todoRepository</span><span class="o">.</span><span class="na">findAllByTitleContains</span><span class="o">(</span><span class="n">Mono</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="n">key</span><span class="o">));</span>
+<span class="o">}</span></code></pre></div>
+
+<p>Now we can search Todos which contain the string in their titles.</p>
+
+<p><code>curl localhost:8080/todos/search/title/blog</code></p>
+
+<p><code>curl localhost:8080/todos/search/title/java</code></p>
+
+<h3 id="completing-a-todo">Completing a ToDo</h3>
+
+<p>I have always liked the domain driven approach. So let’s add a complete method to our domain object.</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// Todo.java</span>
+<span class="kd">public</span> <span class="n">Todo</span> <span class="nf">complete</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">setCompleted</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">setCompletedDate</span><span class="o">(</span><span class="k">new</span> <span class="nf">Date</span><span class="o">());</span>
+    <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+<span class="o">}</span></code></pre></div>
+
+<p>We need to add a handler method to our controller.</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@PatchMapping</span><span class="o">(</span><span class="s">&quot;complete/{id}&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;</span> <span class="nf">complete</span><span class="o">(</span><span class="nd">@PathVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;id&quot;</span><span class="o">)</span> <span class="n">BigInteger</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">todoRepository</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>
+                         <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="nl">Todo:</span><span class="o">:</span><span class="n">complete</span><span class="o">)</span>
+                         <span class="o">.</span><span class="na">flatMap</span><span class="o">(</span><span class="nl">todoRepository:</span><span class="o">:</span><span class="n">save</span><span class="o">);</span>
+<span class="o">}</span></code></pre></div>
+
+<p>As you see, we are following the functional programming fashion.</p>
+
+<p>In order to test the endpoint, you can use the following command.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PATCH http://localhost:8080/todos/complete/27667845079056742421533148010</code></pre></div>
+
+<p>Just do not forget to replace the id section with one of your own todo ids.</p>
+
+<h3 id="removing-a-todo">Removing a Todo</h3>
+
+<p>It is very similar what we have done in the previous example. We will use <code>flatMap</code> function to call the <code>delete</code> method of the reactive repository.</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@DeleteMapping</span><span class="o">(</span><span class="s">&quot;{id}&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="nf">delete</span><span class="o">(</span><span class="nd">@PathVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;id&quot;</span><span class="o">)</span> <span class="n">BigInteger</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">todoRepository</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">).</span><span class="na">flatMap</span><span class="o">(</span><span class="nl">todoRepository:</span><span class="o">:</span><span class="n">delete</span><span class="o">);</span>
+<span class="o">}</span></code></pre></div>
+
+<p>For testing:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X DELETE http://localhost:8080/todos/27667845079056742421533148010</code></pre></div>
+
+<h2 id="summary">Summary</h2>
+
+<p>Spring Boot 2.0 is coming with bunch of new features such as Functional Reactive Programming concepts. I am very excited to see what comes next. I hope this article helped to understand the basics of the reactive data repositories and reactive web applications.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>https://gist.github.com/staltz/868e7e9bc2a7b8c1f754 <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+          </article>
+
+          <div class="social-share">
+            <span>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+            </span>
+            <span>
+              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              </div>
+            </span>
+          </div>
+
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_shortname = 'turhancoskunblog';
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          <div id="fb-root"></div>
+
+          <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/tr_TR/sdk.js#xfbml=1&appId=1469686916649684&version=v2.0";
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));</script>
+
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+          <p>
+            <a href="/">Ana Sayfaya Dön</a>
+          </p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script type="text/javascript" src="/assets/headroom.min.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-41396472-1', 'auto');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+
+  </script>
+  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+</body>
+
+</html>
