@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Turhan Coskun</title>
-    <description>Ruby, JavaScript, Clojure ve diğer yazılım maceralarım
+    <description>Programming related articles.
 </description>
-    <link>http://www.turhancoskun.com/</link>
-    <atom:link href="http://www.turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 12 Jul 2017 22:33:48 +0300</pubDate>
-    <lastBuildDate>Wed, 12 Jul 2017 22:33:48 +0300</lastBuildDate>
+    <link>https://www.turhancoskun.com/</link>
+    <atom:link href="https://www.turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Wed, 12 Jul 2017 22:42:56 +0300</pubDate>
+    <lastBuildDate>Wed, 12 Jul 2017 22:42:56 +0300</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -207,8 +207,14 @@ MongoDB database and return results as a Reactive Stream.&lt;/p&gt;
 &lt;/div&gt;
 </description>
         <pubDate>Wed, 12 Jul 2017 16:37:04 +0300</pubDate>
-        <link>http://www.turhancoskun.com/blog/a-reactive-todo-application-with-spring-boot-2/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/a-reactive-todo-application-with-spring-boot-2/</guid>
+        <link>https://www.turhancoskun.com/blog/a-reactive-todo-application-with-spring-boot-2/</link>
+        <guid isPermaLink="true">https://www.turhancoskun.com/blog/a-reactive-todo-application-with-spring-boot-2/</guid>
+        
+        <category>Java</category>
+        
+        <category>SpringBoot</category>
+        
+        <category>English</category>
         
         
       </item>
@@ -268,8 +274,8 @@ sudo service start docker-dns&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;I hope this helps you.&lt;/p&gt;
 </description>
         <pubDate>Sun, 07 Aug 2016 13:46:15 +0300</pubDate>
-        <link>http://www.turhancoskun.com/blog/how-to-create-a-dynamic-dns-server-using-cloudflare/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/how-to-create-a-dynamic-dns-server-using-cloudflare/</guid>
+        <link>https://www.turhancoskun.com/blog/how-to-create-a-dynamic-dns-server-using-cloudflare/</link>
+        <guid isPermaLink="true">https://www.turhancoskun.com/blog/how-to-create-a-dynamic-dns-server-using-cloudflare/</guid>
         
         <category>English</category>
         
@@ -362,8 +368,8 @@ dd if=/dev/disk2 of=bad_cardimage.img
 &lt;p&gt;Congratulations. You saved the day.&lt;/p&gt;
 </description>
         <pubDate>Tue, 15 Dec 2015 00:00:00 +0200</pubDate>
-        <link>http://www.turhancoskun.com/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-device/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-device/</guid>
+        <link>https://www.turhancoskun.com/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-device/</link>
+        <guid isPermaLink="true">https://www.turhancoskun.com/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-device/</guid>
         
         <category>English</category>
         
@@ -623,8 +629,8 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 
 </description>
         <pubDate>Tue, 10 Mar 2015 00:00:00 +0200</pubDate>
-        <link>http://www.turhancoskun.com/blog/clojureda-veri-yapilari/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/clojureda-veri-yapilari/</guid>
+        <link>https://www.turhancoskun.com/blog/clojureda-veri-yapilari/</link>
+        <guid isPermaLink="true">https://www.turhancoskun.com/blog/clojureda-veri-yapilari/</guid>
         
         <category>Clojure</category>
         
@@ -957,8 +963,8 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 &lt;/ul&gt;
 </description>
         <pubDate>Mon, 19 Jan 2015 00:00:00 +0200</pubDate>
-        <link>http://www.turhancoskun.com/blog/javascript-ile-lambda-calculus/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/javascript-ile-lambda-calculus/</guid>
+        <link>https://www.turhancoskun.com/blog/javascript-ile-lambda-calculus/</link>
+        <guid isPermaLink="true">https://www.turhancoskun.com/blog/javascript-ile-lambda-calculus/</guid>
         
         <category>JavaScript</category>
         
@@ -1006,8 +1012,8 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 
 </description>
         <pubDate>Wed, 07 Jan 2015 00:00:00 +0200</pubDate>
-        <link>http://www.turhancoskun.com/blog/javascript-ile-stringden-a-etiketi-uretmek/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/javascript-ile-stringden-a-etiketi-uretmek/</guid>
+        <link>https://www.turhancoskun.com/blog/javascript-ile-stringden-a-etiketi-uretmek/</link>
+        <guid isPermaLink="true">https://www.turhancoskun.com/blog/javascript-ile-stringden-a-etiketi-uretmek/</guid>
         
         <category>İpucu</category>
         
@@ -1212,8 +1218,8 @@ squash ba51761 Ceviz başlık eklendi&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Görüşmek üzere…&lt;/p&gt;
 </description>
         <pubDate>Mon, 05 Jan 2015 00:00:00 +0200</pubDate>
-        <link>http://www.turhancoskun.com/blog/git-ile-panik-yonetimi/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/git-ile-panik-yonetimi/</guid>
+        <link>https://www.turhancoskun.com/blog/git-ile-panik-yonetimi/</link>
+        <guid isPermaLink="true">https://www.turhancoskun.com/blog/git-ile-panik-yonetimi/</guid>
         
         <category>Dersler</category>
         
@@ -1507,8 +1513,8 @@ Birçok dilin aksine &lt;strong&gt;”“&lt;/strong&gt;(boş string), &lt;stron
 
 </description>
         <pubDate>Fri, 02 Jan 2015 00:00:00 +0200</pubDate>
-        <link>http://www.turhancoskun.com/blog/clojure-ile-basit-veri-turleri/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/clojure-ile-basit-veri-turleri/</guid>
+        <link>https://www.turhancoskun.com/blog/clojure-ile-basit-veri-turleri/</link>
+        <guid isPermaLink="true">https://www.turhancoskun.com/blog/clojure-ile-basit-veri-turleri/</guid>
         
         <category>Clojure</category>
         
@@ -1552,8 +1558,8 @@ servehere&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 </description>
         <pubDate>Fri, 26 Dec 2014 00:00:00 +0200</pubDate>
-        <link>http://www.turhancoskun.com/blog/ruby-ve-komut-satiri-ile-localhost/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/ruby-ve-komut-satiri-ile-localhost/</guid>
+        <link>https://www.turhancoskun.com/blog/ruby-ve-komut-satiri-ile-localhost/</link>
+        <guid isPermaLink="true">https://www.turhancoskun.com/blog/ruby-ve-komut-satiri-ile-localhost/</guid>
         
         <category>İpucu</category>
         
@@ -1663,8 +1669,8 @@ find .&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;İşte bu kadar.&lt;/p&gt;
 </description>
         <pubDate>Mon, 01 Dec 2014 00:00:00 +0200</pubDate>
-        <link>http://www.turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</link>
-        <guid isPermaLink="true">http://www.turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</guid>
+        <link>https://www.turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</link>
+        <guid isPermaLink="true">https://www.turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</guid>
         
         <category>Clojure</category>
         
