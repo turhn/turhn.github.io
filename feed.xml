@@ -6,8 +6,8 @@
 </description>
     <link>https://www.turhancoskun.com/</link>
     <atom:link href="https://www.turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 12 Jul 2017 22:42:56 +0300</pubDate>
-    <lastBuildDate>Wed, 12 Jul 2017 22:42:56 +0300</lastBuildDate>
+    <pubDate>Sat, 15 Jul 2017 02:04:07 +0300</pubDate>
+    <lastBuildDate>Sat, 15 Jul 2017 02:04:07 +0300</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -34,6 +34,15 @@ Spring Web Flux will help us to build high throughput functional reactive micros
 &lt;p&gt;In order to generate the project skeleton, go to http://start.spring.io address and choose “Generate a “maven” project with “Java” and Spring Boot “2.0.x”. As of writing this blog post, the latest version was 2.0.0 M2. In dependencies, section, choose Reactive Web and Reactive MongoDB. Then unzip the downloaded file and open with your favorite IDE. My personal preference is IntelliJ.&lt;/p&gt;
 
 &lt;p&gt;Currently, only MongoDB, Cassandra, and Redis are supported as reactive data stores. In this blog post, I will go with MongoDB.&lt;/p&gt;
+
+&lt;div id=&quot;reklamlar&quot;&gt;
+&lt;script async=&quot;&quot; src=&quot;//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-format=&quot;fluid&quot; data-ad-layout=&quot;in-article&quot; data-ad-client=&quot;ca-pub-0825474100193973&quot; data-ad-slot=&quot;6860032677&quot;&gt;
+&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
 
@@ -266,6 +275,15 @@ sudo systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;docker-dns
 sudo service start docker-dns&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Thus you created a system service that is running in the background.&lt;/p&gt;
+
+&lt;div id=&quot;reklamlar&quot;&gt;
+&lt;script async=&quot;&quot; src=&quot;//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-format=&quot;fluid&quot; data-ad-layout=&quot;in-article&quot; data-ad-client=&quot;ca-pub-0825474100193973&quot; data-ad-slot=&quot;6860032677&quot;&gt;
+&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;
+&lt;/div&gt;
 
 &lt;p&gt;When we check the Docker processes with &lt;code&gt;docker ps&lt;/code&gt;, we should see that our service is running. By default, it should check IP addresses every minute. If you wish to change the default interval value, i.e. you can add &lt;code&gt;-e INTERVAL=120&lt;/code&gt; variable in ExecStart section for 120 seconds.&lt;/p&gt;
 
@@ -659,6 +677,15 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 &lt;h2 id=&quot;lambda-calculus-nedir&quot;&gt;Lambda Calculus Nedir?&lt;/h2&gt;
 
 &lt;p&gt;Lambda(λ), Yunan alfabesindeki onbirinci harfe takabül eden ve özellikle üniversitede sayısal bölüm okumuş olanların sıkça haşır neşir olduğu bir semboldür. Lambda sembolünün özel bir anlamı olmamakla birlikte genellikle matematik dünyasında fonksiyonlara değer atamayı belirten bir semboldür. &lt;em&gt;Calculus&lt;/em&gt;, latince hesap yapmak anlamına gelir, İngilizce &lt;em&gt;calculate&lt;/em&gt; kelimesi de Latince calculus’ten alınmıştır. Matematikte ise calculus, fonksiyonlar, diziler, limit, türev ve integrali kapsayan matematiksel analitiğin giriş kısmını tanımlamak için kullanılır.&lt;/p&gt;
+
+&lt;div id=&quot;reklamlar&quot;&gt;
+&lt;script async=&quot;&quot; src=&quot;//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-format=&quot;fluid&quot; data-ad-layout=&quot;in-article&quot; data-ad-client=&quot;ca-pub-0825474100193973&quot; data-ad-slot=&quot;6860032677&quot;&gt;
+&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Kelimelerin kökenlerini inceledikten sonra artık Lambda Calculus’un daha kolay anlaşılacağını umuyorum. Lambda Calculus, ile kez Alonzo Church tarafından, matematiğin temellerini araştırırken 1930larda ortaya sunulmuş. Tarih konusunda çok detaylara girmek istemiyorum ama &lt;a href=&quot;http://en.wikipedia.org/wiki/Lambda_calculus&quot;&gt;Vikipedi&lt;/a&gt; sayfasında dediğine göre, bilgisayar bilimlerinden başka; felsefe, dil ve matemetik alanlarında da kullanımı varmış.&lt;/p&gt;
 
