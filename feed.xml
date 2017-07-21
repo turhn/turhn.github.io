@@ -6,9 +6,73 @@
 </description>
     <link>https://www.turhancoskun.com/</link>
     <atom:link href="https://www.turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 15 Jul 2017 02:04:07 +0300</pubDate>
-    <lastBuildDate>Sat, 15 Jul 2017 02:04:07 +0300</lastBuildDate>
+    <pubDate>Fri, 21 Jul 2017 20:40:49 +0300</pubDate>
+    <lastBuildDate>Fri, 21 Jul 2017 20:40:49 +0300</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>10 Easy Ways to Become a Better Software Developer</title>
+        <description>&lt;h2 id=&quot;start-coding&quot;&gt;1. Start Coding&lt;/h2&gt;
+
+&lt;p&gt;First thing is first. To get better, you need to fail often and early. To fail, you need to get your hands dirty. If you think that you are still incompetent, begin writing code now. The brain is just like your muscles. You want to get bigger muscles; you must work out. It’s that simple. As you code more, you will gain experience in abstract thinking, problem-solving, and debugging skills. You will also get faster.&lt;/p&gt;
+
+&lt;h2 id=&quot;read-blogs-and-books&quot;&gt;2. Read Blogs and Books&lt;/h2&gt;
+
+&lt;p&gt;People in software development industry are very generous in sharing their experiences. Read other people’s blogs and read product blogs. There is extensive knowledge shared in blogs. People tend to write their challenges and how they overcame the challenges. It is a great chance to get the same the experience without spending hours or days by just a reading a blog post.&lt;/p&gt;
+
+&lt;p&gt;Books are one of the most valuable learning resources in software programming. Books are usually better organized than blog posts. If you follow a well-written programming book throughout, it is a great resource to gain expertise in a certain topic.&lt;/p&gt;
+
+&lt;div id=&quot;reklamlar&quot;&gt;
+&lt;script async=&quot;&quot; src=&quot;//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-format=&quot;fluid&quot; data-ad-layout=&quot;in-article&quot; data-ad-client=&quot;ca-pub-0825474100193973&quot; data-ad-slot=&quot;6860032677&quot;&gt;
+&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;write-blogs&quot;&gt;3. Write Blogs&lt;/h2&gt;
+
+&lt;p&gt;Not just for giving back to the community, sharing what we know and what we can teach to the others is also very important. Writing a blog post refines your knowledge about the topic you write. Writing will help you both improve your technical skills and your personal brand.&lt;/p&gt;
+
+&lt;h2 id=&quot;watch-videos&quot;&gt;4. Watch Videos&lt;/h2&gt;
+
+&lt;p&gt;If you are new to a programming language or a framework, video materials are great ways of learning. There are tons of internet sites which provide quality video content. Some of them even contain hands-on-labs to practice. It does not matter if you are a novice or an advanced programmer, you can always find new stuff to learn in online courses and videos.&lt;/p&gt;
+
+&lt;h2 id=&quot;read-other-peoples-code&quot;&gt;5. Read Other People’s Code&lt;/h2&gt;
+
+&lt;p&gt;When I compare the top developers and the mediocre ones I know, the main difference is the top developers read other’s code. If you are using an open source framework, start reading its source code. You will better understand the problems you encounter, and you will learn how to organize your code better.&lt;/p&gt;
+
+&lt;h2 id=&quot;subscribe-newsletters&quot;&gt;6. Subscribe Newsletters&lt;/h2&gt;
+
+&lt;p&gt;Subscribing newsletters is a great way to stay updated. There are many great newsletter publishers on the internet. Those newsletters may contain the latest news about programming languages, libraries, frameworks, and recent blog posts.&lt;/p&gt;
+
+&lt;h2 id=&quot;use-social-media-wisely&quot;&gt;7. Use Social Media Wisely&lt;/h2&gt;
+
+&lt;p&gt;Social media is not just meant to share what you eat, what wear or where you have been. It can be much more beneficial. You can follow top influencers, top authors, or top contributors. They share the latest news and some information about their recent work. Social media might become the right tool to access the most valuable knowledge.&lt;/p&gt;
+
+&lt;h2 id=&quot;learn-to-test-your-code&quot;&gt;8. Learn to Test Your Code&lt;/h2&gt;
+
+&lt;p&gt;When you begin learning a new framework or a library, I suggest learning the testing framework at the same time. Writing tests requires writing testable code. Testable code is more modular and loosely coupled thus more maintainable. Writing tests also decrease the technical debt and save you time from maintenance and debugging.&lt;/p&gt;
+
+&lt;h2 id=&quot;improve-your-communication-skills&quot;&gt;9. Improve Your Communication Skills&lt;/h2&gt;
+
+&lt;p&gt;Communication is an essential part of our daily job. It doesn’t matter you are a great developer unless you can explain simple things to your team mates. You can’t solve complex problems if you don’t understand them well.&lt;/p&gt;
+
+&lt;h2 id=&quot;help-others&quot;&gt;10. Help Others&lt;/h2&gt;
+
+&lt;p&gt;Software development communities are &lt;em&gt;usually&lt;/em&gt; friendly to answer questions. There are tens of thousands of developers get stuck and asking help out there. You can also get stuck and ask questions. When you start answering questions as well, you will start growing. Helping people in StackOverflow or community forums is a good practice.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 21 Jul 2017 16:20:31 +0300</pubDate>
+        <link>https://www.turhancoskun.com/blog/10-easy-ways-to-become-a-better-software-developer/</link>
+        <guid isPermaLink="true">https://www.turhancoskun.com/blog/10-easy-ways-to-become-a-better-software-developer/</guid>
+        
+        <category>Software</category>
+        
+        <category>General</category>
+        
+        
+      </item>
     
       <item>
         <title>A Reactive To-Do Application with Spring Boot 2</title>
@@ -1593,115 +1657,6 @@ servehere&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
         <category>Ruby</category>
         
         <category>Komut Satırı</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Clojure ile JVM ve Lisp dünyasına &#39;Merhaba Dünya&#39;</title>
-        <description>&lt;p&gt;Lisp ve JVM’in buluştuğu Clojure ile ne zamandan beri tanışmak istiyordum. Clojure,
-söylenenlere göre Lisp fanatiklerinin Lisp’de en sevdiği özelliklerin tutulduğu ve nefret
-edenlerinin en nefret ettiği parçaların çıkarıldığı bir programlama dili. Java
-sanal makinesi üzerinde çalıştığı için bütün Java kütüphanelerini kullanabiliyor,
-Java ve diğer JVM dilleriyle ortak kullanabileceği kod tabanları oluşturabiliyor.
-Kod yapısına baktığınızda direkt Lisp gibi görünse de parantez kullanımı biraz daha
-azaltılmış. Lisp yapısının haricinde dilin harika özellikleri var.&lt;/p&gt;
-
-&lt;p&gt;Fonksiyonel programlama son zamanlarda oldukça popüler. Fonksiyonel programlamada
-yazılım kalitesini arttıracak önemli konseptler ve yaklaşımlar bulunuyor. Zaman zaman
-bunları Ruby ve Python gibi dillere de uyarladığımız oluyor(immutable object vs).
-Ancak gerçek hayatta işler malesef tamamen fonksiyonel olmuyor. Zaten saf fonksiyonel programlama
-her problemin çözümü olsaydı bugün saf fonksiyonel bir dil olan Haskell gibi diller en yaygın dillerden olurdu. Scala,
-Erlang, F#, Groovy vs birçok fonksiyonel dilden Clojure seçmemdeki temel sebep Lisp mantığının
-hayat kolaylaştırıcı yönlerinin modern standartlarla buluşması ve fonksiyonel programlamanın gerçek hayat senaryolarına
-uygun olan yönlerini mantıklı bir şekilde harmanlaması oldu.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Lisp lehçesi olması&lt;/li&gt;
-  &lt;li&gt;Fonksiyonel programlamanın iyi yönlerini alması&lt;/li&gt;
-  &lt;li&gt;Thread-safe olması&lt;/li&gt;
-  &lt;li&gt;Güçlü ve kolay kullanılan paralel programlama özellikleri olması&lt;/li&gt;
-  &lt;li&gt;Büyük ve küçük ölçekli projelere uygun olması&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Yukarıda saydığım özelliklerin büyük çoğunluğu kısmen veya tamamı birçok dilde zaten var.
-Ancak bütün bunların haricinde ben bilhassa o dilde kod yazarken aldığım zevke bakıyorum. Bu nedenle
-Clojure bana uzun süre arkadaşlık edecekmiş gibi duruyor.&lt;/p&gt;
-
-&lt;p&gt;Örn Java ile boş string testi yapmak için:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StringUtils&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;isBlank&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strLen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strLen&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strLen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Character&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isWhitespace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;charAt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Aynı kodun clojure ile yazılması:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;defn &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;blank?&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;every? &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Character/isWhitespace&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Tek satırda işi bitirmek ne güzel değil mi? Özellikle farklı bir tarz syntax ile. :)&lt;/p&gt;
-
-&lt;p&gt;Herkesin bildiği üzere çok kod beraberinde daha çok hata ihtimali, daha uzun yazma
-süresi ve bakım konusunda daha büyük zorluklar getirir. Uzun lafın kısası çok kod eşittir çok
-maliyet. Aslında bu noktada Clojure, girişimlerin de seveceği bir programlama dili.&lt;/p&gt;
-
-&lt;p&gt;Öncelikle Clojure kullanmaya başlamak için &lt;em&gt;Leiningen&lt;/em&gt; isim bir araç yükledim. Pek çok
-alternatifi olmasına rağmen en hoşuma giden bu oldu. Nedir diye sorarsanız Ruby’den bildiğimiz &lt;em&gt;rake&lt;/em&gt; gibi
-bir komut satırı aracı. Terminal’e &lt;em&gt;lein&lt;/em&gt; adında bir komut ekliyor. Aslında rake’den ziyade&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;rake&lt;/li&gt;
-  &lt;li&gt;gem&lt;/li&gt;
-  &lt;li&gt;rails (CLI olarak)&lt;/li&gt;
-  &lt;li&gt;repl&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;gibi birçok aracım kullanışlı bir şekilde bir araya gelmesi diyebiliriz. &lt;em&gt;Leiningen&lt;/em&gt; yüklemek
-için OS X kullanıyorsanız :&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;brew install leiningen&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;komutunu kullanabilirsiniz.&lt;/p&gt;
-
-&lt;p&gt;Daha sonra komut satırına&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;lein new helloapp
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;helloapp
-find .&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;komutlarını girerek tipik bir leiningen projesinin yapısı görebilirsiniz.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;lein &lt;span class=&quot;nb&quot;&gt;help&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;komutu ile lein ile çalıştırabileceğiniz komutların listesini kontrol edebilirsiniz.&lt;/p&gt;
-
-&lt;p&gt;Bu noktada Lisp dünyasına ‘merhaba’ demek için&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;lein repl&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;komut satırında &lt;strong&gt;user=&amp;gt;&lt;/strong&gt; promptunun olduğu satıra:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lisp&quot; data-lang=&quot;lisp&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;println&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Merhaba Dünya&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;İşte bu kadar.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 01 Dec 2014 00:00:00 +0200</pubDate>
-        <link>https://www.turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</link>
-        <guid isPermaLink="true">https://www.turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/</guid>
-        
-        <category>Clojure</category>
-        
-        <category>Dersler</category>
         
         
       </item>
