@@ -6,9 +6,93 @@
 </description>
     <link>https://www.turhancoskun.com/</link>
     <atom:link href="https://www.turhancoskun.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 21 Jul 2017 20:40:49 +0300</pubDate>
-    <lastBuildDate>Fri, 21 Jul 2017 20:40:49 +0300</lastBuildDate>
+    <pubDate>Sat, 05 Aug 2017 17:42:01 +0300</pubDate>
+    <lastBuildDate>Sat, 05 Aug 2017 17:42:01 +0300</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Kotlin and Spring Framework Tutorial</title>
+        <description>&lt;p&gt;Recently I published a tutorial about the upcoming release of the popular Spring Frameworks. You can read the post &lt;a href=&quot;https://turhancoskun.com/blog/a-reactive-todo-application-with-spring-boot-2/&quot; title=&quot;A Reactive To-Do Application with Spring Boot 2&quot;&gt;here&lt;/a&gt;. I am very excited about the next release of Spring and the next release of Java. Past few days, I have been experimenting with the Kotlin language. I think it is a very well designed language and incredibly easy to adopt. First, we heard Google chose Kotlin as a first class citizen to the Android platform. Now, we heard that Spring team decided to treat Kotlin as a &lt;a href=&quot;https://spring.io/blog/2017/08/01/spring-framework-5-kotlin-apis-the-functional-way&quot; title=&quot;Spring Framework 5 Kotlin Support&quot;&gt;first class citizen&lt;/a&gt; in Spring Framework. I believe all these developments will help Kotlin to gain popularity and we will see it in a better place in TIOBE index.&lt;/p&gt;
+
+&lt;p&gt;Previously, I used &lt;code&gt;maven&lt;/code&gt; as the package manager, but in this example, I will use &lt;code&gt;gradle&lt;/code&gt; as the package manager. Gradle uses a Groovy DSL to configure dependencies. In a very close future, we will be able to use Kotlin in our Gradle configuration files.&lt;/p&gt;
+
+&lt;p&gt;Go to https://start.spring.io and select boxes ‘Generate a &lt;code&gt;Gradle Project&lt;/code&gt;  with &lt;code&gt;Kotlin&lt;/code&gt;  and Spring Boot &lt;code&gt;2.0.0 M3&lt;/code&gt;. In ‘Project Metadata’ section write proper group and artifact names. In dependencies section select &lt;code&gt;Web&lt;/code&gt;, &lt;code&gt;MongoDB&lt;/code&gt;. Click on ‘Generate Project’ button then open downloaded the zip file with your favorite IDE.&lt;/p&gt;
+
+&lt;p&gt;This tutorial requires MongoDB, and you can install it via HomeBrew on OS X or use a Docker container as you wish. This tutorial can be thought as a Kotlin translated version of the Accessing Data with MongoDB and Building a RESTful Web Service guides in Spring Guides.&lt;/p&gt;
+
+&lt;div id=&quot;reklamlar&quot;&gt;
+&lt;script async=&quot;&quot; src=&quot;//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-format=&quot;fluid&quot; data-ad-layout=&quot;in-article&quot; data-ad-client=&quot;ca-pub-0825474100193973&quot; data-ad-slot=&quot;6860032677&quot;&gt;
+&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Lets create the model:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-kotlin&quot; data-lang=&quot;kotlin&quot;&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Customer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;@Id&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;firstName&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;lastName&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As you see, this is class oneliner. If you are familiar with Lombok package in Java, you might remember the &lt;code&gt;@Data&lt;/code&gt; annotation. &lt;code&gt;data&lt;/code&gt; modifier in Kotlin does the same thing, but it is integrated into the language. Wowww goes here.&lt;/p&gt;
+
+&lt;p&gt;The repository:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-kotlin&quot; data-lang=&quot;kotlin&quot;&gt;&lt;span class=&quot;n&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Repository&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MongoRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Customer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;findByFirstName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;firstName&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;findByLastName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lastName&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The repository class can be translated to Java line by line.&lt;/p&gt;
+
+&lt;p&gt;Seeding some data for the demo:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-kotlin&quot; data-lang=&quot;kotlin&quot;&gt;&lt;span class=&quot;n&quot;&gt;@Component&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Seeder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CommandLineRunner&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vararg&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;deleteAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Customer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;5985cff7eed9877e3e5b6976&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;John&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Snow&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Customer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;5985cff7eed9877e3e5b6977&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Ned&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Stark&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Customer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;5985cff7eed9877e3e5b6978&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Tyrion&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Lannister&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Found Customers&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;findAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Constructor automatically injects the repository we created before. Just like Lombok’s &lt;code&gt;@Data&lt;/code&gt; annotation, &lt;code&gt;override&lt;/code&gt; appears as a keyword instead of an annotation.&lt;/p&gt;
+
+&lt;p&gt;And finally the Controller:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-kotlin&quot; data-lang=&quot;kotlin&quot;&gt;&lt;span class=&quot;n&quot;&gt;@RestController&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;@RequestMapping&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;/customers&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Controller&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;@GetMapping&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Customer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;findAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;@PostMapping&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;@ResponseStatus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpStatus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CREATED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;@RequestBody&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;customer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Customer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;customer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!!&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;curl http://localhost:8080/customers&lt;/code&gt;
+&lt;code&gt;curl -X POST -H &quot;content-type: application/json&quot; -d &#39;{&quot;firstName&quot;: &quot;John&quot;, &quot;lastName&quot;: &quot;Doe&quot;}&#39; http://localhost:8080/customers&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;You can try to extend the example yourself by implementing the update and the delete methods. If you have any questions, do not hesitate to shoot below.&lt;/p&gt;
+
+&lt;h3 id=&quot;references&quot;&gt;References:&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;https://spring.io/guides/gs/accessing-data-mongodb/&lt;/li&gt;
+  &lt;li&gt;https://spring.io/guides/gs/rest-service/&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sat, 05 Aug 2017 17:32:44 +0300</pubDate>
+        <link>https://www.turhancoskun.com/blog/kotlin-and-spring-framework-tutorial/</link>
+        <guid isPermaLink="true">https://www.turhancoskun.com/blog/kotlin-and-spring-framework-tutorial/</guid>
+        
+        
+      </item>
     
       <item>
         <title>10 Easy Ways to Become a Better Software Developer</title>
@@ -1610,53 +1694,6 @@ Birçok dilin aksine &lt;strong&gt;”“&lt;/strong&gt;(boş string), &lt;stron
         <category>Clojure</category>
         
         <category>Dersler</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Ruby ve Shell ile kolay yoldan web server</title>
-        <description>&lt;p&gt;Ruby ve Python gibi betik dilleri hayatımızı kolaylaştıran çok önemli
-yardımcılarımız. Özellikle Ruby dili mutluluğumuzu daim eden sevdiceğimiz. Şimdi
-size Ruby dili ve küçük bir shell komutu yardımıyla 1 saniyeden kısa sürede
-aktif olan yerel bir web sunucusu nasıl yapılır onu gösteriyorum. Tabiki bunu
-yapabilmek için Linux, BSD ya da OS X gibi *nix tabanlı bir işletim sistemi kullanmalısınız.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Komut satırından bu kodu girdiğimizde bize hangi shell programını kullandığımızı söyleyecek&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$SHELL&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Bendeki durumda /bin/zsh&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Komut satırının verdiği sonuca göre hangi shell kullanıldığını öğrendiğimize göre sıra o shell
-programının ayar dosyasına gerekli alias eklemesini yapacağız.&lt;/p&gt;
-
-&lt;p&gt;Bu durumda zsh kullananlar için ~/.zshrc ve bash kullananlar için ise ~/.bashrc dosyalarının altına
-aşağıdaki satırı giriniz.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;servehere&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;ruby -run -ehttpd . -p8000&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Kaydedip çıktıktan sonra statik html dosyalarınızın olduğu klasöre konsoldan girip:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Örn cd ~/project/template&lt;/span&gt;
-servehere&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;komutunu girin. Eğer böyle bir komut bulunamadığına dair hata alırsanız:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;rehash&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;komutuyla tekrar deneyin. Eğer yine hata alırsanız konsol penceresini kapatıp tekrar açarak deneyin. :)&lt;/p&gt;
-
-&lt;p&gt;Tarayıcınızın penceresinden http://localhost:8000 adresine girerek statik html dosyalarınızı hatta JavaScript ile Ajax Sorgularınızı test edebilirsiniz.&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 26 Dec 2014 00:00:00 +0200</pubDate>
-        <link>https://www.turhancoskun.com/blog/ruby-ve-komut-satiri-ile-localhost/</link>
-        <guid isPermaLink="true">https://www.turhancoskun.com/blog/ruby-ve-komut-satiri-ile-localhost/</guid>
-        
-        <category>İpucu</category>
-        
-        <category>Ruby</category>
-        
-        <category>Komut Satırı</category>
         
         
       </item>

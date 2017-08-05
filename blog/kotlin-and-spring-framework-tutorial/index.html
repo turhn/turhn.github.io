@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="0emXjEbk_ZIziWSlcEWaCEaOIivGlP2tiGnQPLvZKNE" />
+    <title>Kotlin and Spring Framework Tutorial</title>
+    
+    <meta name="description" content="Programming related articles.
+">
+    
+    <link rel="canonical" href="https://www.turhancoskun.com/blog/kotlin-and-spring-framework-tutorial/">
+    <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+</head>
+
+
+<body class="showing-post">
+  <div class="pure-g">
+    <div class="content pure-u-1 pure-u-md-3-4">
+      <div>
+          <header class="post-nav-bar pure-g">
+            <div class="pure-u-1-3">
+              <figure>
+                <a href="/">
+                  <img class="post-avatar" src="/assets/profile200x200.jpg" alt="Turhan Coskun" />
+                </a>
+              </figure>
+            </div>
+            <div class="blog-name pure-u-1-3">
+              <div><a href="/">Turhan Coskun</a></div>
+            </div>
+            <div class="pure-u-1-3">
+            </div>
+          </header>
+
+        <div class="post">
+          <header class="post-header">
+            <h1 class="post-title">Kotlin and Spring Framework Tutorial</h1>
+            <div class="post-meta">Aug 5, 2017
+            <div>
+              
+            </div>
+            </div>
+          </header>
+
+          <article class="post-content">
+            <p>Recently I published a tutorial about the upcoming release of the popular Spring Frameworks. You can read the post <a href="https://turhancoskun.com/blog/a-reactive-todo-application-with-spring-boot-2/" title="A Reactive To-Do Application with Spring Boot 2">here</a>. I am very excited about the next release of Spring and the next release of Java. Past few days, I have been experimenting with the Kotlin language. I think it is a very well designed language and incredibly easy to adopt. First, we heard Google chose Kotlin as a first class citizen to the Android platform. Now, we heard that Spring team decided to treat Kotlin as a <a href="https://spring.io/blog/2017/08/01/spring-framework-5-kotlin-apis-the-functional-way" title="Spring Framework 5 Kotlin Support">first class citizen</a> in Spring Framework. I believe all these developments will help Kotlin to gain popularity and we will see it in a better place in TIOBE index.</p>
+
+<p>Previously, I used <code>maven</code> as the package manager, but in this example, I will use <code>gradle</code> as the package manager. Gradle uses a Groovy DSL to configure dependencies. In a very close future, we will be able to use Kotlin in our Gradle configuration files.</p>
+
+<p>Go to https://start.spring.io and select boxes ‘Generate a <code>Gradle Project</code>  with <code>Kotlin</code>  and Spring Boot <code>2.0.0 M3</code>. In ‘Project Metadata’ section write proper group and artifact names. In dependencies section select <code>Web</code>, <code>MongoDB</code>. Click on ‘Generate Project’ button then open downloaded the zip file with your favorite IDE.</p>
+
+<p>This tutorial requires MongoDB, and you can install it via HomeBrew on OS X or use a Docker container as you wish. This tutorial can be thought as a Kotlin translated version of the Accessing Data with MongoDB and Building a RESTful Web Service guides in Spring Guides.</p>
+
+<div id="reklamlar">
+<script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-format="fluid" data-ad-layout="in-article" data-ad-client="ca-pub-0825474100193973" data-ad-slot="6860032677">
+</ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<p>Lets create the model:</p>
+
+<div class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="n">data</span> <span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">@Id</span> <span class="k">val</span> <span class="py">id</span> <span class="p">:</span> <span class="n">String</span><span class="p">?,</span> <span class="k">val</span> <span class="py">firstName</span> <span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="k">val</span> <span class="py">lastName</span> <span class="p">:</span> <span class="n">String</span><span class="p">)</span></code></pre></div>
+
+<p>As you see, this is class oneliner. If you are familiar with Lombok package in Java, you might remember the <code>@Data</code> annotation. <code>data</code> modifier in Kotlin does the same thing, but it is integrated into the language. Wowww goes here.</p>
+
+<p>The repository:</p>
+
+<div class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="n">interface</span> <span class="n">Repository</span> <span class="p">:</span> <span class="n">MongoRepository</span><span class="p">&lt;</span><span class="n">Customer</span><span class="p">,</span> <span class="n">String</span><span class="p">&gt;</span> <span class="p">{</span>
+    <span class="k">fun</span> <span class="nf">findByFirstName</span><span class="p">(</span><span class="n">firstName</span> <span class="p">:</span> <span class="n">String</span><span class="p">)</span>
+    <span class="k">fun</span> <span class="nf">findByLastName</span><span class="p">(</span><span class="n">lastName</span> <span class="p">:</span> <span class="n">String</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+
+<p>The repository class can be translated to Java line by line.</p>
+
+<p>Seeding some data for the demo:</p>
+
+<div class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="n">@Component</span>
+<span class="k">class</span> <span class="nc">Seeder</span><span class="p">(</span><span class="k">private</span> <span class="k">val</span> <span class="py">repository</span><span class="p">:</span> <span class="n">Repository</span><span class="p">)</span> <span class="p">:</span> <span class="n">CommandLineRunner</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">run</span><span class="p">(</span><span class="k">vararg</span> <span class="n">args</span><span class="p">:</span> <span class="n">String</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="n">repository</span><span class="p">.</span><span class="n">deleteAll</span><span class="p">()</span>
+        <span class="n">repository</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="n">Customer</span><span class="p">(</span><span class="s">&quot;5985cff7eed9877e3e5b6976&quot;</span><span class="p">,</span> <span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="s">&quot;Snow&quot;</span><span class="p">))</span>
+        <span class="n">repository</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="n">Customer</span><span class="p">(</span><span class="s">&quot;5985cff7eed9877e3e5b6977&quot;</span><span class="p">,</span> <span class="s">&quot;Ned&quot;</span><span class="p">,</span> <span class="s">&quot;Stark&quot;</span><span class="p">))</span>
+        <span class="n">repository</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="n">Customer</span><span class="p">(</span><span class="s">&quot;5985cff7eed9877e3e5b6978&quot;</span><span class="p">,</span> <span class="s">&quot;Tyrion&quot;</span><span class="p">,</span> <span class="s">&quot;Lannister&quot;</span><span class="p">))</span>
+
+        <span class="n">println</span><span class="p">(</span><span class="s">&quot;Found Customers&quot;</span><span class="p">)</span>
+        <span class="n">repository</span><span class="p">.</span><span class="n">findAll</span><span class="p">().</span><span class="n">forEach</span><span class="p">(</span><span class="o">::</span><span class="n">println</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Constructor automatically injects the repository we created before. Just like Lombok’s <code>@Data</code> annotation, <code>override</code> appears as a keyword instead of an annotation.</p>
+
+<p>And finally the Controller:</p>
+
+<div class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="n">@RestController</span>
+<span class="n">@RequestMapping</span><span class="p">(</span><span class="s">&quot;/customers&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Controller</span><span class="p">(</span><span class="k">val</span> <span class="py">repository</span><span class="p">:</span> <span class="n">Repository</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="n">@GetMapping</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">fun</span> <span class="nf">index</span><span class="p">():</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Customer</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">repository</span><span class="p">.</span><span class="n">findAll</span><span class="p">()</span>
+
+    <span class="n">@PostMapping</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">@ResponseStatus</span><span class="p">(</span><span class="n">HttpStatus</span><span class="p">.</span><span class="n">CREATED</span><span class="p">)</span>
+    <span class="k">fun</span> <span class="nf">create</span><span class="p">(</span><span class="n">@RequestBody</span> <span class="n">customer</span><span class="p">:</span> <span class="n">Customer</span><span class="p">)</span> <span class="p">=</span> <span class="n">repository</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span><span class="o">!!</span>
+<span class="p">}</span></code></pre></div>
+
+<p><code>curl http://localhost:8080/customers</code>
+<code>curl -X POST -H "content-type: application/json" -d '{"firstName": "John", "lastName": "Doe"}' http://localhost:8080/customers</code></p>
+
+<p>You can try to extend the example yourself by implementing the update and the delete methods. If you have any questions, do not hesitate to shoot below.</p>
+
+<h3 id="references">References:</h3>
+
+<ol>
+  <li>https://spring.io/guides/gs/accessing-data-mongodb/</li>
+  <li>https://spring.io/guides/gs/rest-service/</li>
+</ol>
+
+          </article>
+
+          <div class="social-share">
+            <span>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+            </span>
+            <span>
+              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              </div>
+            </span>
+          </div>
+
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+            var disqus_shortname = 'turhancoskunblog';
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          <div id="fb-root"></div>
+
+          <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/tr_TR/sdk.js#xfbml=1&appId=1469686916649684&version=v2.0";
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));</script>
+
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+          <p>
+            <a href="/">Ana Sayfaya Dön</a>
+          </p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script type="text/javascript" src="/assets/headroom.min.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-41396472-1', 'auto');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+
+  </script>
+  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+</body>
+
+</html>
