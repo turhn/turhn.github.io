@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/asp-net-mvc-pagedlist-knockout-ile-ajax-grid-sayfalandirma/">
+    <link rel="canonical" href="http://localhost:4000/blog/asp-net-mvc-pagedlist-knockout-ile-ajax-grid-sayfalandirma/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -55,24 +55,24 @@
           <article class="post-content">
             <p>Daha önce paylaştığım yazılarımda genel olarak problem çıkardığında kaynak bulmanın zor olabileceği konuları hedef aldım. Bu yazımda sizlere direkt olarak bir çözüm sunmayı istiyorum. ASP.NET MVC ile uygulama geliştirenler tablolarında sayfalandırma yapmak için genelde PagedList paketini kullanırlar. Ancak bu senkron bir çözümdür ve sayfalarda dolaşmak için bütün sayfaların tekrar tekrar yüklenmelerini gerektirir. Bu durumda JQuery’nin sağladığı hazır ajax fonksiyonları imdadımıza yetişir. Peki PagedList ile gelen veriyi JQuery ile nasıl sayfama yazdırırım.</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">GetList</span><span class="p">(</span><span class="kt">int?</span> <span class="n">page</span><span class="p">,</span> <span class="kt">int</span> <span class="n">pageSize</span> <span class="p">=</span> <span class="m">10</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">GetList</span><span class="p">(</span><span class="kt">int</span><span class="p">?</span> <span class="n">page</span><span class="p">,</span> <span class="kt">int</span> <span class="n">pageSize</span> <span class="p">=</span> <span class="m">10</span><span class="p">)</span>
     <span class="c1">// Buraya başka kodlar</span>
-    <span class="kt">var</span> <span class="n">people</span> <span class="p">=</span> <span class="n">Person</span><span class="p">.</span><span class="n">GetPeople</span><span class="p">.</span><span class="n">AsQueryable</span><span class="p">();</span>
-    <span class="kt">var</span> <span class="n">pagedPeople</span> <span class="p">=</span> <span class="n">people</span><span class="p">.</span><span class="n">ToPagedList</span><span class="p">(</span><span class="n">pageNumber</span><span class="p">,</span> <span class="n">pageSize</span><span class="p">);</span>
+    <span class="kt">var</span> <span class="n">people</span> <span class="p">=</span> <span class="n">Person</span><span class="p">.</span><span class="n">GetPeople</span><span class="p">.</span><span class="nf">AsQueryable</span><span class="p">();</span>
+    <span class="kt">var</span> <span class="n">pagedPeople</span> <span class="p">=</span> <span class="n">people</span><span class="p">.</span><span class="nf">ToPagedList</span><span class="p">(</span><span class="n">pageNumber</span><span class="p">,</span> <span class="n">pageSize</span><span class="p">);</span>
     <span class="k">return</span> <span class="nf">Json</span><span class="p">(</span><span class="n">pagedPeople</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>tarzında bir controller’dan sorguyu çekmek için :</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">&#39;/Home/GetList&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">page</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">pageSize</span><span class="o">:</span><span class="mi">10</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">){</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">'/Home/GetList'</span><span class="p">,</span> <span class="p">{</span><span class="na">page</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">pageSize</span><span class="p">:</span><span class="mi">10</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">){</span>
     <span class="c1">//Buraya veriyi satır satır yazdıracak mantık içeren kodlar</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <p>gibi bir javascript kodu işinizi görecektir. Ancak bu çözüm sayfamızdaki html tasarımında değişiklikler yaptığımızda bizlere problem çıkarmaktadır. Tasarımı temiz tutmak için knockoutjs kütüphanesini kullanacağız.</p>
 
 <p>Yapılabilecek en basit örneği sizlere sunmak istiyorum. Öncelikte hâlihazırda oluşturduğumuz ASP.NET projemizde ‘Models’ klasörüne dosyaadı ‘Person.cs’ isminde bir sınıf ekleyelim. Eklediğimiz sınıf aşağıdaki gibi olsun:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Person</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Person</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
     <span class="k">public</span> <span class="kt">string</span> <span class="n">Surname</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
@@ -82,25 +82,25 @@
          <span class="k">this</span><span class="p">.</span><span class="n">Surname</span> <span class="p">=</span> <span class="n">surname</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">public</span> <span class="k">static</span> <span class="n">List</span> <span class="n">GetPeople</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">{</span>
-       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">&quot;Cahit&quot;</span><span class="p">,</span> <span class="s">&quot;Sıtkı&quot;</span><span class="p">),</span>
-       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">&quot;Yaşar&quot;</span><span class="p">,</span> <span class="s">&quot;Kemal&quot;</span><span class="p">),</span>
-       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">&quot;Nafiz&quot;</span><span class="p">,</span> <span class="s">&quot;Çamlıbel&quot;</span><span class="p">),</span>
-       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">&quot;Mehmet Akif&quot;</span><span class="p">,</span> <span class="s">&quot;Ersoy&quot;</span><span class="p">)</span>
-       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">&quot;Nazım&quot;</span><span class="p">,</span> <span class="s">&quot;Hikmet&quot;</span><span class="p">)</span>
-       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">&quot;Ahmet Hamdi&quot;</span><span class="p">,</span> <span class="s">&quot;Tanpınar&quot;</span><span class="p">)</span>
-       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">&quot;Ahmet&quot;</span><span class="p">,</span> <span class="s">&quot;Haşim&quot;</span><span class="p">)</span>
+       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">"Cahit"</span><span class="p">,</span> <span class="s">"Sıtkı"</span><span class="p">),</span>
+       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">"Yaşar"</span><span class="p">,</span> <span class="s">"Kemal"</span><span class="p">),</span>
+       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">"Nafiz"</span><span class="p">,</span> <span class="s">"Çamlıbel"</span><span class="p">),</span>
+       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">"Mehmet Akif"</span><span class="p">,</span> <span class="s">"Ersoy"</span><span class="p">)</span>
+       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">"Nazım"</span><span class="p">,</span> <span class="s">"Hikmet"</span><span class="p">)</span>
+       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">"Ahmet Hamdi"</span><span class="p">,</span> <span class="s">"Tanpınar"</span><span class="p">)</span>
+       <span class="k">new</span> <span class="nf">Person</span><span class="p">(</span><span class="s">"Ahmet"</span><span class="p">,</span> <span class="s">"Haşim"</span><span class="p">)</span>
     <span class="p">};</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>‘Controllers’ dizini altındaki HomeController.cs dosyasına aşağıdaki kodu ekliyoruz:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">GetList</span><span class="p">(</span><span class="kt">int?</span> <span class="n">page</span><span class="p">,</span> <span class="kt">int</span> <span class="n">pageSize</span> <span class="p">=</span> <span class="m">10</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">GetList</span><span class="p">(</span><span class="kt">int</span><span class="p">?</span> <span class="n">page</span><span class="p">,</span> <span class="kt">int</span> <span class="n">pageSize</span> <span class="p">=</span> <span class="m">10</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="kt">var</span> <span class="n">people</span> <span class="p">=</span> <span class="n">Person</span><span class="p">.</span><span class="n">GetPeople</span><span class="p">.</span><span class="n">AsQueryable</span><span class="p">();</span>
+    <span class="kt">var</span> <span class="n">people</span> <span class="p">=</span> <span class="n">Person</span><span class="p">.</span><span class="n">GetPeople</span><span class="p">.</span><span class="nf">AsQueryable</span><span class="p">();</span>
     <span class="kt">var</span> <span class="n">pageNumber</span> <span class="p">=</span> <span class="n">page</span> <span class="p">??</span> <span class="m">1</span><span class="p">;</span>
-    <span class="kt">var</span> <span class="n">pagedPeople</span> <span class="p">=</span> <span class="n">people</span><span class="p">.</span><span class="n">ToPagedList</span><span class="p">(</span><span class="n">pageNumber</span><span class="p">,</span> <span class="n">pageSize</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nf">Json</span><span class="p">(</span><span class="k">new</span> <span class="p">{</span> <span class="n">items</span><span class="p">=</span><span class="n">pagedPeople</span><span class="p">.</span><span class="n">ToList</span><span class="p">(),</span> <span class="n">metaData</span> <span class="p">=</span> <span class="n">pagedPeople</span><span class="p">.</span><span class="n">GetMetaData</span><span class="p">()</span> <span class="p">},</span>   <span class="n">JsonRequestBehavior</span><span class="p">.</span><span class="n">AllowGet</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
+    <span class="kt">var</span> <span class="n">pagedPeople</span> <span class="p">=</span> <span class="n">people</span><span class="p">.</span><span class="nf">ToPagedList</span><span class="p">(</span><span class="n">pageNumber</span><span class="p">,</span> <span class="n">pageSize</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nf">Json</span><span class="p">(</span><span class="k">new</span> <span class="p">{</span> <span class="n">items</span><span class="p">=</span><span class="n">pagedPeople</span><span class="p">.</span><span class="nf">ToList</span><span class="p">(),</span> <span class="n">metaData</span> <span class="p">=</span> <span class="n">pagedPeople</span><span class="p">.</span><span class="nf">GetMetaData</span><span class="p">()</span> <span class="p">},</span>   <span class="n">JsonRequestBehavior</span><span class="p">.</span><span class="n">AllowGet</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
 
 <p>Burada dikkatinizi çekmek istediğim nokta nesneleri Json ile parse ederken item adı altında bir liste ve metaData adı altında PagedList’in sayfa numarası, sayfa sayısı gibi bilgilerini barındıran bir anonim nesne oluşturduk.</p>
 
@@ -108,26 +108,26 @@
 
 <p>Pager.js isimli bir js dosyası oluşturup içine aşağıdaki kodu ekleyin.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">loadPagedData</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">pageSize</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">loadPagedData</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">pageSize</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">vm</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-    <span class="nx">self</span><span class="p">.</span><span class="nx">Items</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">observableArray</span><span class="p">([]);</span>
-    <span class="nx">self</span><span class="p">.</span><span class="nx">MetaData</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">observable</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nb">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nx">Items</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">observableArray</span><span class="p">([]);</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nx">MetaData</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">observable</span><span class="p">();</span>
   <span class="p">}</span>
   <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#Next&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">'#Next'</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
       <span class="kd">var</span> <span class="nx">parsedData</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">mapping</span><span class="p">.</span><span class="nx">toJS</span><span class="p">(</span><span class="nx">model</span><span class="p">.</span><span class="nx">MetaData</span><span class="p">);</span>
       <span class="k">if</span> <span class="p">(</span><span class="nx">parsedData</span><span class="p">.</span><span class="nx">HasNextPage</span><span class="p">)</span>
       <span class="nx">loadPage</span><span class="p">(</span><span class="nx">parsedData</span><span class="p">.</span><span class="nx">PageNumber</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
       <span class="p">});</span>
-      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#Prev&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="nx">$</span><span class="p">(</span><span class="s1">'#Prev'</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">parsedData</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">mapping</span><span class="p">.</span><span class="nx">toJS</span><span class="p">(</span><span class="nx">model</span><span class="p">.</span><span class="nx">MetaData</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">parsedData</span><span class="p">.</span><span class="nx">HasPreviousPage</span><span class="p">)</span>
         <span class="nx">loadPage</span><span class="p">(</span><span class="nx">parsedData</span><span class="p">.</span><span class="nx">PageNumber</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
         <span class="p">});</span>
         <span class="kd">var</span> <span class="nx">model</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
         <span class="kd">function</span> <span class="nx">loadPage</span><span class="p">(</span><span class="nx">pageNumber</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">{</span> <span class="nx">page</span><span class="o">:</span> <span class="nx">pageNumber</span><span class="p">,</span> <span class="nx">pageSize</span><span class="o">:</span> <span class="nx">pageSize</span> <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">{</span> <span class="na">page</span><span class="p">:</span> <span class="nx">pageNumber</span><span class="p">,</span> <span class="na">pageSize</span><span class="p">:</span> <span class="nx">pageSize</span> <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">model</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
               <span class="nx">model</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">vm</span><span class="p">();</span>
               <span class="nx">model</span><span class="p">.</span><span class="nx">Items</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">mapping</span><span class="p">.</span><span class="nx">fromJS</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">items</span><span class="p">);</span>
@@ -143,33 +143,33 @@
         <span class="p">}</span>
         <span class="nx">loadPage</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
     <span class="p">});</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>ve HTML kodumuzun başına :</p>
 
 <p>kodunu eklersek sayfamızda sayfalandırılabilir tablo kullanılabilir. Aynı kodu isteğiniz sayfada kullanabilirsiniz GetList aksiyonunda kullandığımız kalıbı kullanmak kaydıyla.</p>
 
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;table&gt;</span>
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;table&gt;</span>
     <span class="nt">&lt;thead&gt;</span>
         <span class="nt">&lt;tr&gt;</span>
             <span class="nt">&lt;th&gt;</span>Name<span class="nt">&lt;/th&gt;</span>
             <span class="nt">&lt;th&gt;</span>Surname<span class="nt">&lt;/th&gt;</span>
         <span class="nt">&lt;/tr&gt;</span>
     <span class="nt">&lt;/thead&gt;</span>
-    <span class="nt">&lt;tbody</span> <span class="na">data-bind=</span><span class="s">&quot;foreach: Items&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;tbody</span> <span class="na">data-bind=</span><span class="s">"foreach: Items"</span><span class="nt">&gt;</span>
         <span class="nt">&lt;tr&gt;</span>
-            <span class="nt">&lt;td</span> <span class="na">data-bind=</span><span class="s">&quot;text: Name&quot;</span><span class="nt">&gt;&lt;/td&gt;</span>
-            <span class="nt">&lt;td</span> <span class="na">data-bind=</span><span class="s">&quot;text: Surname&quot;</span><span class="nt">&gt;&lt;/td&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">data-bind=</span><span class="s">"text: Name"</span><span class="nt">&gt;&lt;/td&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">data-bind=</span><span class="s">"text: Surname"</span><span class="nt">&gt;&lt;/td&gt;</span>
         <span class="nt">&lt;/tr&gt;</span>
     <span class="nt">&lt;/tbody&gt;</span>
     <span class="nt">&lt;tfoot&gt;</span>
         <span class="nt">&lt;tr&gt;</span>
-            <span class="nt">&lt;td</span> <span class="na">colspan=</span><span class="s">&quot;2&quot;</span><span class="nt">&gt;</span>
-                Page Number <span class="nt">&lt;span</span> <span class="na">data-bind=</span><span class="s">&quot;text: MetaData.PageNumber&quot;</span><span class="nt">&gt;&lt;/span&gt;</span> of <span class="nt">&lt;span</span> <span class="na">data-bind=</span><span class="s">&quot;text: MetaData.PageCount&quot;</span><span class="nt">&gt;&lt;/span&gt;&lt;a</span> <span class="na">id=</span><span class="s">&quot;Prev&quot;</span> <span class="na">href=</span><span class="s">&quot;javascript:;&quot;</span><span class="nt">&gt;&lt; Prev</span> <span class="err">&lt;/</span><span class="na">a</span><span class="nt">&gt;</span> <span class="nt">&lt;a</span> <span class="na">id=</span><span class="s">&quot;Next&quot;</span> <span class="na">href=</span><span class="s">&quot;javascript:;&quot;</span><span class="nt">&gt;</span> Next &gt;<span class="nt">&lt;/a&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">colspan=</span><span class="s">"2"</span><span class="nt">&gt;</span>
+                Page Number <span class="nt">&lt;span</span> <span class="na">data-bind=</span><span class="s">"text: MetaData.PageNumber"</span><span class="nt">&gt;&lt;/span&gt;</span> of <span class="nt">&lt;span</span> <span class="na">data-bind=</span><span class="s">"text: MetaData.PageCount"</span><span class="nt">&gt;&lt;/span&gt;&lt;a</span> <span class="na">id=</span><span class="s">"Prev"</span> <span class="na">href=</span><span class="s">"javascript:;"</span><span class="nt">&gt;&lt;</span> <span class="nt">Prev</span> <span class="err">&lt;/</span><span class="na">a</span><span class="nt">&gt;</span> <span class="nt">&lt;a</span> <span class="na">id=</span><span class="s">"Next"</span> <span class="na">href=</span><span class="s">"javascript:;"</span><span class="nt">&gt;</span> Next &gt;<span class="nt">&lt;/a&gt;</span>
             <span class="nt">&lt;/td&gt;</span>
         <span class="nt">&lt;/tr&gt;</span>
     <span class="nt">&lt;/tfoot&gt;</span>
-<span class="nt">&lt;/table&gt;</span></code></pre></div>
+<span class="nt">&lt;/table&gt;</span></code></pre></figure>
 
 <p>JSON ile gelen verilerin çeşitliliğine göre tbody de değişiklik yapabilirsiniz. Temel mantığı anladığınızı umuyorum.</p>
 
@@ -179,10 +179,10 @@
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/asp-net-mvc-pagedlist-knockout-ile-ajax-grid-sayfalandirma/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/asp-net-mvc-pagedlist-knockout-ile-ajax-grid-sayfalandirma/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -231,7 +231,7 @@
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

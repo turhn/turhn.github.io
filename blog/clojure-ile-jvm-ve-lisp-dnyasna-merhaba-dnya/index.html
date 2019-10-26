@@ -10,9 +10,9 @@
     
     <meta name="description" content="Clojure ile JVM ve Lisp dünyasına adım atarak 'Merhaba Dünya' diyoruz.">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/">
+    <link rel="canonical" href="http://localhost:4000/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -81,7 +81,7 @@ Clojure bana uzun süre arkadaşlık edecekmiş gibi duruyor.</p>
 
 <p>Örn Java ile boş string testi yapmak için:</p>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StringUtils</span> <span class="o">{</span>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StringUtils</span> <span class="o">{</span>
   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">isBlank</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
     <span class="kt">int</span> <span class="n">strLen</span><span class="o">;</span>
     <span class="k">if</span> <span class="o">(</span><span class="n">str</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="o">(</span><span class="n">strLen</span> <span class="o">=</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">())</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
@@ -94,11 +94,11 @@ Clojure bana uzun süre arkadaşlık edecekmiş gibi duruyor.</p>
     <span class="o">}</span>
     <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
   <span class="o">}</span>
-<span class="o">}</span></code></pre></div>
+<span class="o">}</span></code></pre></figure>
 
 <p>Aynı kodun clojure ile yazılması:</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="kd">defn </span><span class="nv">blank?</span> <span class="p">[</span><span class="nv">s</span><span class="p">]</span> <span class="p">(</span><span class="nb">every? </span><span class="o">#</span><span class="p">(</span><span class="nf">Character/isWhitespace</span> <span class="nv">%</span><span class="p">)</span> <span class="nv">s</span><span class="p">))</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">blank?</span><span class="w"> </span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">every?</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">Character/isWhitespace</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="n">s</span><span class="p">))</span></code></pre></figure>
 
 <p>Tek satırda işi bitirmek ne güzel değil mi? Özellikle farklı bir tarz syntax ile. :)</p>
 
@@ -120,29 +120,29 @@ bir komut satırı aracı. Terminal’e <em>lein</em> adında bir komut ekliyor.
 <p>gibi birçok aracım kullanışlı bir şekilde bir araya gelmesi diyebiliriz. <em>Leiningen</em> yüklemek
 için OS X kullanıyorsanız :</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">brew install leiningen</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">brew install leiningen</code></pre></figure>
 
 <p>komutunu kullanabilirsiniz.</p>
 
 <p>Daha sonra komut satırına</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">lein new helloapp
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">lein new helloapp
 <span class="nb">cd </span>helloapp
-find .</code></pre></div>
+find .</code></pre></figure>
 
 <p>komutlarını girerek tipik bir leiningen projesinin yapısı görebilirsiniz.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">lein <span class="nb">help</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">lein <span class="nb">help</span></code></pre></figure>
 
 <p>komutu ile lein ile çalıştırabileceğiniz komutların listesini kontrol edebilirsiniz.</p>
 
 <p>Bu noktada Lisp dünyasına ‘merhaba’ demek için</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">lein repl</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">lein repl</code></pre></figure>
 
 <p>komut satırında <strong>user=&gt;</strong> promptunun olduğu satıra:</p>
 
-<div class="highlight"><pre><code class="language-lisp" data-lang="lisp"><span class="p">(</span><span class="nv">println</span> <span class="s">&quot;Merhaba Dünya&quot;</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-lisp" data-lang="lisp">(println "Merhaba Dünya")</code></pre></figure>
 
 <p>İşte bu kadar.</p>
 
@@ -150,10 +150,10 @@ find .</code></pre></div>
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/clojure-ile-jvm-ve-lisp-dnyasna-merhaba-dnya/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -202,7 +202,7 @@ find .</code></pre></div>
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

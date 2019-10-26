@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/how-to-create-a-dynamic-dns-server-using-cloudflare/">
+    <link rel="canonical" href="http://localhost:4000/blog/how-to-create-a-dynamic-dns-server-using-cloudflare/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -75,29 +75,29 @@
 
 <p>For the code you can visit. <a href="https://github.com/turhn/cloudflare-client">https://github.com/turhn/cloudflare-client</a></p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">git clone https://github.com/turhn/cloudflare-client.git<span class="sb">`</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">git clone https://github.com/turhn/cloudflare-client.git<span class="sb">`</span>
 <span class="nb">cd </span>cloudflare-client
-docker build -t cloudflare .</code></pre></div>
+docker build <span class="nt">-t</span> cloudflare .</code></pre></figure>
 
-<p>And create a file at <code>/etc/systemd/system/docker-dns</code> and paste the content below. (Do not forget to change <email> and <api key=""> sections.)</api></email></p>
+<p>And create a file at <code class="highlighter-rouge">/etc/systemd/system/docker-dns</code> and paste the content below. (Do not forget to change <EMAIL> and <API KEY=""> sections.)</API></EMAIL></p>
 
-<div class="highlight"><pre><code class="language-ini" data-lang="ini"><span class="k">[Unit]</span>
-<span class="na">Description</span><span class="o">=</span><span class="s">Docker Application Service</span>
-<span class="na">Requires</span><span class="o">=</span><span class="s">docker.service</span>
-<span class="na">After</span><span class="o">=</span><span class="s">docker.service</span>
+<figure class="highlight"><pre><code class="language-ini" data-lang="ini"><span class="nn">[Unit]</span>
+<span class="py">Description</span><span class="p">=</span><span class="s">Docker Application Service</span>
+<span class="py">Requires</span><span class="p">=</span><span class="s">docker.service</span>
+<span class="py">After</span><span class="p">=</span><span class="s">docker.service</span>
 
-<span class="k">[Service]</span>
-<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/bin/docker run --rm -e &quot;CLOUD_FLARE_API_KEY=&lt;API KEY&gt;&quot; -e &quot;CLOUD_FLARE_EMAIL=&lt;EMAIL&gt;&quot; --name cloudflare cloudflare:latest bin/update_dns example.com test</span>
-<span class="na">ExecStop</span><span class="o">=</span><span class="s">/usr/bin/docker stop -t 2 cloudflare</span>
-<span class="na">ExecStopPost</span><span class="o">=</span><span class="s">/usr/bin/docker rm -f cloudflare</span>
+<span class="nn">[Service]</span>
+<span class="py">Restart</span><span class="p">=</span><span class="s">always</span>
+<span class="py">ExecStart</span><span class="p">=</span><span class="s">/usr/bin/docker run --rm -e "CLOUD_FLARE_API_KEY=&lt;API KEY&gt;" -e "CLOUD_FLARE_EMAIL=&lt;EMAIL&gt;" --name cloudflare cloudflare:latest bin/update_dns example.com test</span>
+<span class="py">ExecStop</span><span class="p">=</span><span class="s">/usr/bin/docker stop -t 2 cloudflare</span>
+<span class="py">ExecStopPost</span><span class="p">=</span><span class="s">/usr/bin/docker rm -f cloudflare</span>
 
-<span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">default.target</span></code></pre></div>
+<span class="nn">[Install]</span>
+<span class="py">WantedBy</span><span class="p">=</span><span class="s">default.target</span></code></pre></figure>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo systemctl daemon-reload
-sudo systemctl <span class="nb">enable </span>docker-dns
-sudo service start docker-dns</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">sudo </span>systemctl daemon-reload
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>docker-dns
+<span class="nb">sudo </span>service start docker-dns</code></pre></figure>
 
 <p>Thus you created a system service that is running in the background.</p>
 
@@ -110,7 +110,7 @@ sudo service start docker-dns</code></pre></div>
 </script>
 </div>
 
-<p>When we check the Docker processes with <code>docker ps</code>, we should see that our service is running. By default, it should check IP addresses every minute. If you wish to change the default interval value, i.e. you can add <code>-e INTERVAL=120</code> variable in ExecStart section for 120 seconds.</p>
+<p>When we check the Docker processes with <code class="highlighter-rouge">docker ps</code>, we should see that our service is running. By default, it should check IP addresses every minute. If you wish to change the default interval value, i.e. you can add <code class="highlighter-rouge">-e INTERVAL=120</code> variable in ExecStart section for 120 seconds.</p>
 
 <p>You can easily create an upstart script for upstart using distros.</p>
 
@@ -120,10 +120,10 @@ sudo service start docker-dns</code></pre></div>
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/how-to-create-a-dynamic-dns-server-using-cloudflare/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/how-to-create-a-dynamic-dns-server-using-cloudflare/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -172,7 +172,7 @@ sudo service start docker-dns</code></pre></div>
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

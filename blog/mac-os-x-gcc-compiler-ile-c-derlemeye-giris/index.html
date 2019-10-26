@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/mac-os-x-gcc-compiler-ile-c-derlemeye-giris/">
+    <link rel="canonical" href="http://localhost:4000/blog/mac-os-x-gcc-compiler-ile-c-derlemeye-giris/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -57,20 +57,20 @@
 
 <p>Programımız konsoldan bizi selamlayan basit bir program olacak :</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">vim hello.cpp</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">vim hello.cpp</code></pre></figure>
 
 <p>komutu ile populer vim editöründe “hello.cpp” dosyasını oluşturduk. Dosyaya kayıt ekleyebilmek için klavyenizden “i” karakterine basmanız gerekiyor.</p>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;iostream&gt;</span>
-<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;iostream&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="kt">char</span> <span class="o">*</span><span class="n">isim</span><span class="p">;</span>
-    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;İsminizi yazın: &quot;</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"İsminizi yazın: "</span><span class="p">;</span>
     <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">isim</span><span class="p">;</span>
-    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Merhaba &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">isim</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Merhaba "</span> <span class="o">&lt;&lt;</span> <span class="n">isim</span><span class="p">;</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Değişiklikleri kaydedip çıkmak için vim editörünüzde sırayla "esc", ":", "x" komutlarını girerek değişiklikleri kaydedip çıkabilirsiniz.</p>
 <pre lang="bash">gcc -o hello hello.cpp -lstdc++</pre>
@@ -92,10 +92,10 @@
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/mac-os-x-gcc-compiler-ile-c-derlemeye-giris/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/mac-os-x-gcc-compiler-ile-c-derlemeye-giris/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -144,7 +144,7 @@
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

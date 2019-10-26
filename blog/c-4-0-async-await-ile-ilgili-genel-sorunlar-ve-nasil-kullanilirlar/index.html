@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/c-4-0-async-await-ile-ilgili-genel-sorunlar-ve-nasil-kullanilirlar/">
+    <link rel="canonical" href="http://localhost:4000/blog/c-4-0-async-await-ile-ilgili-genel-sorunlar-ve-nasil-kullanilirlar/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -59,24 +59,24 @@
 
 <p>Daha sonra “<em>This async method lacks ‘await’ operators and will run synchronously. Consider using the ‘await’ operator to await non-blocking API calls, or ‘await Task.Run(…)’ to do CPU-bound work on a background thread” </em> uyarısını almanız olası. Bu async ile tanımladığınız bir metotda await bulamadığını dolayısı ile kodunuzun asenkron değil de senkron çalışacağını belirtiyor. Bu şu demek eğer metodumuzu oluştururken async olarak tanımladıysak muhakkak içinde await geçmeli. Aşağıdaki örneklerde görebilirsiniz.</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Login</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Login</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="kt">string</span> <span class="n">Email</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
     <span class="k">public</span> <span class="kt">string</span> <span class="n">Parola</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Login isimli bir sınıf tanımladık. Bunu birden fazla parametreyi paket halinde asenkron metodumuza sokmak için kullanmak üzere örnek olarak oluşturdum</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">KontrolEt</span><span class="p">(</span><span class="n">Login</span> <span class="n">grs</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">KontrolEt</span><span class="p">(</span><span class="n">Login</span> <span class="n">grs</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="n">DataContext</span> <span class="n">db</span> <span class="p">=</span> <span class="k">new</span> <span class="n">DataContext</span><span class="p">();</span>
-  <span class="n">Task</span> <span class="n">myTask</span> <span class="p">=</span> <span class="n">Task</span><span class="p">.</span><span class="n">Factory</span><span class="p">.</span><span class="n">StartNew</span><span class="p">(</span><span class="k">new</span> <span class="n">Func</span><span class="p">(()</span> <span class="p">=&gt;</span>
+  <span class="n">DataContext</span> <span class="n">db</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DataContext</span><span class="p">();</span>
+  <span class="n">Task</span> <span class="n">myTask</span> <span class="p">=</span> <span class="n">Task</span><span class="p">.</span><span class="n">Factory</span><span class="p">.</span><span class="nf">StartNew</span><span class="p">(</span><span class="k">new</span> <span class="nf">Func</span><span class="p">(()</span> <span class="p">=&gt;</span>
   <span class="p">{</span>
-    <span class="k">return</span> <span class="n">db</span><span class="p">.</span><span class="n">Users</span><span class="p">.</span><span class="n">Any</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Email</span><span class="p">.</span><span class="n">ToLower</span><span class="p">()</span> <span class="p">==</span> <span class="n">grs</span><span class="p">.</span><span class="n">Email</span><span class="p">.</span><span class="n">ToLower</span><span class="p">()</span> <span class="p">&amp;&amp;</span> <span class="n">x</span><span class="p">.</span><span class="n">Password</span> <span class="p">==</span> <span class="n">grs</span><span class="p">.</span><span class="n">Parola</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">db</span><span class="p">.</span><span class="n">Users</span><span class="p">.</span><span class="nf">Any</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Email</span><span class="p">.</span><span class="nf">ToLower</span><span class="p">()</span> <span class="p">==</span> <span class="n">grs</span><span class="p">.</span><span class="n">Email</span><span class="p">.</span><span class="nf">ToLower</span><span class="p">()</span> <span class="p">&amp;&amp;</span> <span class="n">x</span><span class="p">.</span><span class="n">Password</span> <span class="p">==</span> <span class="n">grs</span><span class="p">.</span><span class="n">Parola</span><span class="p">);</span>
     <span class="p">}));</span>
 
     <span class="k">return</span> <span class="k">await</span> <span class="n">myTask</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
+  <span class="p">}</span></code></pre></figure>
 
 <p>Burada KontrolEt isimli asenkron bir metot oluşturduk. Metodumuza Login sınıfından giriş bilgilerini veritabanından sorgu yapmak için kullanacağız.</p>
 <p>private async void Button_Click_1(object sender, RoutedEventArgs e)</p>
@@ -91,7 +91,7 @@
 <li>async ile işaretlenmiş bir metot yalnıza void, Task ve Task&lt;T&gt; dönüş tiplerine sahip olabilir.</li>
 <li>async ile işaretlenmiş bir metot birden fazla await içerebilir.<strong><br />
 Kaynaklar:<br />
-</strong>
+</strong>&lt;/p&gt;
 <ol>
 <li><strong>http://msdn.microsoft.com/en-us/library/vstudio/hh191443.aspx<br />
 </strong></li>
@@ -106,10 +106,10 @@ Kaynaklar:<br />
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/c-4-0-async-await-ile-ilgili-genel-sorunlar-ve-nasil-kullanilirlar/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/c-4-0-async-await-ile-ilgili-genel-sorunlar-ve-nasil-kullanilirlar/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -158,7 +158,7 @@ Kaynaklar:<br />
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

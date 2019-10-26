@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/knockoutjs-kutuphanesine-hizli-bir-giris/">
+    <link rel="canonical" href="http://localhost:4000/blog/knockoutjs-kutuphanesine-hizli-bir-giris/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -59,61 +59,61 @@
 
 <p>Öncelikle JavaScript ile bir ViewModel Oluşturalım :</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">viewModel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">viewModel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">postList</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">mapping</span><span class="p">.</span><span class="nx">fromJS</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">isEmpty</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">observable</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">posts</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="kc">false</span><span class="p">);</span> <span class="c1">// Gelen veri boş mu dolu mu kontrol ediyoruz</span>
-<span class="p">};</span></code></pre></div>
+  <span class="k">this</span><span class="p">.</span><span class="nx">isEmpty</span> <span class="o">=</span> <span class="nx">ko</span><span class="p">.</span><span class="nx">observable</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">posts</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">?</span> <span class="kc">true</span> <span class="p">:</span> <span class="kc">false</span><span class="p">);</span> <span class="c1">// Gelen veri boş mu dolu mu kontrol ediyoruz</span>
+<span class="p">};</span></code></pre></figure>
 
 <p>Ajax ile verimizi çekiyoruz</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
-    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/JSON/RecentPosts&#39;</span><span class="p">,</span>
-    <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-    <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="na">url</span><span class="p">:</span> <span class="s1">'/JSON/RecentPosts'</span><span class="p">,</span>
+    <span class="na">type</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span>
+    <span class="na">success</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
       <span class="kd">var</span> <span class="nx">vm</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">viewModel</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
       <span class="nx">ko</span><span class="p">.</span><span class="nx">mapping</span><span class="p">.</span><span class="nx">fromJS</span><span class="p">(</span><span class="nx">vm</span><span class="p">.</span><span class="nx">postList</span><span class="p">);</span>
       <span class="nx">ko</span><span class="p">.</span><span class="nx">applyBindings</span><span class="p">(</span><span class="nx">vm</span><span class="p">);</span> <span class="c1">//Gerekli bağlamaları yaptık</span>
     <span class="p">}</span>
   <span class="p">});</span>
-<span class="p">});</span></code></pre></div>
+<span class="p">});</span></code></pre></figure>
 
 <p>Aşağıdaki html MVVM modelinin view kısmını temsil etmektedir.</p>
 
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
-  <span class="nt">&lt;li&gt;</span>Son Gönderiler <span class="nt">&lt;span&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/Posts/&quot;</span><span class="nt">&gt;</span>Hepsini Gör<span class="nt">&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;</span>
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Son Gönderiler <span class="nt">&lt;span&gt;&lt;a</span> <span class="na">href=</span><span class="s">"/Posts/"</span><span class="nt">&gt;</span>Hepsini Gör<span class="nt">&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;</span>
 <span class="nt">&lt;/ul&gt;</span>
 <span class="c">&lt;!-- ko if: isEmpty --&gt;</span>
 <span class="nt">&lt;ul&gt;</span>
-  <span class="nt">&lt;li&gt;</span>Kayıtlı Gönderi Bulunamadı <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;link&quot;</span> <span class="na">href=</span><span class="s">&quot;/Posts/Create/&quot;</span><span class="nt">&gt;</span>Add your first recipient<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Kayıtlı Gönderi Bulunamadı <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"link"</span> <span class="na">href=</span><span class="s">"/Posts/Create/"</span><span class="nt">&gt;</span>Add your first recipient<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
 <span class="nt">&lt;/ul&gt;</span>
 <span class="c">&lt;!-- /ko --&gt;</span>
 <span class="c">&lt;!-- ko else --&gt;</span>
 <span class="c">&lt;!-- ko foreach: postList.posts --&gt;</span>
 <span class="nt">&lt;ul&gt;</span>
   <span class="nt">&lt;li&gt;</span>
-<span class="nt">&lt;p</span> <span class="na">data-bind=</span><span class="s">&quot;text: PostTitle&quot;</span><span class="nt">&gt;&lt;/p&gt;</span>
-<span class="nt">&lt;span&gt;&lt;a</span> <span class="na">class=</span><span class="s">&quot;link&quot;</span> <span class="na">data-bind=</span><span class="s">&quot;attr: { href: &#39;/Posts/View/&#39; + PostID() }&quot;</span><span class="nt">&gt;</span>Read More<span class="nt">&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">data-bind=</span><span class="s">"text: PostTitle"</span><span class="nt">&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;span&gt;&lt;a</span> <span class="na">class=</span><span class="s">"link"</span> <span class="na">data-bind=</span><span class="s">"attr: { href: '/Posts/View/' + PostID() }"</span><span class="nt">&gt;</span>Read More<span class="nt">&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;</span>
 <span class="nt">&lt;/ul&gt;</span>
 <span class="c">&lt;!-- /ko --&gt;</span>
-<span class="c">&lt;!-- /ko --&gt;</span></code></pre></div>
+<span class="c">&lt;!-- /ko --&gt;</span></code></pre></figure>
 
 <p>Örnek veri ile deneme yapabileceğiniz modifiye edilmiş basit bir örneği JSFiddle üzerinde verdim. Buyrun linki :
 <a href="http://jsfiddle.net/rgdJm/">http://jsfiddle.net/rgdJm/</a></p>
 
 <p>Örnek JSON:</p>
 
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="nt">&quot;posts&quot;</span><span class="p">:[{</span><span class="nt">&quot;PostID&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&quot;PostTitle&quot;</span><span class="p">:</span><span class="s2">&quot;Merhaba&quot;</span><span class="p">},{</span><span class="nt">&quot;PostID&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&quot;PostTitle&quot;</span><span class="p">:</span><span class="s2">&quot;Hello&quot;</span><span class="p">},{</span><span class="nt">&quot;PostID&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="nt">&quot;PostTitle&quot;</span><span class="p">:</span><span class="s2">&quot;Hej&quot;</span><span class="p">}]}</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="s2">"posts"</span><span class="p">:[{</span><span class="s2">"PostID"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s2">"PostTitle"</span><span class="p">:</span><span class="s2">"Merhaba"</span><span class="p">},{</span><span class="s2">"PostID"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="s2">"PostTitle"</span><span class="p">:</span><span class="s2">"Hello"</span><span class="p">},{</span><span class="s2">"PostID"</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="s2">"PostTitle"</span><span class="p">:</span><span class="s2">"Hej"</span><span class="p">}]}</span></code></pre></figure>
 
 
           </article>
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/knockoutjs-kutuphanesine-hizli-bir-giris/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/knockoutjs-kutuphanesine-hizli-bir-giris/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -162,7 +162,7 @@
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

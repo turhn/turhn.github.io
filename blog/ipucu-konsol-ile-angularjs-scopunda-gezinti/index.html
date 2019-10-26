@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="0emXjEbk_ZIziWSlcEWaCEaOIivGlP2tiGnQPLvZKNE" />
-    <title>Ruby ve Shell ile kolay yoldan web server</title>
+    <title>İpucu : Konsol ile angular.js scope'unda gezinti</title>
     
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="http://localhost:4000/blog/ruby-ve-komut-satiri-ile-localhost/">
+    <link rel="canonical" href="http://localhost:4000/blog/ipucu-konsol-ile-angularjs-scopunda-gezinti/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
@@ -38,61 +38,57 @@
 
         <div class="post">
           <header class="post-header">
-            <h1 class="post-title">Ruby ve Shell ile kolay yoldan web server</h1>
-            <div class="post-meta">Dec 26, 2014
+            <h1 class="post-title">İpucu : Konsol ile angular.js scope'unda gezinti</h1>
+            <div class="post-meta">Sep 3, 2014
             <div>
               
               <a class="post-category" href="/tag/İpucu">İpucu</a>
               
-              <a class="post-category" href="/tag/Ruby">Ruby</a>
+              <a class="post-category" href="/tag/JavaScript">JavaScript</a>
               
-              <a class="post-category" href="/tag/Komut Satırı">Komut Satırı</a>
+              <a class="post-category" href="/tag/AngularJs">AngularJs</a>
               
             </div>
             </div>
           </header>
 
           <article class="post-content">
-            <p>Ruby ve Python gibi betik dilleri hayatımızı kolaylaştıran çok önemli
-yardımcılarımız. Özellikle Ruby dili mutluluğumuzu daim eden sevdiceğimiz. Şimdi
-size Ruby dili ve küçük bir shell komutu yardımıyla 1 saniyeden kısa sürede
-aktif olan yerel bir web sunucusu nasıl yapılır onu gösteriyorum. Tabiki bunu
-yapabilmek için Linux, BSD ya da OS X gibi *nix tabanlı bir işletim sistemi kullanmalısınız.</p>
+            <p>Angular.js ile geliştirdiğimiz uygulamalarda bazen <em>controller</em> üzerinden gelen
+veriye view’ın nasıl tepki vereceğini kestiremediğimiz oluyor. Live edit özellikli
+bir geliştirme ortamınız yoksa controller koduna girip $scope değişkenlerini
+düzenleyerek uygulamamızın nasıl tepki gösterdiği gözlemlemeniz gerekebilir.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Komut satırından bu kodu girdiğimizde bize hangi shell programını kullandığımızı söyleyecek</span>
-<span class="nb">echo</span> <span class="nv">$SHELL</span>
-<span class="c"># Bendeki durumda /bin/zsh</span></code></pre></figure>
+<p>Örneğin sayfanızın bir bölümü ng-show ve/veya ng-hide direktifleriyle <em>controller</em>‘daki
+bir veri kaynağına veya bir fonksiyonun sonucuna bağlı olsun. Bu değer değiştiğinde
+sayfanızdaki ilgili kısmın gösterildiğinde ya da gizlendiğinde ne olacağını gözlemlemek
+istiyorsunuz.</p>
 
-<p>Komut satırının verdiği sonuca göre hangi shell kullanıldığını öğrendiğimize göre sıra o shell
-programının ayar dosyasına gerekli alias eklemesini yapacağız.</p>
+<p>Ya da en iyisi örneği boş verin burada hayatta aklıma gelmeyecek bir sebepten dolayı scope’a
+dışarıdan müdahale etmek istiyorsunuz diyelim :)</p>
 
-<p>Bu durumda zsh kullananlar için ~/.zshrc ve bash kullananlar için ise ~/.bashrc dosyalarının altına
-aşağıdaki satırı giriniz.</p>
+<p>Tarayıcının konsolunu açıp :</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">alias </span><span class="nv">servehere</span><span class="o">=</span><span class="s1">'ruby -run -ehttpd . -p8000'</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">scope</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">element</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">'.secilecek-eleman'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]).</span><span class="nx">scope</span><span class="p">()</span></code></pre></figure>
 
-<p>Kaydedip çıktıktan sonra statik html dosyalarınızın olduğu klasöre konsoldan girip:</p>
+<p>burada JQuery ile seçim yaptım ama isterseniz <code class="highlighter-rouge">document.getElementById()</code> gibi
+native JS kodu ile de seçebilirsiniz. <em>Dikkat etmeniz gereken nokta: ng-controller
+tagları arasında bir eleman seçmeniz gerekiyor.</em></p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Örn cd ~/project/template</span>
-servehere</code></pre></figure>
+<p><code class="highlighter-rouge">scope.model_name = "abc"</code> şeklinde veya daha da alt özellikler için <code class="highlighter-rouge">scope.model_name.ozellik = "xyz"</code>
+şeklinde istediğiniz gibi <em>scope</em> ile oynayabilirsiniz.</p>
 
-<p>komutunu girin. Eğer böyle bir komut bulunamadığına dair hata alırsanız:</p>
+<p>Fakat bir şey kaldı; dışardan yaptığımız bu müdahaleyi onaylamak:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">rehash</code></pre></figure>
-
-<p>komutuyla tekrar deneyin. Eğer yine hata alırsanız konsol penceresini kapatıp tekrar açarak deneyin. :)</p>
-
-<p>Tarayıcınızın penceresinden http://localhost:8000 adresine girerek statik html dosyalarınızı hatta JavaScript ile Ajax Sorgularınızı test edebilirsiniz.</p>
-
+<p><code class="highlighter-rouge">scope.$apply()</code> komutunu yazdığınızda yaptığınız değişikliğin sonucunu ekranda görebileceksiniz.</p>
 
           </article>
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/ruby-ve-komut-satiri-ile-localhost/" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/ipucu-konsol-ile-angularjs-scopunda-gezinti/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="/blog/ruby-ve-komut-satiri-ile-localhost/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/ipucu-konsol-ile-angularjs-scopunda-gezinti/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>

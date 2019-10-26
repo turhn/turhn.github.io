@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/c-asp-net-icin-data-cache/">
+    <link rel="canonical" href="http://localhost:4000/blog/c-asp-net-icin-data-cache/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -53,17 +53,17 @@
           <article class="post-content">
             <p>Her ne kadar seçmiş olduğum başlık ASP.NET içersede bu yapıyı WPF, WinForms, WindowsServices, ASP.NET MVC gibi .NET ‘in hakim olduğu heryerde kullanabileceğinizi öncelikle belirtmek isterim. İnternet sitelerimizi OutputCache ile önbelleğe aldık ancak sık sık veritabanından aynı veriyi çekmek veya IO işlemleri gerçekleştirmek ciddi performans problemlerine sebep oluyor. Bunu aşmak için verileri önbelleğe almak oldukça geçerli bir çözümdür. .NET kütüphanesindeki ObjectCache sınıfı bu işin biçilmiş kaftandır. Bu yazımda sizlere ObjectCache sınıfını kullanarak veriönbellekme işlemi gerçekleştirmek için kullanışlı bir yol sunmak istiyorum.</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">interface</span> <span class="n">ICacheProvider</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">interface</span> <span class="nc">ICacheProvider</span>
 <span class="p">{</span>
     <span class="kt">object</span> <span class="nf">Get</span><span class="p">(</span><span class="kt">string</span> <span class="n">key</span><span class="p">);</span>
     <span class="k">void</span> <span class="nf">Set</span><span class="p">(</span><span class="kt">string</span> <span class="n">key</span><span class="p">,</span> <span class="kt">object</span> <span class="n">data</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cacheTime</span><span class="p">);</span>
     <span class="kt">bool</span> <span class="nf">IsSet</span><span class="p">(</span><span class="kt">string</span> <span class="n">key</span><span class="p">);</span>
     <span class="k">void</span> <span class="nf">Invalidate</span><span class="p">(</span><span class="kt">string</span> <span class="n">key</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Önbelleğe yazma, okuma, kontrol etme ve silme için metotları tanımlayan bir arayüz oluşturduk. Geriye bu metotları miras alan bir DataCacheProvider sınıfı yazmak kaldı.</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">DataCacheProvider</span> <span class="p">:</span> <span class="n">ICacheProvider</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">DataCacheProvider</span> <span class="p">:</span> <span class="n">ICacheProvider</span>
 <span class="p">{</span>
     <span class="k">private</span> <span class="n">ObjectCache</span> <span class="n">Cache</span> <span class="p">{</span> <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">MemoryCache</span><span class="p">.</span><span class="n">Default</span><span class="p">;</span> <span class="p">}</span> <span class="p">}</span>
     <span class="c1">///</span>
@@ -87,9 +87,9 @@
 
     <span class="k">public</span> <span class="k">void</span> <span class="nf">Set</span><span class="p">(</span><span class="kt">string</span> <span class="n">key</span><span class="p">,</span> <span class="kt">object</span> <span class="n">data</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cacheTime</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">CacheItemPolicy</span> <span class="n">policy</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CacheItemPolicy</span><span class="p">();</span>
-        <span class="n">policy</span><span class="p">.</span><span class="n">AbsoluteExpiration</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span> <span class="p">+</span> <span class="n">TimeSpan</span><span class="p">.</span><span class="n">FromMinutes</span><span class="p">(</span><span class="n">cacheTime</span><span class="p">);</span>
-        <span class="n">Cache</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">CacheItem</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span> <span class="n">policy</span><span class="p">);</span>
+        <span class="n">CacheItemPolicy</span> <span class="n">policy</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">CacheItemPolicy</span><span class="p">();</span>
+        <span class="n">policy</span><span class="p">.</span><span class="n">AbsoluteExpiration</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span> <span class="p">+</span> <span class="n">TimeSpan</span><span class="p">.</span><span class="nf">FromMinutes</span><span class="p">(</span><span class="n">cacheTime</span><span class="p">);</span>
+        <span class="n">Cache</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="k">new</span> <span class="nf">CacheItem</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span> <span class="n">policy</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="c1">///</span>
@@ -109,46 +109,46 @@
     <span class="c1">///Anahtar değerimiz</span>
     <span class="k">public</span> <span class="k">void</span> <span class="nf">Invalidate</span><span class="p">(</span><span class="kt">string</span> <span class="n">key</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">Cache</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+        <span class="n">Cache</span><span class="p">.</span><span class="nf">Remove</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Elimizde istediğimiz veriyi okuyup yazabileceğimiz bir önbellek sağlayımız olduğuna göre LinqToSql ile kullanabileceğimiz bir Repository olsa fena olmazdı.</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">CachedModelsRepository</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">CachedModelsRepository</span>
 <span class="p">{</span>
        <span class="k">protected</span> <span class="n">Entities</span> <span class="n">DataContext</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
        <span class="k">public</span> <span class="n">ICacheProvider</span> <span class="n">Cache</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
        <span class="k">public</span> <span class="nf">CachedModelsRepository</span><span class="p">()</span>
-            <span class="p">:</span><span class="k">this</span><span class="p">(</span><span class="k">new</span> <span class="n">DataCacheProvider</span><span class="p">())</span>
+            <span class="p">:</span><span class="k">this</span><span class="p">(</span><span class="k">new</span> <span class="nf">DataCacheProvider</span><span class="p">())</span>
         <span class="p">{</span>
 
         <span class="p">}</span>
 
         <span class="k">public</span> <span class="nf">CachedModelsRepository</span><span class="p">(</span><span class="n">ICacheProvider</span> <span class="n">cacheProvider</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="n">DataContext</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Entities</span><span class="p">();</span> <span class="c1">//EntityFramework</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">DataContext</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Entities</span><span class="p">();</span> <span class="c1">//EntityFramework</span>
             <span class="k">this</span><span class="p">.</span><span class="n">Cache</span> <span class="p">=</span> <span class="n">cacheProvider</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">public</span> <span class="n">List</span> <span class="nf">Currencies</span><span class="p">()</span>
         <span class="p">{</span>
-            <span class="n">List</span> <span class="n">currencyData</span> <span class="p">=</span> <span class="n">Cache</span><span class="p">.</span><span class="n">Get</span><span class="p">(</span><span class="s">&quot;Currencies&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">List</span><span class="p">;</span>
+            <span class="n">List</span> <span class="n">currencyData</span> <span class="p">=</span> <span class="n">Cache</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">"Currencies"</span><span class="p">)</span> <span class="k">as</span> <span class="n">List</span><span class="p">;</span>
             <span class="k">if</span><span class="p">(</span><span class="n">currencyData</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
             <span class="p">{</span>
-                <span class="n">currencyData</span> <span class="p">=</span> <span class="n">DataContext</span><span class="p">.</span><span class="n">Currencies</span><span class="p">.</span><span class="n">OrderBy</span><span class="p">(</span><span class="n">c</span><span class="p">=&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">c</span><span class="p">.</span><span class="n">CurrencyCode</span><span class="p">).</span><span class="n">ToList</span><span class="p">();</span>
-                <span class="k">if</span><span class="p">(</span><span class="n">currencyData</span><span class="p">.</span><span class="n">Any</span><span class="p">())</span>
+                <span class="n">currencyData</span> <span class="p">=</span> <span class="n">DataContext</span><span class="p">.</span><span class="n">Currencies</span><span class="p">.</span><span class="nf">OrderBy</span><span class="p">(</span><span class="n">c</span><span class="p">=&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">c</span><span class="p">.</span><span class="n">CurrencyCode</span><span class="p">).</span><span class="nf">ToList</span><span class="p">();</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">currencyData</span><span class="p">.</span><span class="nf">Any</span><span class="p">())</span>
                 <span class="p">{</span>
-                    <span class="n">Cache</span><span class="p">.</span><span class="n">Set</span><span class="p">(</span><span class="s">&quot;Currencies&quot;</span><span class="p">,</span> <span class="n">currencyData</span><span class="p">,</span> <span class="m">30</span><span class="p">);</span>
+                    <span class="n">Cache</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="s">"Currencies"</span><span class="p">,</span> <span class="n">currencyData</span><span class="p">,</span> <span class="m">30</span><span class="p">);</span>
                 <span class="p">}</span>
             <span class="p">}</span>
             <span class="k">return</span> <span class="n">currencyData</span><span class="p">;</span>
         <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Veritabanımızda Currency denen tabloyu önbelleğe aldık.  Currency() metodu List tipinde bir sonuç döndürüyor. İlk defa sorgu yaptığınızda 30 dakikalığına önbelleğe alıyor. Sonraki 30 dakika boyunca veritabanına sorgu yapmadan doğrudan önbellekten okuyoruz. Bu da bize müthiş bir performans avantajı veriyor.</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">ICachedModelRepository</span> <span class="n">Repository</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CachedModelsRepository</span><span class="p">();</span>
-<span class="n">Repository</span><span class="p">.</span><span class="n">Currencies</span><span class="p">().</span><span class="n">Where</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">CurrencyCode</span><span class="p">==</span><span class="n">_inputCurrencyCode</span><span class="p">).</span><span class="n">Select</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">CurrencyName</span><span class="p">).</span><span class="n">First</span><span class="p">();</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">ICachedModelRepository</span> <span class="n">Repository</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">CachedModelsRepository</span><span class="p">();</span>
+<span class="n">Repository</span><span class="p">.</span><span class="nf">Currencies</span><span class="p">().</span><span class="nf">Where</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">CurrencyCode</span><span class="p">==</span><span class="n">_inputCurrencyCode</span><span class="p">).</span><span class="nf">Select</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">CurrencyName</span><span class="p">).</span><span class="nf">First</span><span class="p">();</span></code></pre></figure>
 
 <p>Şeklinde bir kodlamayla önbelleğe alınmış veriler arasında sorgulama yapabilirsiniz.</p>
 
@@ -156,10 +156,10 @@
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/c-asp-net-icin-data-cache/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/c-asp-net-icin-data-cache/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -208,7 +208,7 @@
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

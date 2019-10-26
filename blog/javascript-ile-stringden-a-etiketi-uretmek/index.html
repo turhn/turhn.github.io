@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/javascript-ile-stringden-a-etiketi-uretmek/">
+    <link rel="canonical" href="http://localhost:4000/blog/javascript-ile-stringden-a-etiketi-uretmek/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -55,34 +55,34 @@
 
 <p>Kullanılışı:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">str</span><span class="p">.</span><span class="nx">link</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">str</span><span class="p">.</span><span class="nx">link</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span></code></pre></figure>
 
 <p>Burada parametre olarak girilen url <strong><em>&lt;a href=”“…</em></strong> href kısmı ve string’in kendisi ise linkin yazı kısmı olacak. Daha iyi anlamak için örnek vermek gerekirse:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="s2">&quot;Google&quot;</span><span class="p">.</span><span class="nx">link</span><span class="p">(</span><span class="s2">&quot;http://www.google.com&quot;</span><span class="p">);</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="s2">"Google"</span><span class="p">.</span><span class="nx">link</span><span class="p">(</span><span class="s2">"http://www.google.com"</span><span class="p">);</span></code></pre></figure>
 
 <p>Döndüreceği Değer:</p>
 
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://www.google.com&quot;</span><span class="nt">&gt;</span>Google<span class="nt">&lt;/a&gt;</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://www.google.com"</span><span class="nt">&gt;</span>Google<span class="nt">&lt;/a&gt;</span></code></pre></figure>
 
 <p>Daha başka örnekler:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="s2">&quot;Foo&quot;</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">barLink</span> <span class="o">=</span> <span class="s2">&quot;http://foobar.com&quot;</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="s2">"Foo"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">barLink</span> <span class="o">=</span> <span class="s2">"http://foobar.com"</span><span class="p">;</span>
 <span class="nb">document</span><span class="p">.</span><span class="nx">writeln</span><span class="p">(</span><span class="nx">foo</span><span class="p">.</span><span class="nx">link</span><span class="p">(</span><span class="nx">barLink</span><span class="p">));</span>
 
-<span class="c1">// &lt;a href=&quot;http://foobar.com&quot;&gt;Foo&lt;/a&gt;</span></code></pre></div>
+<span class="c1">// &lt;a href="http://foobar.com"&gt;Foo&lt;/a&gt;</span></code></pre></figure>
 
 <p>Veri kaynağından aşağıdaki json verisinin döndüğünü varsayarsak:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
-  <span class="s1">&#39;name&#39;</span><span class="o">:</span> <span class="s1">&#39;Turhan Coşkun&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;blog_url&#39;</span><span class="o">:</span> <span class="s1">&#39;http://turhancoskun.com&#39;</span>
-<span class="p">}</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
+  <span class="s1">'name'</span><span class="p">:</span> <span class="s1">'Turhan Coşkun'</span><span class="p">,</span>
+  <span class="s1">'blog_url'</span><span class="p">:</span> <span class="s1">'http://turhancoskun.com'</span>
+<span class="p">}</span></code></pre></figure>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">&#39;/bloggers/foo&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#elem&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">link</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">blog_url</span><span class="p">));</span>
-<span class="p">});</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">'/bloggers/foo'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">'#elem'</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">link</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">blog_url</span><span class="p">));</span>
+<span class="p">});</span></code></pre></figure>
 
 <p>Kullanım alanına göre örnekler sayısız çoğaltılabilir.</p>
 
@@ -93,10 +93,10 @@
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/javascript-ile-stringden-a-etiketi-uretmek/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/javascript-ile-stringden-a-etiketi-uretmek/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -145,7 +145,7 @@
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

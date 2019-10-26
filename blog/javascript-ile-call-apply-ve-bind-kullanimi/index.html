@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/javascript-ile-call-apply-ve-bind-kullanimi/">
+    <link rel="canonical" href="http://localhost:4000/blog/javascript-ile-call-apply-ve-bind-kullanimi/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -51,12 +51,12 @@
           </header>
 
           <article class="post-content">
-            <p>Merhaba, sizlere JavaScript’te kullanılan <code>call()</code>, <code>apply()</code> ve <code>bind()</code> fonksiyonlarından ve hayatımızı nasıl kolaylaştırdıklarından bahsetmek istiyorum.</p>
+            <p>Merhaba, sizlere JavaScript’te kullanılan <code class="highlighter-rouge">call()</code>, <code class="highlighter-rouge">apply()</code> ve <code class="highlighter-rouge">bind()</code> fonksiyonlarından ve hayatımızı nasıl kolaylaştırdıklarından bahsetmek istiyorum.</p>
 
 <p>JavaScript, her ne kadar çok çok iyi bildiğim bir dil olmasa da benim ilgilendiğim programlama dilleri içinde en zevkli bulduğum dil.
 Zaten bundan daha önceki yazılarımdan birinde bu sevgimden bahsettim sanıyorum.
 Yazıya başlamadan önce ayrıca belirtmek isterim ki JavaScript dünyadaki en yanlış anlaşılmış programlama dili olabilir.
-Ülkemizde bu konuda başarılı yazılımcılar olmasına rağmen yine de JavaScript deyince malesef hala çoğu arkadaşımızın aklına gelen JQuery ile iki <code>click</code> olayı bağlamak ya da birşeyleri <code>toggle</code>
+Ülkemizde bu konuda başarılı yazılımcılar olmasına rağmen yine de JavaScript deyince malesef hala çoğu arkadaşımızın aklına gelen JQuery ile iki <code class="highlighter-rouge">click</code> olayı bağlamak ya da birşeyleri <code class="highlighter-rouge">toggle</code>
 etmek oluyor.</p>
 
 <p>JavaScript gerçekten çok enterasan bir dil. JavaScript ile çok derli toplu projeler yapabileceğiniz gibi, işin ucunu kaçırıp
@@ -67,46 +67,46 @@ ve siz bir web geliştiricisi olarak JavaScript’i hakkıyla bilmezseniz basit 
 yükleme zamanlarıyla kullanıcılarınızı çıldırtabilirsiniz.</p>
 
 <p>JavaScript, hem nesneye dayalı(OOP) bir dil, hem de değil. Aslında bu biraz da sizin JavaScript’i nasıl kullandığınıza bağlı.
- JavaScript ile bir çok OOP konseptini yerine getirebiliriz ancak burada nesnelerimiz <code>class</code> olarak değil <code>function</code> olarak
+ JavaScript ile bir çok OOP konseptini yerine getirebiliriz ancak burada nesnelerimiz <code class="highlighter-rouge">class</code> olarak değil <code class="highlighter-rouge">function</code> olarak
  tanımlı olmak zorundalar. Bu da JavaScript’i ilginç ve kafa karıştırıcı yapan yönlerden birisi.
 Eğer herhangi bir nesneye dayalı bir programlama dili biliyorsanız yazıda bahsedeceğim; miras(inheritance) ve kurucu(constructor) gibi nesneye dayalı
- programlama terimlerine zaten aşina olmalısınız. JavaScript’in önemli farklılıklarından biri JS fonksiyonun gövde bloğu - yani <code>{</code> ve <code>}</code> arasında kalan kısımlar -
+ programlama terimlerine zaten aşina olmalısınız. JavaScript’in önemli farklılıklarından biri JS fonksiyonun gövde bloğu - yani <code class="highlighter-rouge">{</code> ve <code class="highlighter-rouge">}</code> arasında kalan kısımlar -
  nesnemizin kurucusunu oluşturuyor. İlk olarak bunu anlamak önemli.
-İkinci önemli farklılık ise, JavaScript’te nesneler arasındaki miras ilişkisini <code>prototype</code> nesnesi ile kuruyoruz. (NOT: ECMAScript6
+İkinci önemli farklılık ise, JavaScript’te nesneler arasındaki miras ilişkisini <code class="highlighter-rouge">prototype</code> nesnesi ile kuruyoruz. (NOT: ECMAScript6
 standardıyla module ve import gibi terimler de JS hayatımıza girecek olsalar da bu yazıyı yazdığım gün itibariyle henüz ES6 tamamlanmadı.)</p>
 
 <p>Size call, apply ve bind fonksiyonlarını anlatmadan önce context ve scope(kapsam) kavramlarını anlatmak istiyorum.</p>
 
-<h3 id="context-ve-scope">Context ve Scope</h3>
-<p>JavaScript’i tam anlamıyla anlamak için scope ve context gibi kavramları anlamak gerekir.
+<p>###Context ve Scope
+JavaScript’i tam anlamıyla anlamak için scope ve context gibi kavramları anlamak gerekir.
  Zaten bu kavramlar iyi anlaşılmazsa başlıkta bahsettiğim call, apply ve bind fonsiyonlarını anlamak pek mümkün olmaz.</p>
 
 <p>Öncelikle belirtmeliyim ki bir çok programcının zannettiği gibi context ve scope aynı şeyler değiller.
 Basitçe:</p>
 
-<p>context =&gt; <code>this</code> değeri ne ise context dediğimiz de odur.</p>
+<p>context =&gt; <code class="highlighter-rouge">this</code> değeri ne ise context dediğimiz de odur.</p>
 
 <p>scope =&gt; bir değişkenin programın hangi kısımlarında erişilebilir olduğu ya da değişkenin yer aldığı kapsam alanı.</p>
 
 <p>İki temel scope olduğunu söyleyebiliriz bunlar global scope ve yerel scope. Global scope’ta tanımladığımız bir değişken programın herhangi bir yerinden
 herhangi bir zaman erişilebilir durumdadır. Yerel scope ise sadece tanımlanan blok içinde etkindir.
-Bu blok bir döngü bloğu veya karar ifadesi bloğu olabilir (<code>for</code>, <code>while</code>, <code>switch</code>) ya da
+Bu blok bir döngü bloğu veya karar ifadesi bloğu olabilir (<code class="highlighter-rouge">for</code>, <code class="highlighter-rouge">while</code>, <code class="highlighter-rouge">switch</code>) ya da
 yerel scope’un geçerli olacağı blok, bir fonsiyonun gövde bloğu da olabilir.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//Global Scope</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//Global Scope</span>
 <span class="kd">function</span> <span class="nx">fun1</span><span class="p">(){</span>
   <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//Yerel Scope</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;a =&#39;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="s1">&#39;b =&#39;</span><span class="p">,</span> <span class="nx">b</span><span class="p">);</span> <span class="c1">// Çıktı : a = 1 b = 2 (Hem a hem de b değişkenleri erişilebilir durumda)</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'a ='</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="s1">'b ='</span><span class="p">,</span> <span class="nx">b</span><span class="p">);</span> <span class="c1">// Çıktı : a = 1 b = 2 (Hem a hem de b değişkenleri erişilebilir durumda)</span>
 <span class="p">}</span>
 <span class="nx">fun1</span><span class="p">()</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;a =&#39;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="s1">&#39;b =&#39;</span><span class="p">,</span> <span class="nx">b</span><span class="p">);</span> <span class="c1">// Çıktı : ReferenceError: b is not defined</span></code></pre></div>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'a ='</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="s1">'b ='</span><span class="p">,</span> <span class="nx">b</span><span class="p">);</span> <span class="c1">// Çıktı : ReferenceError: b is not defined</span></code></pre></figure>
 
 <p>Gördüğünüz gibi fonksiyonun dışında <em>b</em> değişkenine erişmek isterseniz hata alırsınız çünkü b değişkeni, fun1() fonksiyonunun yerel
 scope’unda tanımlı bir yerel değişken. <em>a</em> ise global scope’da ve programın her yerinde kullanılabilir.</p>
 
 <p>Daha da saçma bir <strong>Inception</strong> örneğiyle pekiştirmek istersek aşağıdaki gibi fonksiyonları iç içe yazabiliriz:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">fun1</span><span class="p">(){</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">fun1</span><span class="p">(){</span>
     <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
     <span class="nx">fun2</span><span class="p">();</span>
     <span class="kd">function</span> <span class="nx">fun2</span><span class="p">(){</span>
@@ -121,7 +121,7 @@ scope’unda tanımlı bir yerel değişken. <em>a</em> ise global scope’da ve
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
-<span class="nx">fun1</span><span class="p">();</span></code></pre></div>
+<span class="nx">fun1</span><span class="p">();</span></code></pre></figure>
 
 <p>Bu örnek içinde fonksiyon içinde fonksiyonlar tanımladık ve diğer tüm fonksiyonlar fun1 içinde tanımlı oldukları için
 fun2, fun3 ve fun4 ‘e fun1 in scope’unda ya da kapsamında diyebiliriz. Bu da şu demek oluyor; bütün bu alt kapsam
@@ -130,37 +130,50 @@ fonksiyonları ait oldukları üst kapsamın değişkenlerine erişebilirler.</p
 <p>Aslında burada anlatılacak o kadar çok şey var ki ben sadece call, apply ve bind fonksiyonlarını anlamak için yeterli olacağını
 düşündüğüm kadarına değindim.</p>
 
-<h3 id="call-ve-apply">Call ve Apply</h3>
-<p>Bu iki fonksiyonu aynı başlıkta toplamamın sebebi, ikisinin de aynı işi yapmaları ancak kullanım şekillerinde ufak bir fark olması.
+<p>###Call ve Apply
+Bu iki fonksiyonu aynı başlıkta toplamamın sebebi, ikisinin de aynı işi yapmaları ancak kullanım şekillerinde ufak bir fark olması.
 call ve apply her fonksiyona otomatik olarak miras edilir. Bunun sebebi JavaScript’in native kodundaki tanımlama şekilleridir.</p>
 
-<p><code>Function.prototype.call</code></p>
+<pre><code class="language-Function.prototype.call```">
+```Function.prototype.apply```
 
-<p><code>Function.prototype.apply</code></p>
+Call ve apply çağırdığımız sınıfın context'ini değiştirir ve sağladığımız argumanlarla kurucu fonksiyonu çalıştırırlar.
 
-<p>Call ve apply çağırdığımız sınıfın context’ini değiştirir ve sağladığımız argumanlarla kurucu fonksiyonu çalıştırırlar.</p>
+**Örnek :**
 
-<p><strong>Örnek :</strong></p>
+&lt;figure class="highlight"&gt;&lt;pre&gt;&lt;code class="language-javascript" data-lang="javascript"&gt;&lt;table class="rouge-table"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;pre class="lineno"&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+&lt;/pre&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;pre&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;Otomobil&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;model&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;renk&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;model&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;renk&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;renk&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;bmw&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;model&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;renk&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;Otomobil&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;model&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;renk&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;marka&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"bmw"&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nx"&gt;bmw&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;prototype&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;Object&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;Otomobil&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;prototype&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="lineno"> 1</span> <span class="kd">function</span> <span class="nx">Otomobil</span> <span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="nx">renk</span><span class="p">)</span> <span class="p">{</span>
-<span class="lineno"> 2</span>   <span class="k">this</span><span class="p">.</span><span class="nx">model</span> <span class="o">=</span> <span class="nx">model</span><span class="p">;</span>
-<span class="lineno"> 3</span>   <span class="k">this</span><span class="p">.</span><span class="nx">renk</span> <span class="o">=</span> <span class="nx">renk</span><span class="p">;</span>
-<span class="lineno"> 4</span>   <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
-<span class="lineno"> 5</span> <span class="p">}</span>
-<span class="lineno"> 6</span> <span class="kd">var</span> <span class="nx">bmw</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="nx">renk</span><span class="p">)</span> <span class="p">{</span>
-<span class="lineno"> 7</span>   <span class="nx">Otomobil</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">model</span><span class="p">,</span> <span class="nx">renk</span><span class="p">);</span>
-<span class="lineno"> 8</span>   <span class="k">this</span><span class="p">.</span><span class="nx">marka</span> <span class="o">=</span> <span class="s2">&quot;bmw&quot;</span><span class="p">;</span>
-<span class="lineno"> 9</span> <span class="p">}</span>
-<span class="lineno">10</span> <span class="nx">bmw</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Otomobil</span><span class="p">.</span><span class="nx">prototype</span><span class="p">)</span>
-<span class="lineno">11</span> 
-<span class="lineno">12</span> <span class="kd">var</span> <span class="nx">bmw316</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">bmw</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span> <span class="s1">&#39;siyah&#39;</span><span class="p">);</span>
-<span class="lineno">13</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">bmw316</span><span class="p">);</span></code></pre></div>
+&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;bmw316&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;bmw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2005&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'siyah'&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;bmw316&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-<p><strong>Beklenen Çıktı :</strong></p>
 
-<p><code>
-bmw {model: 2005, renk: "beyaz", marka: "bmw"}
-</code></p>
+**Beklenen Çıktı :**
+
+</code></pre>
+<p>bmw {model: 2005, renk: “beyaz”, marka: “bmw”}
+```</p>
 
 <div id="reklamlar">
 <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -176,21 +189,21 @@ satır satır olanları anlatmak istiyorum.</p>
 
 <ol>
   <li>
-    <p>Satır : Otomobil isimli kendini döndüren bir sınıf tasarladık. Burada dikkat etmemiz gereken, sınıf tanımımıza <code>function</code> tanımlayıcımız ile
+    <p>Satır : Otomobil isimli kendini döndüren bir sınıf tasarladık. Burada dikkat etmemiz gereken, sınıf tanımımıza <code class="highlighter-rouge">function</code> tanımlayıcımız ile
 başlamak. Bu sayede bu sınıfın prototype’ını başka sınıflardan miras alabiliriz.</p>
   </li>
   <li>
     <p>Satır : <em>bmw</em> isimli nesne oluşturduk. Bu nesneden başka nesneler miras almayacağımız için <em>var</em> ile tanımlamakta sakınca görmedim.</p>
   </li>
   <li>
-    <p>Satır : <em>Otomobil</em> sınıfının <code>call</code> fonksiyonunu <code>this</code>, <code>marka</code>, <code>renk</code> argümanlarıyla çağırdık.
-buradaki <code>this</code>, <em>bmw</em> nesnesi içinde olduğumuz için <em>bmw</em> context’ini işaret ediyor. <code>model</code> ve <code>renk</code> argümanları da
+    <p>Satır : <em>Otomobil</em> sınıfının <code class="highlighter-rouge">call</code> fonksiyonunu <code class="highlighter-rouge">this</code>, <code class="highlighter-rouge">marka</code>, <code class="highlighter-rouge">renk</code> argümanlarıyla çağırdık.
+buradaki <code class="highlighter-rouge">this</code>, <em>bmw</em> nesnesi içinde olduğumuz için <em>bmw</em> context’ini işaret ediyor. <code class="highlighter-rouge">model</code> ve <code class="highlighter-rouge">renk</code> argümanları da
 aynı şekilde <em>bmw</em> sınıfının 6. satırdaki parametreleri.
-<code>call</code> fonksiyonunun çağrılması tamamlandığında, <em>Otomobil</em> sınıfının kurucusu model ve renk parametreleri ile çağırılıp Otomobil sınıfının
+<code class="highlighter-rouge">call</code> fonksiyonunun çağrılması tamamlandığında, <em>Otomobil</em> sınıfının kurucusu model ve renk parametreleri ile çağırılıp Otomobil sınıfının
 context’indeki tanımlar (this.model, this.renk), bmw sınıfındaki aynı addaki alanların üzerine yazılıyor.</p>
   </li>
   <li>
-    <p>Satır : <em>bmw</em> sınıfının context’inde <code>marka</code> özelliğini “bmw” olarak belirledik.</p>
+    <p>Satır : <em>bmw</em> sınıfının context’inde <code class="highlighter-rouge">marka</code> özelliğini “bmw” olarak belirledik.</p>
   </li>
   <li>
     <p>Satır : <em>bmw</em> sınıfının, <em>Otomobil</em> sınıfının alt sınıfı olduğunu belirtlediğimiz satır. Yani <em>Otomobil</em> sınıfının özelliklerini
@@ -217,36 +230,37 @@ olduğunun düzgünce açıklandığında pek rastlamıyorum. O yüzden bu şeki
 Fark call fonksiyonu manuel olarak tek tek parametre girilmesine karşın, apply argümanları Array olarak istiyor.</p>
 
 <p>Yukarıdaki örnekte 7. satırı:
-<code>Otomobil.apply(this, [model, renk]);</code></p>
+<code class="highlighter-rouge">Otomobil.apply(this, [model, renk]);</code></p>
 
 <p>Olarak güncellerseniz aynı sonucu aldığınızı görürsünüz.</p>
 
-<h5 id="call-apply-ve-anonim-fonksiyonlar">Call, Apply ve Anonim Fonksiyonlar</h5>
-<p>JavaScript’in en <em>şeker</em> özelliklerinden birisi de şüphesiz anonim fonksiyonlar. Hani şu JQuery’de sürekli kullandığınız isimsiz
+<p>#####Call, Apply ve Anonim Fonksiyonlar
+ JavaScript’in en <em>şeker</em> özelliklerinden birisi de şüphesiz anonim fonksiyonlar. Hani şu JQuery’de sürekli kullandığınız isimsiz
  fonksiyonlar.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">unload</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"> <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">unload</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
    <span class="c1">//..</span>
- <span class="p">});</span></code></pre></div>
+ <span class="p">});</span>
+ </code></pre></figure>
 
-<p>İşte bu tarz anonim fonksiyonlar da <code>Function.prototype</code> ‘dan türedikleri için call ve apply fonksiyonlarını kullanabilirsiniz.</p>
+<p>İşte bu tarz anonim fonksiyonlar da <code class="highlighter-rouge">Function.prototype</code> ‘dan türedikleri için call ve apply fonksiyonlarını kullanabilirsiniz.</p>
 
 <p>Mozilla Developer Network’te konuyla ilgili <em>çokça</em> paylaşılan örneği veriyorum :</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">animals</span> <span class="o">=</span> <span class="p">[</span>
-  <span class="p">{</span><span class="nx">species</span><span class="o">:</span> <span class="s1">&#39;Lion&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;King&#39;</span><span class="p">},</span>
-  <span class="p">{</span><span class="nx">species</span><span class="o">:</span> <span class="s1">&#39;Whale&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Fail&#39;</span><span class="p">}</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">animals</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">{</span><span class="na">species</span><span class="p">:</span> <span class="s1">'Lion'</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="s1">'King'</span><span class="p">},</span>
+  <span class="p">{</span><span class="na">species</span><span class="p">:</span> <span class="s1">'Whale'</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="s1">'Fail'</span><span class="p">}</span>
 <span class="p">];</span>
 
 <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">animals</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
   <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">print</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;#&#39;</span> <span class="o">+</span> <span class="nx">i</span>  <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">species</span>
-                  <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'#'</span> <span class="o">+</span> <span class="nx">i</span>  <span class="o">+</span> <span class="s1">' '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">species</span>
+                  <span class="o">+</span> <span class="s1">': '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">print</span><span class="p">();</span>
   <span class="p">}).</span><span class="nx">call</span><span class="p">(</span><span class="nx">animals</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">i</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Programın işleyişini anlamak açısından gerçekten harika bir örnek. Bunu beyin cimnastiği olması için satır satır açıklamıyorum
 ama bu örnekle ilgili herhangi bir sorusu olan olursa seve seve cevaplarım.</p>
@@ -256,14 +270,14 @@ ama bu örnekle ilgili herhangi bir sorusu olan olursa seve seve cevaplarım.</p
 gelen bir özellik. Şu an anda bir çok tarayıcının kullandığı ECMAScript5 standardı ile hayatımıza girdi. Bilmiyorum hala bind()
 desteklemeyen tarayıcı kullanan amcalar var mıdır ama her ihtimale karşı :</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="s1">&#39;bind&#39;</span> <span class="k">in</span> <span class="nb">Function</span><span class="p">.</span><span class="nx">prototype</span><span class="p">)){</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="s1">'bind'</span> <span class="k">in</span> <span class="nb">Function</span><span class="p">.</span><span class="nx">prototype</span><span class="p">)){</span>
     <span class="nb">Function</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">bind</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
-        <span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span> <span class="nx">context</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">args</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span> <span class="nx">context</span> <span class="o">=</span> <span class="kr">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">args</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="kr">arguments</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
         <span class="k">return</span> <span class="kd">function</span><span class="p">(){</span>
-            <span class="k">return</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">)));</span>
+            <span class="k">return</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="kr">arguments</span><span class="p">)));</span>
         <span class="p">}</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Yukarıdaki kod ile uygulamanızın her koşulda bind() fonksiyonunu desteklemesini sağlayabilirsiniz. Aynı zamanda yukarıdaki
 koddan bind’ın arkaplanında yatan mantığı da anlayabiliriz.</p>
@@ -272,20 +286,20 @@ koddan bind’ın arkaplanında yatan mantığı da anlayabiliriz.</p>
 uygulayarak bize bir fonksiyon döndürüyor. Call-Apply anında çalışırken bind’in bize döndürdüğü fonksiyonu sonra çağırarak
 context’i değiştirme şansı buluyoruz.</p>
 
-<p>Bind’i uygulamadaki asıl amaç context’i değiştirmek yani farklı bir <code>this</code> uygulamak.</p>
+<p>Bind’i uygulamadaki asıl amaç context’i değiştirmek yani farklı bir <code class="highlighter-rouge">this</code> uygulamak.</p>
 
 <p>Bu sefer MSDN’den Basit bir örnek uygularsak :</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// orijinal fonksiyon tanımı</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// orijinal fonksiyon tanımı</span>
 <span class="kd">var</span> <span class="nx">checkNumericRange</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">value</span> <span class="o">!==</span> <span class="s1">&#39;number&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">value</span> <span class="o">!==</span> <span class="s1">'number'</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
     <span class="k">else</span>
         <span class="k">return</span> <span class="nx">value</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&lt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">maximum</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="c1">// Callback fonksiyonunda &#39;this&#39; olacak nesne</span>
-<span class="kd">var</span> <span class="nx">range</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">minimum</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">maximum</span><span class="o">:</span> <span class="mi">20</span> <span class="p">};</span>
+<span class="c1">// Callback fonksiyonunda 'this' olacak nesne</span>
+<span class="kd">var</span> <span class="nx">range</span> <span class="o">=</span> <span class="p">{</span> <span class="na">minimum</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="na">maximum</span><span class="p">:</span> <span class="mi">20</span> <span class="p">};</span>
 
 <span class="c1">// checkNumericRange fonksiyonunu bind ile bağla</span>
 <span class="kd">var</span> <span class="nx">boundCheckNumericRange</span> <span class="o">=</span> <span class="nx">checkNumericRange</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">range</span><span class="p">);</span>
@@ -294,11 +308,11 @@ context’i değiştirme şansı buluyoruz.</p>
 <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">boundCheckNumericRange</span> <span class="p">(</span><span class="mi">12</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 
-<span class="c1">// Çıktı: true</span></code></pre></div>
+<span class="c1">// Çıktı: true</span></code></pre></figure>
 
-<p>Yukarıdaki örnekte <code>checkNumericRange</code> fonksiyonunun context’i için <code>this.minimum</code> ve <code>this.maximum</code> özellikleri
+<p>Yukarıdaki örnekte <code class="highlighter-rouge">checkNumericRange</code> fonksiyonunun context’i için <code class="highlighter-rouge">this.minimum</code> ve <code class="highlighter-rouge">this.maximum</code> özellikleri
 tanımlanmamış dolayısıyla dışarıdan bir context yapıştırmamız gerekiyor. <em>range</em> nesnesi minimum ve maximum alanlarına sahip.
-<code>var boundCheckNumericRange = checkNumericRange.bind(range);</code> bu kod ile range nesnesini checkNumericRange fonksiyonuna
+<code class="highlighter-rouge">var boundCheckNumericRange = checkNumericRange.bind(range);</code> bu kod ile range nesnesini checkNumericRange fonksiyonuna
 context olarak yapıştırdık ve yeni bir değişkene fonksiyon tipinde atadık. Ve fonksiyonu uygun parametre ile çağırdığımızda
 sonuç karşımızda. :)</p>
 
@@ -310,10 +324,10 @@ sonuç karşımızda. :)</p>
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/javascript-ile-call-apply-ve-bind-kullanimi/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/javascript-ile-call-apply-ve-bind-kullanimi/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -362,7 +376,7 @@ sonuç karşımızda. :)</p>
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/newtonsoftjson-iin-custom-datetime-converter/">
+    <link rel="canonical" href="http://localhost:4000/blog/newtonsoftjson-iin-custom-datetime-converter/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -64,7 +64,7 @@
 
 <p>Sunucu ile yapılacak bilgi alışverişini serileştirecek custom sınıf:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">Newtonsoft.Json</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">Newtonsoft.Json.Converters</span><span class="p">;</span>
 
@@ -74,48 +74,48 @@
     <span class="p">{</span>
         <span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">WriteJson</span><span class="p">(</span><span class="n">JsonWriter</span> <span class="n">writer</span><span class="p">,</span> <span class="kt">object</span> <span class="k">value</span><span class="p">,</span> <span class="n">JsonSerializer</span> <span class="n">serializer</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="n">writer</span><span class="p">.</span><span class="n">WriteValue</span><span class="p">(((</span><span class="n">DateTime</span><span class="p">)</span> <span class="k">value</span><span class="p">).</span><span class="n">ToUniversalTime</span><span class="p">());</span>
+            <span class="n">writer</span><span class="p">.</span><span class="nf">WriteValue</span><span class="p">(((</span><span class="n">DateTime</span><span class="p">)</span> <span class="k">value</span><span class="p">).</span><span class="nf">ToUniversalTime</span><span class="p">());</span>
         <span class="p">}</span>
 
         <span class="k">public</span> <span class="k">override</span> <span class="kt">object</span> <span class="nf">ReadJson</span><span class="p">(</span><span class="n">JsonReader</span> <span class="n">reader</span><span class="p">,</span> <span class="n">Type</span> <span class="n">objectType</span><span class="p">,</span> <span class="kt">object</span> <span class="n">existingValue</span><span class="p">,</span>
             <span class="n">JsonSerializer</span> <span class="n">serializer</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="kt">var</span> <span class="n">dateStr</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
-            <span class="kt">var</span> <span class="n">parts</span> <span class="p">=</span> <span class="n">dateStr</span><span class="p">.</span><span class="n">Split</span><span class="p">(</span><span class="sc">&#39;/&#39;</span><span class="p">);</span>
-            <span class="k">return</span> <span class="k">new</span> <span class="nf">DateTime</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">ToInt32</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="m">2</span><span class="p">]),</span> <span class="n">Convert</span><span class="p">.</span><span class="n">ToInt32</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="m">1</span><span class="p">]),</span> <span class="n">Convert</span><span class="p">.</span><span class="n">ToInt32</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="m">0</span><span class="p">]));</span>
+            <span class="kt">var</span> <span class="n">dateStr</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="nf">ToString</span><span class="p">();</span>
+            <span class="kt">var</span> <span class="n">parts</span> <span class="p">=</span> <span class="n">dateStr</span><span class="p">.</span><span class="nf">Split</span><span class="p">(</span><span class="sc">'/'</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">DateTime</span><span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="nf">ToInt32</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="m">2</span><span class="p">]),</span> <span class="n">Convert</span><span class="p">.</span><span class="nf">ToInt32</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="m">1</span><span class="p">]),</span> <span class="n">Convert</span><span class="p">.</span><span class="nf">ToInt32</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="m">0</span><span class="p">]));</span>
         <span class="p">}</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Geriye artık web uygulamamızın Json’a veya Json’dan veri dönüşümlerinde bu sınıfı kullanabilmeleri için uygulamamıza sınıfı tanıtmak kalıyor.</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Register</span><span class="p">(</span><span class="n">HttpConfiguration</span> <span class="n">config</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Register</span><span class="p">(</span><span class="n">HttpConfiguration</span> <span class="n">config</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="c1">// Web API configuration and services</span>
 
   <span class="c1">// Web API routes</span>
-  <span class="n">config</span><span class="p">.</span><span class="n">MapHttpAttributeRoutes</span><span class="p">();</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">MapHttpAttributeRoutes</span><span class="p">();</span>
 
-  <span class="n">config</span><span class="p">.</span><span class="n">Routes</span><span class="p">.</span><span class="n">MapHttpRoute</span><span class="p">(</span>
-    <span class="n">name</span><span class="p">:</span> <span class="s">&quot;DefaultApi&quot;</span><span class="p">,</span>
-    <span class="n">routeTemplate</span><span class="p">:</span> <span class="s">&quot;api/{controller}/{id}&quot;</span><span class="p">,</span>
+  <span class="n">config</span><span class="p">.</span><span class="n">Routes</span><span class="p">.</span><span class="nf">MapHttpRoute</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="s">"DefaultApi"</span><span class="p">,</span>
+    <span class="n">routeTemplate</span><span class="p">:</span> <span class="s">"api/{controller}/{id}"</span><span class="p">,</span>
     <span class="n">defaults</span><span class="p">:</span> <span class="k">new</span> <span class="p">{</span> <span class="n">id</span> <span class="p">=</span> <span class="n">RouteParameter</span><span class="p">.</span><span class="n">Optional</span> <span class="p">}</span>
     <span class="p">);</span>
 
-    <span class="n">config</span><span class="p">.</span><span class="n">Formatters</span><span class="p">.</span><span class="n">JsonFormatter</span><span class="p">.</span><span class="n">SerializerSettings</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">CustomDateTimeConvertor</span><span class="p">());</span> <span class="c1">// &lt;-- Burada</span>
+    <span class="n">config</span><span class="p">.</span><span class="n">Formatters</span><span class="p">.</span><span class="n">JsonFormatter</span><span class="p">.</span><span class="n">SerializerSettings</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="k">new</span> <span class="nf">CustomDateTimeConvertor</span><span class="p">());</span> <span class="c1">// &lt;-- Burada</span>
     <span class="n">config</span><span class="p">.</span><span class="n">Formatters</span><span class="p">.</span><span class="n">JsonFormatter</span><span class="p">.</span><span class="n">SerializerSettings</span><span class="p">.</span><span class="n">ReferenceLoopHandling</span> <span class="p">=</span> <span class="n">ReferenceLoopHandling</span><span class="p">.</span><span class="n">Ignore</span><span class="p">;</span>
-    <span class="n">config</span><span class="p">.</span><span class="n">Formatters</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">GlobalConfiguration</span><span class="p">.</span><span class="n">Configuration</span><span class="p">.</span><span class="n">Formatters</span><span class="p">.</span><span class="n">XmlFormatter</span><span class="p">);</span>
-  <span class="p">}</span></code></pre></div>
+    <span class="n">config</span><span class="p">.</span><span class="n">Formatters</span><span class="p">.</span><span class="nf">Remove</span><span class="p">(</span><span class="n">GlobalConfiguration</span><span class="p">.</span><span class="n">Configuration</span><span class="p">.</span><span class="n">Formatters</span><span class="p">.</span><span class="n">XmlFormatter</span><span class="p">);</span>
+  <span class="p">}</span></code></pre></figure>
 
 
           </article>
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/newtonsoftjson-iin-custom-datetime-converter/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/newtonsoftjson-iin-custom-datetime-converter/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -164,7 +164,7 @@
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

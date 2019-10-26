@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/a-reactive-todo-application-with-spring-boot-2/">
+    <link rel="canonical" href="http://localhost:4000/blog/a-reactive-todo-application-with-spring-boot-2/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -89,7 +89,7 @@ Spring Web Flux will help us to build high throughput functional reactive micros
 
 <p>In order to make use of MongoDB’s async API’s, we need to enable the reactive MongoDB repositories. The default configuration will connect you to the local MongoDB instance on the default port.</p>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@EnableReactiveMongoRepositories</span>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@EnableReactiveMongoRepositories</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MongoDBConfiguration</span> <span class="kd">extends</span> <span class="n">AbstractReactiveMongoConfiguration</span> <span class="o">{</span>
 
     <span class="nd">@Bean</span>
@@ -100,15 +100,15 @@ Spring Web Flux will help us to build high throughput functional reactive micros
 
     <span class="nd">@Override</span>
     <span class="kd">protected</span> <span class="n">String</span> <span class="nf">getDatabaseName</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="s">&quot;reactive_todos&quot;</span><span class="o">;</span>
+        <span class="k">return</span> <span class="s">"reactive_todos"</span><span class="o">;</span>
     <span class="o">}</span>
-<span class="o">}</span></code></pre></div>
+<span class="o">}</span></code></pre></figure>
 
 <h2 id="model">Model</h2>
 
 <p>Our Todo model will consist of an id field, title, creation and completion dates and a boolean completion flag.</p>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Document</span>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Document</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Todo</span> <span class="o">{</span>
 
     <span class="nd">@Id</span>
@@ -123,14 +123,14 @@ Spring Web Flux will help us to build high throughput functional reactive micros
 
     <span class="c1">// Getters ...</span>
     <span class="c1">// Setters ...</span>
-<span class="o">}</span></code></pre></div>
+<span class="o">}</span>    </code></pre></figure>
 
 <p>You can check out Project Lombok in order to create clean data models. It can magically create constructors, getters, and setters.</p>
 
 <h2 id="data-layer">Data Layer</h2>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">TodoRepository</span> <span class="kd">extends</span> <span class="n">ReactiveCrudRepository</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">,</span> <span class="n">BigInteger</span><span class="o">&gt;</span> <span class="o">{</span>
-<span class="o">}</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">TodoRepository</span> <span class="kd">extends</span> <span class="n">ReactiveCrudRepository</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">,</span> <span class="n">BigInteger</span><span class="o">&gt;</span> <span class="o">{</span>
+<span class="o">}</span></code></pre></figure>
 
 <p>Creating this interface will magically generate common CRUD methods for us. The first generic argument is our domain model and the second is the type of the <em>@Id</em> annotated field. For MongoDB documents it can a String or a BigInteger.</p>
 
@@ -138,8 +138,8 @@ Spring Web Flux will help us to build high throughput functional reactive micros
 
 <p>The controller will be annotated with <em>@RestController</em>. Just like nonreactive rest applications.</p>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@RestController</span>
-<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&quot;/todos&quot;</span><span class="o">)</span>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/todos"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">TodoController</span> <span class="o">{</span>
   <span class="kd">private</span> <span class="n">TodoRepository</span> <span class="n">todoRepository</span><span class="o">;</span>
 
@@ -147,7 +147,7 @@ Spring Web Flux will help us to build high throughput functional reactive micros
   <span class="kd">public</span> <span class="nf">TodoController</span><span class="o">(</span><span class="n">TodoRepository</span> <span class="n">todoRepository</span><span class="o">)</span> <span class="o">{</span>
       <span class="k">this</span><span class="o">.</span><span class="na">todoRepository</span> <span class="o">=</span> <span class="n">todoRepository</span><span class="o">;</span>
   <span class="o">}</span>
-<span class="o">}</span></code></pre></div>
+<span class="o">}</span></code></pre></figure>
 
 <p>Spring can inject dependencies in a constructor without <em>@Autowired</em> annotation but I prefer to declaring it explicitly.</p>
 
@@ -155,27 +155,27 @@ Spring Web Flux will help us to build high throughput functional reactive micros
 
 <p>In order to create a To-Do, we will use the following method.</p>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@PostMapping</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">)</span>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@PostMapping</span><span class="o">(</span><span class="s">""</span><span class="o">)</span>
 <span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;</span> <span class="nf">create</span><span class="o">(</span><span class="nd">@RequestBody</span> <span class="n">Todo</span> <span class="n">todo</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">todo</span><span class="o">.</span><span class="na">setCreatedDate</span><span class="o">(</span><span class="k">new</span> <span class="nf">Date</span><span class="o">());</span>
+    <span class="n">todo</span><span class="o">.</span><span class="na">setCreatedDate</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">());</span>
     <span class="k">return</span> <span class="n">todoRepository</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">todo</span><span class="o">);</span>
-<span class="o">}</span></code></pre></div>
+<span class="o">}</span></code></pre></figure>
 
-<p>Start the application by using the IDE or from the command line with <code>mvn spring-boot:run</code> command.
+<p>Start the application by using the IDE or from the command line with <code class="highlighter-rouge">mvn spring-boot:run</code> command.
 Using the command line you can add some todos:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST -d <span class="s1">&#39;{&quot;title&quot;: &quot;Create a REST API&quot;}&#39;</span> http://localhost:8080/todos
-curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST -d <span class="s1">&#39;{&quot;title&quot;: &quot;Write a blog post&quot;}&#39;</span> http://localhost:8080/todos
-curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST -d <span class="s1">&#39;{&quot;title&quot;: &quot;Learn some Java and Functional Programming&quot;}&#39;</span> http://localhost:8080/todos</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">curl <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s1">'{"title": "Create a REST API"}'</span> http://localhost:8080/todos
+curl <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s1">'{"title": "Write a blog post"}'</span> http://localhost:8080/todos
+curl <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s1">'{"title": "Learn some Java and Functional Programming"}'</span> http://localhost:8080/todos</code></pre></figure>
 
 <h3 id="listing-all-todos">Listing all Todos</h3>
 
 <p>In order to list all todos, we will use the <em>Flux</em> class. Flux is just like <em>Mono</em> but there is a fundamental difference. A Mono can contain 0 or 1 elements in contrast to Flux can contain 0 to N elements. Flux is similar to a standard Java Stream or a List in that manner.</p>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@GetMapping</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">)</span>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@GetMapping</span><span class="o">(</span><span class="s">""</span><span class="o">)</span>
 <span class="kd">public</span> <span class="n">Flux</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;</span> <span class="nf">index</span><span class="o">()</span> <span class="o">{</span>
     <span class="k">return</span> <span class="n">todoRepository</span><span class="o">.</span><span class="na">findAll</span><span class="o">();</span>
-<span class="o">}</span></code></pre></div>
+<span class="o">}</span></code></pre></figure>
 
 <h3 id="filter-todos-by-title">Filter ToDos by Title</h3>
 
@@ -184,63 +184,63 @@ MongoDB database and return results as a Reactive Stream.</p>
 
 <p>Add the following line to TodoRepository.</p>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">Flux</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;</span> <span class="nf">findAllByTitleContains</span><span class="o">(</span><span class="kd">final</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">title</span><span class="o">);</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">Flux</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;</span> <span class="nf">findAllByTitleContains</span><span class="o">(</span><span class="kd">final</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">title</span><span class="o">);</span></code></pre></figure>
 
 <p><strong>Do not try to implement</strong> this method. Just leave it as it is. Spring data package will automatically implement the required method from the meaning.</p>
 
 <p>And add the following handler method to the controller.</p>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@GetMapping</span><span class="o">(</span><span class="s">&quot;search/title/{key}&quot;</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">Flux</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;</span> <span class="nf">findByTitle</span><span class="o">(</span><span class="nd">@PathVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;key&quot;</span><span class="o">)</span> <span class="n">String</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"search/title/{key}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">Flux</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;</span> <span class="nf">findByTitle</span><span class="o">(</span><span class="nd">@PathVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"key"</span><span class="o">)</span> <span class="n">String</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">return</span> <span class="n">todoRepository</span><span class="o">.</span><span class="na">findAllByTitleContains</span><span class="o">(</span><span class="n">Mono</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="n">key</span><span class="o">));</span>
-<span class="o">}</span></code></pre></div>
+<span class="o">}</span></code></pre></figure>
 
 <p>Now we can search Todos which contain the string in their titles.</p>
 
-<p><code>curl localhost:8080/todos/search/title/blog</code></p>
+<p><code class="highlighter-rouge">curl localhost:8080/todos/search/title/blog</code></p>
 
-<p><code>curl localhost:8080/todos/search/title/java</code></p>
+<p><code class="highlighter-rouge">curl localhost:8080/todos/search/title/java</code></p>
 
 <h3 id="completing-a-todo">Completing a ToDo</h3>
 
 <p>I have always liked the domain driven approach. So let’s add a complete method to our domain object.</p>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// Todo.java</span>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// Todo.java</span>
 <span class="kd">public</span> <span class="n">Todo</span> <span class="nf">complete</span><span class="o">()</span> <span class="o">{</span>
     <span class="k">this</span><span class="o">.</span><span class="na">setCompleted</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">setCompletedDate</span><span class="o">(</span><span class="k">new</span> <span class="nf">Date</span><span class="o">());</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">setCompletedDate</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">());</span>
     <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
-<span class="o">}</span></code></pre></div>
+<span class="o">}</span></code></pre></figure>
 
 <p>We need to add a handler method to our controller.</p>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@PatchMapping</span><span class="o">(</span><span class="s">&quot;complete/{id}&quot;</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;</span> <span class="nf">complete</span><span class="o">(</span><span class="nd">@PathVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;id&quot;</span><span class="o">)</span> <span class="n">BigInteger</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@PatchMapping</span><span class="o">(</span><span class="s">"complete/{id}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;</span> <span class="nf">complete</span><span class="o">(</span><span class="nd">@PathVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">)</span> <span class="n">BigInteger</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">return</span> <span class="n">todoRepository</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>
                          <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="nl">Todo:</span><span class="o">:</span><span class="n">complete</span><span class="o">)</span>
                          <span class="o">.</span><span class="na">flatMap</span><span class="o">(</span><span class="nl">todoRepository:</span><span class="o">:</span><span class="n">save</span><span class="o">);</span>
-<span class="o">}</span></code></pre></div>
+<span class="o">}</span></code></pre></figure>
 
 <p>As you see, we are following the functional programming fashion.</p>
 
 <p>In order to test the endpoint, you can use the following command.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X PATCH http://localhost:8080/todos/complete/27667845079056742421533148010</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">curl <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">-X</span> PATCH http://localhost:8080/todos/complete/27667845079056742421533148010</code></pre></figure>
 
 <p>Just do not forget to replace the id section with one of your own todo ids.</p>
 
 <h3 id="removing-a-todo">Removing a Todo</h3>
 
-<p>It is very similar what we have done in the previous example. We will use <code>flatMap</code> function to call the <code>delete</code> method of the reactive repository.</p>
+<p>It is very similar what we have done in the previous example. We will use <code class="highlighter-rouge">flatMap</code> function to call the <code class="highlighter-rouge">delete</code> method of the reactive repository.</p>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@DeleteMapping</span><span class="o">(</span><span class="s">&quot;{id}&quot;</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="nf">delete</span><span class="o">(</span><span class="nd">@PathVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;id&quot;</span><span class="o">)</span> <span class="n">BigInteger</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@DeleteMapping</span><span class="o">(</span><span class="s">"{id}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="nf">delete</span><span class="o">(</span><span class="nd">@PathVariable</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">)</span> <span class="n">BigInteger</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">return</span> <span class="n">todoRepository</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">).</span><span class="na">flatMap</span><span class="o">(</span><span class="nl">todoRepository:</span><span class="o">:</span><span class="n">delete</span><span class="o">);</span>
-<span class="o">}</span></code></pre></div>
+<span class="o">}</span></code></pre></figure>
 
 <p>For testing:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X DELETE http://localhost:8080/todos/27667845079056742421533148010</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">curl <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">-X</span> DELETE http://localhost:8080/todos/27667845079056742421533148010</code></pre></figure>
 
 <h2 id="summary">Summary</h2>
 
@@ -251,7 +251,7 @@ MongoDB database and return results as a Reactive Stream.</p>
 <div class="footnotes">
   <ol>
     <li id="fn:1">
-      <p>https://gist.github.com/staltz/868e7e9bc2a7b8c1f754 <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+      <p>https://gist.github.com/staltz/868e7e9bc2a7b8c1f754 <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>
@@ -260,10 +260,10 @@ MongoDB database and return results as a Reactive Stream.</p>
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/a-reactive-todo-application-with-spring-boot-2/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/a-reactive-todo-application-with-spring-boot-2/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -312,7 +312,7 @@ MongoDB database and return results as a Reactive Stream.</p>
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

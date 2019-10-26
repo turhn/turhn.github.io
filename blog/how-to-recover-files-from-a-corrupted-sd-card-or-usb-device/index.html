@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-device/">
+    <link rel="canonical" href="http://localhost:4000/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-device/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -64,7 +64,7 @@ checked the source code and it was surprisingly simple and comprehensive. I
 wanted to give a try on my father’s corrupted 2 GB SD card. He wanted to recover
 photos from his latest Balkans tour.</p>
 
-<h2 id="installation">Installation:</h2>
+<p>##Installation:</p>
 
 <p>Since the software is distributed as a source code form. We need to compile it.
 I use Mac and OS X and I already have all the required tools with my XBuild
@@ -72,22 +72,20 @@ setup.</p>
 
 <p>Firstly clone the repository:</p>
 
-<p>```
-git clone git://git.code.sf.net/p/sdrecover/git sdrecover-git</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git://git.code.sf.net/p/sdrecover/git sdrecover-git
 
-<p>cd sdrecover-git
-```</p>
+cd sdrecover-git
+</code></pre></div></div>
 
 <p>Then we need to compile it. It is not recommended installing the software in the
 documentation so we are just going to use the output of our build.</p>
 
-<h2 id="compile">Compile</h2>
+<p>##Compile</p>
 
-<p><code>
-xcodebuild
-</code></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xcodebuild
+</code></pre></div></div>
 
-<p><code>xcodebuild</code> command should compile the required executable files into the project
+<p><code class="highlighter-rouge">xcodebuild</code> command should compile the required executable files into the project
 path.</p>
 
 <p>The compiled tools are:</p>
@@ -99,32 +97,29 @@ path.</p>
   <li>sdsearch - searches for file signatures and other data structures</li>
 </ul>
 
-<p>I will use <code>jpgrecover</code> to save my father’s corrupted jpeg pictures.</p>
+<p>I will use <code class="highlighter-rouge">jpgrecover</code> to save my father’s corrupted jpeg pictures.</p>
 
-<p>When you run <code>./jpgrecover</code>, you should see that it is asking the missing ‘bad_cardimage.img’ to
+<p>When you run <code class="highlighter-rouge">./jpgrecover</code>, you should see that it is asking the missing ‘bad_cardimage.img’ to
 run. It is just a snapshot of your device. In order to get the snapshot, I am
 going to use the <em>dd</em> command. But the <em>dd</em> command requires an input source and an
 output target. The input source is going to be the device.</p>
 
-<p><code>
-diskutil list
-</code></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>diskutil list
+</code></pre></div></div>
 
 <p>Enter the command above to list the connected storage devices. We will see the path to the
-device. In my case, it is <code>/dev/disk2</code>. Literally, the output target is going to be
+device. In my case, it is <code class="highlighter-rouge">/dev/disk2</code>. Literally, the output target is going to be
 ‘bad_cardimage.img’ file.</p>
 
-<p><code>
-dd if=/dev/disk2 of=bad_cardimage.img
-</code></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dd if=/dev/disk2 of=bad_cardimage.img
+</code></pre></div></div>
 
 <p>Wait for a while to copy the entire device into the ‘bad_cardimage.img’ file.</p>
 
 <p>Once it is finished, you have to run:</p>
 
-<p><code>
-./jpgrecover
-</code></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./jpgrecover
+</code></pre></div></div>
 
 <p>Congratulations. You saved the day.</p>
 
@@ -132,10 +127,10 @@ dd if=/dev/disk2 of=bad_cardimage.img
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-device/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/how-to-recover-files-from-a-corrupted-sd-card-or-usb-device/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -184,7 +179,7 @@ dd if=/dev/disk2 of=bad_cardimage.img
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

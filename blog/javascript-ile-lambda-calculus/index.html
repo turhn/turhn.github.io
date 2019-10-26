@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/javascript-ile-lambda-calculus/">
+    <link rel="canonical" href="http://localhost:4000/blog/javascript-ile-lambda-calculus/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -55,12 +55,12 @@
 
 <p>Yazının bitiminde Lambda Calculus ile basit bir özyinelemeli(recursive) faktoriyel yazmış olacağız. Yazacak olduğumuz vanilya JavaScript faktoriyel kodu aşağıdaki gibidir:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">faktoriyel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">faktoriyel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">n</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">faktoriyel</span><span class="p">(</span><span class="nx">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Şimdi gelelim asıl konumuza:</p>
 
@@ -81,179 +81,179 @@
 
 <p>Lambda Calculus ile tek veri tipi aslında fonksiyonlardır. Sadece fonksiyon kullanarak değişken tanımı, <em>if</em> koşulları ve hesaplama yapacağız. Bir nevi JavaScript içinde ayrı bir fonksiyonel programlama dili çıkarmış olacağız.</p>
 
-<h3 id="lambda-fadeleri">Lambda İfadeleri</h3>
+<h3 id="lambda-i̇fadeleri">Lambda İfadeleri</h3>
 
 <p><strong>λx.x</strong> bu ifade basit bir lambda ifadesi olup JavaScript versiyonu basitçe aşağıdaki gibidir. λ işaretinden sonra gelen <em>x</em>, parametre ve ardından gelen <em>x</em> ise dönüş değeri olarak düşünülebilir.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
    <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Biraz daha karmaşığa doğru ilerlersek, JavaScript’te bulunan <em>closure</em> ve <em>scope</em> kavramlarını hatırlayalım. JavaScript’e çevireceğimiz lambda ifadesi <strong>λx.λ.y.x</strong> şeklinde. λ işaretinden sonra gelen <em>x</em>, parametredir ve ardından gelen başka bir lambda ifadesi ise fonksiyonun başka bir fonksiyon döndüreceğini gösteriyor.</p>
 
 <p><strong>λx.λ.x.y</strong></p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
   <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
-<h3 id="anonim-fonksiyonlarla-lemler">Anonim Fonksiyonlarla İşlemler</h3>
+<h3 id="anonim-fonksiyonlarla-i̇şlemler">Anonim Fonksiyonlarla İşlemler</h3>
 
 <p>Şimdi basit bir çarpma işlemi yapan fonksiyon yazalım.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">y</span><span class="p">;</span>
-<span class="p">}(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span></code></pre></div>
+<span class="p">}(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span></code></pre></figure>
 
 <p>Gördüğünüz gibi değişken tanımlamadık ama ananim fonksiyonumuz iki parametre alıyor. Lambda Calculus’te sadece 1 parametre alabilir. Bu durumda kodu aşağıdaki gibi refaktor edebiliriz.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">y</span><span class="p">;</span>
   <span class="p">};</span>
-<span class="p">}(</span><span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">);</span></code></pre></div>
+<span class="p">}(</span><span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">);</span></code></pre></figure>
 
-<h2 id="faktoriyel-kodundaki-fonksiyon-olmayan-ksmlar">Faktoriyel Kodundaki Fonksiyon olmayan kısımlar</h2>
+<h2 id="faktoriyel-kodundaki-fonksiyon-olmayan-kısımlar">Faktoriyel Kodundaki Fonksiyon olmayan kısımlar</h2>
 
 <p>Lambda calculus’teki amacımız hesaplama işlemini sadece fonksiyon kullanarak tamamlamak, ancak basit bir recursive işleminde bile birden fazla fonksiyon olmayan öğe mevcut. Sonuca ulaşmak bunların hepsini fonksiyonlarla ifade etmemiz gerekecek.</p>
 
 <ul>
-  <li>Sayılar <code>n, 1</code></li>
+  <li>Sayılar <code class="highlighter-rouge">n, 1</code></li>
   <li>Boolean değerler true, false</li>
-  <li><code>n - 1</code> çıkarma işlemi</li>
-  <li><code>===</code> eşittir ifadesi</li>
-  <li><code>if</code> ifadesi</li>
-  <li><code>n *</code> çarpma işlemi</li>
+  <li><code class="highlighter-rouge">n - 1</code> çıkarma işlemi</li>
+  <li><code class="highlighter-rouge">===</code> eşittir ifadesi</li>
+  <li><code class="highlighter-rouge">if</code> ifadesi</li>
+  <li><code class="highlighter-rouge">n *</code> çarpma işlemi</li>
   <li>Yineleme için Y-Combinator</li>
 </ul>
 
-<h3 id="saylar">Sayılar</h3>
+<h3 id="sayılar">Sayılar</h3>
 
-<p>Lambda calculus tanımı yaparken tek veri tipinin fonksiyon olduğunu belirtmiştim. Bu durumda yukarıda verdiğim örneklerde 2 ve 3 <code>number</code> tipini kullandık. Ben anlaşılması basit olması açısından tam sayılar yerine sıfırdan beşe doğal sayıları kullanacağım.</p>
+<p>Lambda calculus tanımı yaparken tek veri tipinin fonksiyon olduğunu belirtmiştim. Bu durumda yukarıda verdiğim örneklerde 2 ve 3 <code class="highlighter-rouge">number</code> tipini kullandık. Ben anlaşılması basit olması açısından tam sayılar yerine sıfırdan beşe doğal sayıları kullanacağım.</p>
 
-<p>Not: Fonksiyonel programlamanın temellerinden birisi de <em>immutability</em> (değişmezlik) olduğu için sayı tanımları yaparken ES6 standardı olan <code>const</code> deyimini kullanacağım. <em>const</em> deyimi bazı ortamlarda desteklenmiyor olabilir ancak bu yazıyı yazarken kullandığım Chrome sürümü tarafından destekleniyor. Eğer <code>const</code> ifadesini desteklemeyen bir ortamda deneme yaparsanız const yerine <code>var</code> kullanabilirsiniz.</p>
+<p>Not: Fonksiyonel programlamanın temellerinden birisi de <em>immutability</em> (değişmezlik) olduğu için sayı tanımları yaparken ES6 standardı olan <code class="highlighter-rouge">const</code> deyimini kullanacağım. <em>const</em> deyimi bazı ortamlarda desteklenmiyor olabilir ancak bu yazıyı yazarken kullandığım Chrome sürümü tarafından destekleniyor. Eğer <code class="highlighter-rouge">const</code> ifadesini desteklemeyen bir ortamda deneme yaparsanız const yerine <code class="highlighter-rouge">var</code> kullanabilirsiniz.</p>
 
 <p>Bir problemimiz daha var: Şu an için JavaScript, sadece fonksiyon ile nasıl aritmetik işlem yapacağını bilmiyor ve bunu bizim öğretmemiz gerek.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">sayi</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">sayi</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">f</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
   <span class="p">})(</span><span class="mi">0</span><span class="p">);</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <p>Yukarıdaki fonksiyonu Lambda Calculus’te oluşturduğumuz saf fonksiyon değerlerini bildiğimiz ‘number’ tipine çevirmek için kullanacağız.</p>
 
 <p>Şimdi fonksiyonel programlamanın nimetlerinden faydalanarak <em>rakamsız</em> sayılarımızı oluşturalım.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">sifir</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">f</span><span class="p">()</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">sifir</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">f</span><span class="p">()</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
   <span class="p">};</span>
 <span class="p">};</span>
 
-<span class="kr">const</span> <span class="nx">bir</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">bir</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">f</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
   <span class="p">};</span>
 <span class="p">};</span>
 
-<span class="kr">const</span> <span class="nx">iki</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">iki</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">f</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="nx">x</span><span class="p">));</span>
   <span class="p">};</span>
 <span class="p">};</span>
 
-<span class="kr">const</span> <span class="nx">uc</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">uc</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">f</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="nx">x</span><span class="p">)));</span>
   <span class="p">};</span>
 <span class="p">};</span>
 
-<span class="kr">const</span> <span class="nx">dort</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">dort</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">f</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="nx">x</span><span class="p">))));</span>
   <span class="p">};</span>
 <span class="p">};</span>
 
-<span class="kr">const</span> <span class="nx">bes</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">bes</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">f</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="nx">x</span><span class="p">)))));</span>
   <span class="p">};</span>
 <span class="p">};</span>
 
-<span class="c1">//...</span></code></pre></div>
+<span class="c1">//...</span></code></pre></figure>
 
 <p>Bu şekilde sayılarımızı tamamladık. Konsol üzerinde test etmek isterseniz:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sayi</span><span class="p">(</span><span class="nx">sifir</span><span class="p">));</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sayi</span><span class="p">(</span><span class="nx">sifir</span><span class="p">));</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sayi</span><span class="p">(</span><span class="nx">bir</span><span class="p">));</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sayi</span><span class="p">(</span><span class="nx">iki</span><span class="p">));</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sayi</span><span class="p">(</span><span class="nx">uc</span><span class="p">));</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sayi</span><span class="p">(</span><span class="nx">dort</span><span class="p">));</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sayi</span><span class="p">(</span><span class="nx">bes</span><span class="p">));</span>
 
-<span class="c1">//...</span></code></pre></div>
+<span class="c1">//...</span></code></pre></figure>
 
-<p><code>sayi</code> fonksiyonumuz işini iyi yapıyor ve yinemeli şekilde x+1 işlemi gerçekleştirerek istediğimiz fonksiyonları doğal sayıya çeviriyor. Sayıları tanımladığımız fonksiyonlara bakarsanız saf fonksiyonlardan meydana geldiklerini görürsünüz.</p>
+<p><code class="highlighter-rouge">sayi</code> fonksiyonumuz işini iyi yapıyor ve yinemeli şekilde x+1 işlemi gerçekleştirerek istediğimiz fonksiyonları doğal sayıya çeviriyor. Sayıları tanımladığımız fonksiyonlara bakarsanız saf fonksiyonlardan meydana geldiklerini görürsünüz.</p>
 
-<h3 id="boolean-deerler">Boolean Değerler</h3>
+<h3 id="boolean-değerler">Boolean Değerler</h3>
 
 <p>JavaScript ile Lambda Calculus için sayıların nasıl implemente edildiklerini gördük. Mantığı biraz anladıysak fonksiyon kullanarak nasıl true, false değerlerinin elde edilebileceğini bulabiliriz.</p>
 
-<p><strong>λx.λy.</strong> ifadesi x döndürürse <code>true</code>, y döndürürse <code>false</code> kabul edeceğiz. Ancak fonksiyon boolen değerini, JavaScript boolean değerine çevirmek için ayrı bir fonksiyona ihtiyacımız var.</p>
+<p><strong>λx.λy.</strong> ifadesi x döndürürse <code class="highlighter-rouge">true</code>, y döndürürse <code class="highlighter-rouge">false</code> kabul edeceğiz. Ancak fonksiyon boolen değerini, JavaScript boolean değerine çevirmek için ayrı bir fonksiyona ihtiyacımız var.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="kr">boolean</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="kr">boolean</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">f</span><span class="p">(</span><span class="kc">true</span><span class="p">)(</span><span class="kc">false</span><span class="p">);</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
-<p><code>boolean</code> fonksiyonunu(arayüz de desek olur sanıyorum) yine iç içe geçmiş fonksiyonları parametre olarak alacak şekilde yazdık.</p>
+<p><code class="highlighter-rouge">boolean</code> fonksiyonunu(arayüz de desek olur sanıyorum) yine iç içe geçmiş fonksiyonları parametre olarak alacak şekilde yazdık.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">dogru</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">dogru</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
   <span class="p">};</span>
 <span class="p">};</span>
 
-<span class="kr">const</span> <span class="nx">yanlis</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">yanlis</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">y</span><span class="p">;</span>
   <span class="p">};</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <h3 id="if-ifadesi">If Ifadesi</h3>
-<p>Clojure ve diğer Lisp lehçelerinde if dahil tüm ifadeler için sürekli fonksiyon notasyonunu kullanmak <code>(if true (...) (...) )</code> oldukça pratik ve okunaklı bir yöntem. Şimdi aynı gücü JavaScript ile elde etme zamanı.</p>
+<p>Clojure ve diğer Lisp lehçelerinde if dahil tüm ifadeler için sürekli fonksiyon notasyonunu kullanmak <code class="highlighter-rouge">(if true (...) (...) )</code> oldukça pratik ve okunaklı bir yöntem. Şimdi aynı gücü JavaScript ile elde etme zamanı.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">eger</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">eger</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="nx">bool</span><span class="p">(</span><span class="nx">x</span><span class="p">)(</span><span class="nx">y</span><span class="p">);</span>
     <span class="p">};</span>
   <span class="p">};</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <p>Normal bir if’in yapması gerektiği gibi bool türünde bir parametre alacak ve bool değeri <em>dogru</em> veya <em>yanlis</em> olması durumuna göre iç içe geçmiş fonksiyonlarımızdan hangisinin önce çalışacağına karar verecek.</p>
 
 <p>Konsol üzerinde test etmek için:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="kr">boolean</span><span class="p">(</span><span class="nx">eger</span><span class="p">(</span><span class="nx">yanlis</span><span class="p">)));</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="kr">boolean</span><span class="p">(</span><span class="nx">eger</span><span class="p">(</span><span class="nx">dogru</span><span class="p">)));</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="kr">boolean</span><span class="p">(</span><span class="nx">eger</span><span class="p">(</span><span class="nx">yanlis</span><span class="p">)));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="kr">boolean</span><span class="p">(</span><span class="nx">eger</span><span class="p">(</span><span class="nx">dogru</span><span class="p">)));</span></code></pre></figure>
 
-<h3 id="karma-lemi">Çıkarma İşlemi</h3>
+<h3 id="çıkarma-i̇şlemi">Çıkarma İşlemi</h3>
 <p>Çıkarma işleminin bizim için ekstra önemli bir özelliği var o da eşittir işleminin temelini oluşturacak olması. Şöyle ki bir sayıdan bir sayı çıkarıldığında sonuç 0 ise o iki sayı birbirine eşittir. Bu bilgiyi aklımızda tutalım, daha sonra işimize yarayacak.</p>
 
 <p>Lambda calculus ile basit aritmetik işlemleri gerçekleştirmek iki taban fonksiyon bulunuyor. Birisi arttırıcı diğeri ise azaltıcı. Toplama, çıkarma, çarpma ve bölme gibi işlemler bu temel fonksiyon üzerinden yürüyor.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">arttir</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">arttir</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="nx">p</span><span class="p">(</span><span class="nx">n</span><span class="p">(</span><span class="nx">p</span><span class="p">)(</span><span class="nx">x</span><span class="p">));</span>
     <span class="p">};</span>
   <span class="p">};</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">azalt</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">azalt</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="nx">n</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">g</span><span class="p">)</span> <span class="p">{</span>
@@ -267,60 +267,60 @@
       <span class="p">});</span>
     <span class="p">};</span>
   <span class="p">};</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <p>Arttırma ve azaltma için taban fonksiyonlarımız tamam, şimdi sıra çıkarma işleminde.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">cikar</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">cikar</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">n</span><span class="p">(</span><span class="nx">azalt</span><span class="p">)(</span><span class="nx">m</span><span class="p">);</span>
   <span class="p">};</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <p>Gördüğünüz gibi cikar fonksiyonu ile daha okunaklı bir hale geldi.</p>
 
-<h3 id="arpma-lemi">Çarpma İşlemi</h3>
+<h3 id="çarpma-i̇şlemi">Çarpma İşlemi</h3>
 
-<p>Çarpma işlemini gerçekleştirmek için daha önce tanımladığımız <code>arttir</code> taban fonksiyonundan toplama fonksiyonunu ve toplama fonksiyonundan ise çarpma fonksiyonunu gerçekleştireceğiz. Unutulmamalı ki çarpma işlemi yinelemeli bir toplama işlemidir. Örneğin n + n + n &lt;=&gt; 3n.</p>
+<p>Çarpma işlemini gerçekleştirmek için daha önce tanımladığımız <code class="highlighter-rouge">arttir</code> taban fonksiyonundan toplama fonksiyonunu ve toplama fonksiyonundan ise çarpma fonksiyonunu gerçekleştireceğiz. Unutulmamalı ki çarpma işlemi yinelemeli bir toplama işlemidir. Örneğin n + n + n &lt;=&gt; 3n.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">topla</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">topla</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">n</span><span class="p">(</span><span class="nx">arttir</span><span class="p">)(</span><span class="nx">m</span><span class="p">);</span>
   <span class="p">};</span>
 <span class="p">};</span>
 
-<span class="kr">const</span> <span class="nx">carp</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">const</span> <span class="nx">carp</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">n</span><span class="p">(</span><span class="nx">topla</span><span class="p">(</span><span class="nx">m</span><span class="p">))(</span><span class="nx">sifir</span><span class="p">);</span>
   <span class="p">};</span>
 <span class="p">};</span>
 
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sayi</span><span class="p">(</span><span class="nx">carp</span><span class="p">(</span><span class="nx">iki</span><span class="p">)(</span><span class="nx">iki</span><span class="p">)));</span> <span class="c1">//dort</span></code></pre></div>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sayi</span><span class="p">(</span><span class="nx">carp</span><span class="p">(</span><span class="nx">iki</span><span class="p">)(</span><span class="nx">iki</span><span class="p">)));</span> <span class="c1">//dort</span></code></pre></figure>
 
-<h3 id="eittir-fonksiyonu">Eşittir Fonksiyonu</h3>
+<h3 id="eşittir-fonksiyonu">Eşittir Fonksiyonu</h3>
 <p>Eşittir fonksiyonu iki parametre alacak ve bu parametrelerle bir çıkarma işlemi gerçekleştirecek. Sonuc sifir olursa dogru, aksi halde yanlis sonucunu dondurecek. Sonucun sıfır olup olmadığını kontrol etmek bir fonksiyona daha ihtiyacımız olacak.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">sifirMi</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">sifirMi</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">n</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">yanlis</span><span class="p">;</span>
   <span class="p">})(</span><span class="nx">dogru</span><span class="p">);</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <p>Son olarak eşittir için fonksiyonumuz:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">esittir</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sol</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">esittir</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sol</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sag</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">eger</span><span class="p">(</span><span class="nx">sifirMi</span><span class="p">(</span><span class="nx">cikar</span><span class="p">(</span><span class="nx">sol</span><span class="p">)(</span><span class="nx">sag</span><span class="p">)));</span>
   <span class="p">};</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
-<h2 id="yineleme-iin-y-combinator">Yineleme için Y-Combinator</h2>
+<h2 id="yineleme-için-y-combinator">Yineleme için Y-Combinator</h2>
 
 <p>Y-Combinator deyince eminim hemen aklımıza ünlü startup destek şirketi veya Hacker News gelebilir ama burada bahsedeceğimiz Y-Combinator o değil. Aksine Lambda Calculus ile <em>recursion</em>(özyineleme) işlemlerini gerçekleştirmek için kullanılan önemli bir yardımcı fonksiyon.</p>
 
 <p>Y-Combinator: Lambda Calculus ifadesi: <strong>λf.(λx.f (x x)) (λx.f (x x))</strong></p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">yCombinator</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">yCombinator</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">f</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="p">(</span><span class="nx">x</span><span class="p">(</span><span class="nx">x</span><span class="p">))(</span><span class="nx">y</span><span class="p">);</span>
@@ -330,7 +330,7 @@
       <span class="k">return</span> <span class="p">(</span><span class="nx">x</span><span class="p">(</span><span class="nx">x</span><span class="p">))(</span><span class="nx">y</span><span class="p">);</span>
     <span class="p">});</span>
   <span class="p">});</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <p>Burada dikkat ederseniz yCombinator içinde hiçbir yerde fonksiyonun kendisine referans vermedik. Aksi halde sonsuz döngüye girerek programın akışını kilitleyebilirdi.</p>
 
@@ -340,36 +340,36 @@
 
 <p><strong>Yinemeli JavaScript kodunun yCombinator olarak çağırılması:</strong></p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">orjFaktoriyel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">fact</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">orjFaktoriyel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">fact</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">n</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">fact</span><span class="p">(</span><span class="nx">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
   <span class="p">};</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <p>Burada orijinal faktoriyel kodunu henüz lambda calculus formuna çevirmedik ancak yCombinator fonksiyonuna parametre olarak geçebileceğimiz bir forma soktuk. Yine burada dikkat etmeniz gereken faktoriyel fonksiyonun kendine referans vermeden yineleme işlemini deneyecek olmamız.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">((</span><span class="nx">yCombinator</span><span class="p">(</span><span class="nx">orjFaktoriyel</span><span class="p">))(</span><span class="mi">5</span><span class="p">))</span> <span class="c1">// 120</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">((</span><span class="nx">yCombinator</span><span class="p">(</span><span class="nx">orjFaktoriyel</span><span class="p">))(</span><span class="mi">5</span><span class="p">))</span> <span class="c1">// 120</span></code></pre></figure>
 
 <p>faktoriyel fonksiyonunu çağırmak için yCombinator’ü kullandık.</p>
 
-<h3 id="javascriptin-kysna-vurmak">JavaScript’in Kıyısına Vurmak</h3>
+<h3 id="javascriptin-kıyısına-vurmak">JavaScript’in Kıyısına Vurmak</h3>
 
 <p>Şimdi bütün bu yaptıklarımızı bir araya getirerek faktoriyel kodumuzun son halini oluşturalım.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">faktoriyel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">faktoriyel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">eger</span><span class="p">(</span><span class="nx">esittir</span><span class="p">(</span><span class="nx">n</span><span class="p">)(</span><span class="nx">sifir</span><span class="p">))(</span><span class="nx">bir</span><span class="p">)(</span><span class="nx">carp</span><span class="p">(</span><span class="nx">n</span><span class="p">)(</span><span class="nx">factoriyel</span><span class="p">(</span><span class="nx">cikar</span><span class="p">(</span><span class="nx">n</span><span class="p">)(</span><span class="nx">bir</span><span class="p">))));</span>
-<span class="p">};</span></code></pre></div>
+<span class="p">};</span></code></pre></figure>
 
 <p>Saf Lambda Calculus kodunu yCombinator ile çağırdığımızda.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">((</span><span class="nx">yCombinator</span><span class="p">(</span><span class="nx">faktoriyel</span><span class="p">))(</span><span class="nx">iki</span><span class="p">))</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">((</span><span class="nx">yCombinator</span><span class="p">(</span><span class="nx">faktoriyel</span><span class="p">))(</span><span class="nx">iki</span><span class="p">))</span></code></pre></figure>
 
 <h3 id="edit">Edit:</h3>
 
-<p><strong>“RangeError: Maximum call stack size exceeded”</strong> hatası alıyoruz :( Blog postun ilk taslağını hazırladığımda ve bu hatayı aldığımda aslında y-combinator ile ilgili kısımda bir implementasyon hatası yaptığımı düşünmüştüm. StackOverflow üzerinde sorduğum soruya yaklaşık 10 gün kimse cevap vermediğini görünce JavaScript deyince aklımıza gelen isim olan, sevgili <a href="https://twitter.com/fkadev">Fatih Kadir Akın</a>‘a Twitter üzerinden ulaştım ve sağolsun kodu inceledi, implemantasyon hatası olmadığını söyledi ve post’u yine de yayınlamamı tavsiye etti. Hızlı feedback için kendisine yeniden teşekkür ediyor ve an azından Lambda Calculus kodunun nasıl olduğunu göstermiş olduğuma inanıyorum. Umarım JavaScript üzerinde <code>call stack</code> limiti arttırılır ve bizde lambda calculus ile daha fazla deney yapabiliriz.</p>
+<p><strong>“RangeError: Maximum call stack size exceeded”</strong> hatası alıyoruz :( Blog postun ilk taslağını hazırladığımda ve bu hatayı aldığımda aslında y-combinator ile ilgili kısımda bir implementasyon hatası yaptığımı düşünmüştüm. StackOverflow üzerinde sorduğum soruya yaklaşık 10 gün kimse cevap vermediğini görünce JavaScript deyince aklımıza gelen isim olan, sevgili <a href="https://twitter.com/fkadev">Fatih Kadir Akın</a>‘a Twitter üzerinden ulaştım ve sağolsun kodu inceledi, implemantasyon hatası olmadığını söyledi ve post’u yine de yayınlamamı tavsiye etti. Hızlı feedback için kendisine yeniden teşekkür ediyor ve an azından Lambda Calculus kodunun nasıl olduğunu göstermiş olduğuma inanıyorum. Umarım JavaScript üzerinde <code class="highlighter-rouge">call stack</code> limiti arttırılır ve bizde lambda calculus ile daha fazla deney yapabiliriz.</p>
 
 <h2 id="kaynaklar">Kaynaklar</h2>
 
@@ -383,10 +383,10 @@
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/javascript-ile-lambda-calculus/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/javascript-ile-lambda-calculus/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -435,7 +435,7 @@
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

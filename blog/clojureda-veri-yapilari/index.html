@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/clojureda-veri-yapilari/">
+    <link rel="canonical" href="http://localhost:4000/blog/clojureda-veri-yapilari/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -67,55 +67,55 @@
 <p>Clojure’da veri yapıları, Clojure dilinin fonksiyonel bir dil olması neticesinde tümü değiştirilemez(immutable) ve kalıcı(persistent)’dir. Bu yapılarda bir değişiklik yapmamız gerektiğinde modifiye edilmiş bir kopyalarını alır ve kopyalar üzerinde çalışırız. 
 Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - bazı ortak özellikler taşır. Koleksiyonda bulunan elemanların sayısını alabilmek için <strong>count</strong>, ekleme yapabilmek için <strong>conj</strong> ve koleksiyon üzerinde baştan sonra işlem yapabilmek için <strong>seq</strong> gibi metotlardan yardım alırız. Bu metotlar farklı tip veri yapılarında küçük davranış farklılıkları gösterebilir.</p>
 
-<p>Deneylere başlamak için repl’i açalım: <code>lein repl</code> komutunu girelim. REPL’den gelen yanıtları <code>; =&gt;</code> ifadesi ile göstermeye devam edeceğim.</p>
+<p>Deneylere başlamak için repl’i açalım: <code class="highlighter-rouge">lein repl</code> komutunu girelim. REPL’den gelen yanıtları <code class="highlighter-rouge">; =&gt;</code> ifadesi ile göstermeye devam edeceğim.</p>
 
 <h2 id="list">List</h2>
 
-<p>Listeler sıralı değerlerden oluşan bir koleksiyondur. Tanımlamak için <code>list</code> fonksiyonu kullanılır.</p>
+<p>Listeler sıralı değerlerden oluşan bir koleksiyondur. Tanımlamak için <code class="highlighter-rouge">list</code> fonksiyonu kullanılır.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">)</span>
-<span class="c1">; =&gt; (1 2 3 4)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; (1 2 3 4)</span></code></pre></figure>
 
 <p>Görüldüğü gibi fonksiyon tanımlarında olduğu gibi parantezler kullanılıyor. Deneylerimize biraz daha davam edelim.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">a</span> <span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/a</span>
-<span class="p">(</span><span class="k">def </span><span class="nv">b</span> <span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/b</span>
-<span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
-<span class="c1">; =&gt; true</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/a</span><span class="w">
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">'</span><span class="p">(</span><span class="nf">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/b</span><span class="w">
+</span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; true</span></code></pre></figure>
 
 <p>Burada a ve b isimlerinde iki liste tanımladık. a listesi list fonksiyonu ile b fonksiyonu ise parantez ifade ile tanımlandı. b listesinin önündeki tek tırnak(‘), Clojure’un liste parantezinin fonksiyon parantezi ile karıştırılmasını engellemek için kullanıldı. Eşitlik testinde ise bire bir aynı oldukları için true değeri döndürdü.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">c</span> <span class="o">&#39;</span><span class="p">(</span><span class="mi">4</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">1</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/c</span>
-<span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="nv">c</span><span class="p">)</span>
-<span class="c1">; =&gt; false</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">'</span><span class="p">(</span><span class="nf">4</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/c</span><span class="w">
+</span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; false</span></code></pre></figure>
 
 <p>Görüyoruz ki list veri yapısında sıralama önemli ve a ile c birbirlerine eşit değiller.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">d</span> <span class="o">&#39;</span><span class="p">(</span><span class="mi">4</span> <span class="mi">4</span> <span class="mi">3</span> <span class="mi">1</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/d</span>
-<span class="nv">d</span>
-<span class="c1">; =&gt; (4 4 3 1)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">'</span><span class="p">(</span><span class="nf">4</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/d</span><span class="w">
+</span><span class="n">d</span><span class="w">
+</span><span class="c1">; =&gt; (4 4 3 1)</span></code></pre></figure>
 
 <p>d listesi ise bize çok önemli bir ipucu veriyor. İpucu ise listemizde birden fazla aynı değerin bulunabilmesi.</p>
 
 <p>Aslında dikkat ederseniz Clojure’da list diğer dillerde kullanılan Array veri yapısından başka bir şey değil. Array veri yapısı basit olarak bir indeks ve değer ikililerinden oluşan basit veri yapılarıdır. a ve b listelerini hatırlayalım.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nb">nth </span><span class="nv">a</span> <span class="mi">0</span><span class="p">)</span>
-<span class="c1">; =&gt; 1</span>
-<span class="p">(</span><span class="nb">nth </span><span class="nv">a</span> <span class="mi">2</span><span class="p">)</span>
-<span class="c1">; =&gt; 3</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nb">nth</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; 1</span><span class="w">
+</span><span class="p">(</span><span class="nb">nth</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; 3</span></code></pre></figure>
 
 <p>Yine görüldüğü üzere <em>nth</em> fonksiyonu, diğer birçok dilden bildiğimiz indexOf’dan çok da farklı birşey değil.</p>
 
 <p>Son olarak list veri yapısının Clojure’da nasıl bir değişken türünde tutulduğunu öğrenmek istersek:</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nf">type</span> <span class="nv">a</span><span class="p">)</span>
-<span class="c1">; =&gt; clojure.lang.PersistentList</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nf">type</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; clojure.lang.PersistentList</span></code></pre></figure>
 
-<h3 id="listelere-stack-veri-yaps-gibi-davranmak">Listelere Stack veri yapısı gibi davranmak</h3>
+<h3 id="listelere-stack-veri-yapısı-gibi-davranmak">Listelere Stack veri yapısı gibi davranmak</h3>
 
 <p>List veri yapısının aslında bir Array veri yapısını olduğunu öğrendik. Clojure’da istersek listelere <em>Stack veri yapısı</em> olarak davranabiliriz.</p>
 
@@ -125,52 +125,52 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 
 <p><strong>peek</strong>: Yığının en üstündeki kutuyu almak için kullanılır. Geriye alınan kutunun döndürür.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nb">peek </span><span class="nv">a</span><span class="p">)</span>
-<span class="c1">; =&gt; 1</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nb">peek</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; 1</span></code></pre></figure>
 
 <p>Görüldüğü gibi (1 2 3 4) listesinden 1 değerini döndürdü.</p>
 
 <p><strong>pop</strong>: Yığının en üstündeki değeri atarak yığının kalan elemanlarından oluşan veriyi döndürür.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nb">pop </span><span class="nv">a</span><span class="p">)</span>
-<span class="c1">; =&gt; (2 3 4)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nb">pop</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; (2 3 4)</span></code></pre></figure>
 
 <h2 id="vector">Vector</h2>
 
-<p>Vektörler de listeler gibi bir koleksiyon türüdür. Listelerden biraz daha gelişmiş özellikleri barındırırlar. Yazımın giriş bölümünde tüm koleksiyon türlerinin ortak bir özellik olarak, koleksiyonun tüm öğeleri üzerinde işlem yapmamızı yarayan <strong>seq</strong> fonksiyonunu desteklediklerini söylemiştim. <strong>rseq</strong> ise seq fonksiyonu ile aynı işlemi tersten yapar. <strong>reverse seq</strong> olarak da düşünebiliriz. Vektör tanımlamak için <code>vector</code> fonksiyonu kullanılır. Listelerden bir diğer farkı ise parantez(()) yerine köşeli parantezler([]) ile ifade edilirler.</p>
+<p>Vektörler de listeler gibi bir koleksiyon türüdür. Listelerden biraz daha gelişmiş özellikleri barındırırlar. Yazımın giriş bölümünde tüm koleksiyon türlerinin ortak bir özellik olarak, koleksiyonun tüm öğeleri üzerinde işlem yapmamızı yarayan <strong>seq</strong> fonksiyonunu desteklediklerini söylemiştim. <strong>rseq</strong> ise seq fonksiyonu ile aynı işlemi tersten yapar. <strong>reverse seq</strong> olarak da düşünebiliriz. Vektör tanımlamak için <code class="highlighter-rouge">vector</code> fonksiyonu kullanılır. Listelerden bir diğer farkı ise parantez(()) yerine köşeli parantezler([]) ile ifade edilirler.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">a</span> <span class="p">(</span><span class="nb">vector </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/a</span>
-<span class="p">(</span><span class="k">def </span><span class="nv">b</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">])</span>
-<span class="c1">; =&gt; #&#39;user/b</span>
-<span class="p">(</span><span class="k">def </span><span class="nv">c</span> <span class="p">[</span><span class="mi">4</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">1</span><span class="p">])</span>
-<span class="c1">; =&gt; #&#39;user/c</span>
-<span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="nv">c</span><span class="p">)</span>
-<span class="c1">; =&gt; false</span>
-<span class="p">(</span><span class="k">def </span><span class="nv">d</span> <span class="p">[</span><span class="mi">4</span> <span class="mi">4</span> <span class="mi">2</span> <span class="mi">1</span><span class="p">])</span>
-<span class="c1">; =&gt; #&#39;user/d</span>
-<span class="nv">d</span>
-<span class="c1">; =&gt; [4 4 2 1]</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="nb">vector</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/a</span><span class="w">
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">])</span><span class="w">
+</span><span class="c1">; =&gt; #'user/b</span><span class="w">
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span><span class="w">
+</span><span class="c1">; =&gt; #'user/c</span><span class="w">
+</span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; false</span><span class="w">
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span><span class="w">
+</span><span class="c1">; =&gt; #'user/d</span><span class="w">
+</span><span class="n">d</span><span class="w">
+</span><span class="c1">; =&gt; [4 4 2 1]</span></code></pre></figure>
 
 <p>Buradan çıkaracağımız sonuçlar. Vektörler için de listelerde olduğu gibi sıralama önemli ve bir vektörde aynı değerden birden fazla aynı değer olabilir.</p>
 
 <p>Şimdi başka bir deney yapalım. Bir e listesi tanımlayalım.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">e</span> <span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/e</span>
-<span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="nv">e</span><span class="p">)</span>
-<span class="c1">; =&gt; true</span>
-<span class="p">(</span><span class="nb">= </span><span class="nv">c</span> <span class="nv">e</span><span class="p">)</span>
-<span class="c1">; =&gt; false</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">'</span><span class="p">(</span><span class="nf">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/e</span><span class="w">
+</span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; true</span><span class="w">
+</span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; false</span></code></pre></figure>
 
 <p>Gördüğünüz gibi vektör ve liste yapıları birbirlerine oldukça benzediğinden eşitlik testinde sıralama ve değerleri tuttuğunda true değeri verebiliyorlar. Java’dan miras gelen hashCode metodu ile değerlerini kontrol edelim.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nf">.hashCode</span> <span class="nv">a</span><span class="p">)</span>
-<span class="c1">; =&gt; 955331</span>
-<span class="p">(</span><span class="nf">.hashCode</span> <span class="nv">c</span><span class="p">)</span>
-<span class="c1">; =&gt; 1045631</span>
-<span class="p">(</span><span class="nf">.hashCode</span> <span class="nv">e</span><span class="p">)</span>
-<span class="c1">; =&gt; 955331</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nf">.hashCode</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; 955331</span><span class="w">
+</span><span class="p">(</span><span class="nf">.hashCode</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; 1045631</span><span class="w">
+</span><span class="p">(</span><span class="nf">.hashCode</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; 955331</span></code></pre></figure>
 
 <p>a vektörü ve e listesinin hashCode değerleri birbirlerine eşit. Bu da bize arkaplanda işlerin nasıl yürüdüğüne yönelik bir fikir veriyor olmalı.</p>
 
@@ -180,76 +180,76 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 <h3 id="hash-map">hash-map</h3>
 <p>Karışık mapların kullanımını daha iyi anlamak için aşağıdaki örneğe dikkat edin.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">a</span> <span class="p">(</span><span class="nb">hash-map </span><span class="ss">:tr</span> <span class="ss">&#39;T</span><span class="err">ü</span><span class="nv">rk</span><span class="err">ç</span><span class="nv">e</span>, <span class="ss">:en</span> <span class="o">&#39;</span><span class="err">İ</span><span class="nv">ngilizce</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/a</span>
-<span class="p">(</span><span class="nb">get </span><span class="nv">a</span> <span class="ss">:tr</span><span class="p">)</span>
-<span class="c1">; =&gt; Türkçe</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="nb">hash-map</span><span class="w"> </span><span class="no">:tr</span><span class="w"> </span><span class="ss">'T</span><span class="err">ü</span><span class="n">rk</span><span class="err">ç</span><span class="n">e,</span><span class="w"> </span><span class="no">:en</span><span class="w"> </span><span class="o">'</span><span class="err">İ</span><span class="n">ngilizce</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/a</span><span class="w">
+</span><span class="p">(</span><span class="nb">get</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="no">:tr</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; Türkçe</span></code></pre></figure>
 
 <p>Anahtar-değer çiftleri oluşturmak için virgül(,) kullandık. Anahtarları önceki yazımda bahsettiğim <em>keyword</em> veri türü ile tanımladım.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">b</span> <span class="p">{</span><span class="ss">:en</span> <span class="o">&#39;</span><span class="err">İ</span><span class="nv">ngilizce</span>, <span class="ss">:tr</span> <span class="ss">&#39;T</span><span class="err">ü</span><span class="nv">rk</span><span class="err">ç</span><span class="nv">e</span><span class="p">})</span>
-<span class="c1">; =&gt; #&#39;user/b</span>
-<span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
-<span class="c1">; =&gt; true</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">{</span><span class="no">:en</span><span class="w"> </span><span class="o">'</span><span class="err">İ</span><span class="n">ngilizce,</span><span class="w"> </span><span class="no">:tr</span><span class="w"> </span><span class="ss">'T</span><span class="err">ü</span><span class="n">rk</span><span class="err">ç</span><span class="n">e</span><span class="p">})</span><span class="w">
+</span><span class="c1">; =&gt; #'user/b</span><span class="w">
+</span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; true</span></code></pre></figure>
 
 <p>hash-map tanımlamak için küme parantezi ‘{}’ kullanabiliriz. b hash-map’ının farklı sıralamada oluştuğunu ve yine de a ile eşit olduğuna dikkat etmişsinizdir.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">c</span> <span class="p">{</span><span class="ss">:en</span> <span class="o">&#39;</span><span class="err">İ</span><span class="nv">ngilizce</span>, <span class="ss">:tr</span> <span class="ss">&#39;T</span><span class="err">ü</span><span class="nv">rk</span><span class="err">ç</span><span class="nv">e</span>, <span class="ss">:tr</span> <span class="ss">&#39;T</span><span class="err">ü</span><span class="nv">rk</span><span class="err">ç</span><span class="nv">e</span><span class="p">})</span>
-<span class="c1">; =&gt; IllegalArgumentException Duplicate key: :tr clojure.lang.PersistentArrayMap.createWithCheck (PersistentArrayMap.java:70)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="p">{</span><span class="no">:en</span><span class="w"> </span><span class="o">'</span><span class="err">İ</span><span class="n">ngilizce,</span><span class="w"> </span><span class="no">:tr</span><span class="w"> </span><span class="ss">'T</span><span class="err">ü</span><span class="n">rk</span><span class="err">ç</span><span class="n">e,</span><span class="w"> </span><span class="no">:tr</span><span class="w"> </span><span class="ss">'T</span><span class="err">ü</span><span class="n">rk</span><span class="err">ç</span><span class="n">e</span><span class="p">})</span><span class="w">
+</span><span class="c1">; =&gt; IllegalArgumentException Duplicate key: :tr clojure.lang.PersistentArrayMap.createWithCheck (PersistentArrayMap.java:70)</span></code></pre></figure>
 
 <p>Bu hatadan anladığımız kadarıyla hash-map bize aynı anahtardan birden fazla sayıda sahip olmamıza izin vermiyor.</p>
 
 <h3 id="sorted-map">sorted-map</h3>
-<p>sorted-map yani sıralı map, Comparable sınıfından türemiş anahtar değerler kullanmalıdır. Bunlar numerik veya string tabanlı değerler olabilir. Tanımlamak için <code>sorted-map</code> fonksiyonu kullanılır.</p>
+<p>sorted-map yani sıralı map, Comparable sınıfından türemiş anahtar değerler kullanmalıdır. Bunlar numerik veya string tabanlı değerler olabilir. Tanımlamak için <code class="highlighter-rouge">sorted-map</code> fonksiyonu kullanılır.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">a</span> <span class="p">(</span><span class="nb">sorted-map </span><span class="ss">:a</span> <span class="mi">1</span>, <span class="ss">:z</span> <span class="mi">3</span>, <span class="ss">:b</span> <span class="mi">2</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/a</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="nb">sorted-map</span><span class="w"> </span><span class="no">:a</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:z</span><span class="w"> </span><span class="mi">3</span><span class="n">,</span><span class="w"> </span><span class="no">:b</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/a</span></code></pre></figure>
 
 <p>Burada anahtarlar keyword veri türü ile tanımlandı ve dolayısıyla Comparable’ın bir türevi olmak durumunda. Bunu test etmek için:</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nb">instance? </span><span class="nv">Comparable</span> <span class="ss">:a</span><span class="p">)</span>
-<span class="c1">; =&gt; true</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nb">instance?</span><span class="w"> </span><span class="n">Comparable</span><span class="w"> </span><span class="no">:a</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; true</span></code></pre></figure>
 
 <p>bu şekilde doğrulayabiliriz.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">b</span> <span class="p">(</span><span class="nb">sorted-map </span><span class="ss">:z</span> <span class="mi">3</span>, <span class="ss">:b</span> <span class="mi">2</span>, <span class="ss">:a</span> <span class="mi">1</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/b</span>
-<span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
-<span class="c1">; =&gt; true</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">(</span><span class="nb">sorted-map</span><span class="w"> </span><span class="no">:z</span><span class="w"> </span><span class="mi">3</span><span class="n">,</span><span class="w"> </span><span class="no">:b</span><span class="w"> </span><span class="mi">2</span><span class="n">,</span><span class="w"> </span><span class="no">:a</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/b</span><span class="w">
+</span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; true</span></code></pre></figure>
 
 <p>Peki hash-map ve sorted-map’ı sıralamak istediğimizde ne ile karşılaşırız. c adında bir hash-map tanımlayalım.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">c</span> <span class="p">(</span><span class="nb">hash-map </span><span class="ss">:a</span> <span class="mi">1</span>, <span class="ss">:z</span> <span class="mi">3</span>, <span class="ss">:b</span> <span class="mi">2</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/c</span>
-<span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="nv">c</span><span class="p">)</span>
-<span class="c1">; =&gt; true</span>
-<span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
-<span class="c1">; =&gt; true</span>
-<span class="p">(</span><span class="nf">.hashCode</span> <span class="nv">a</span><span class="p">)</span>
-<span class="c1">; =&gt; -1253234181</span>
-<span class="p">(</span><span class="nf">.hashCode</span> <span class="nv">b</span><span class="p">)</span>
-<span class="c1">; =&gt; -1253234181</span>
-<span class="p">(</span><span class="nf">.hashCode</span> <span class="nv">c</span><span class="p">)</span>
-<span class="c1">; =&gt; -1253234181</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="p">(</span><span class="nb">hash-map</span><span class="w"> </span><span class="no">:a</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:z</span><span class="w"> </span><span class="mi">3</span><span class="n">,</span><span class="w"> </span><span class="no">:b</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/c</span><span class="w">
+</span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; true</span><span class="w">
+</span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; true</span><span class="w">
+</span><span class="p">(</span><span class="nf">.hashCode</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; -1253234181</span><span class="w">
+</span><span class="p">(</span><span class="nf">.hashCode</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; -1253234181</span><span class="w">
+</span><span class="p">(</span><span class="nf">.hashCode</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; -1253234181</span></code></pre></figure>
 
 <p>Gördüğünüz gibi hashCode değerleri aynı ve sorted-map a, b ve hash-map c değerleri birbilerine eşit.</p>
 
 <h3 id="struct-map">Struct-Map</h3>
 
-<p>Clojure’da map’ların anahtar-değer ikililerinden oluştuğunu söylemiştik. Bazı durumlarda anahtarları önceden tanımlayıp bunu başka koleksiyonlarla paylaşmamız gerekebilir. Bir başka deyişle Clojure struct-map yapıları, C tipi dillerdeki <code>struct</code>‘lara benzetilebilir. Bu şekilde söyleyince karışık gelmiş olabilir o yüzden basit örnekle pekiştirelim.</p>
+<p>Clojure’da map’ların anahtar-değer ikililerinden oluştuğunu söylemiştik. Bazı durumlarda anahtarları önceden tanımlayıp bunu başka koleksiyonlarla paylaşmamız gerekebilir. Bir başka deyişle Clojure struct-map yapıları, C tipi dillerdeki <code class="highlighter-rouge">struct</code>‘lara benzetilebilir. Bu şekilde söyleyince karışık gelmiş olabilir o yüzden basit örnekle pekiştirelim.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="kd">defstruct </span><span class="nv">employee</span> <span class="ss">:first-name</span> <span class="ss">:last-name</span> <span class="ss">:salary</span><span class="p">)</span>
-<span class="c1">; =&gt; #&#39;user/employee</span>
-<span class="p">(</span><span class="k">def </span><span class="nv">john-doe</span> <span class="p">(</span><span class="nb">struct-map </span><span class="nv">employee</span> <span class="ss">:first-name</span> <span class="s">&quot;John&quot;</span> <span class="ss">:last-name</span> <span class="s">&quot;Doe&quot;</span> <span class="ss">:salary</span> <span class="mi">3000</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/john-doe</span>
-<span class="p">(</span><span class="k">def </span><span class="nv">jane-bazz</span> <span class="p">(</span><span class="nb">struct-map </span><span class="nv">employee</span> <span class="ss">:first-name</span> <span class="s">&quot;Jane&quot;</span> <span class="ss">:last-name</span> <span class="s">&quot;Bazz&quot;</span> <span class="ss">:salary</span> <span class="mi">3200</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/jane-bazz</span>
-<span class="p">(</span><span class="ss">:salary</span> <span class="nv">jane-bazz</span><span class="p">)</span>
-<span class="c1">; =&gt; 3200</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">defstruct</span><span class="w"> </span><span class="n">employee</span><span class="w"> </span><span class="no">:first-name</span><span class="w"> </span><span class="no">:last-name</span><span class="w"> </span><span class="no">:salary</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; #'user/employee</span><span class="w">
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">john-doe</span><span class="w"> </span><span class="p">(</span><span class="nb">struct-map</span><span class="w"> </span><span class="n">employee</span><span class="w"> </span><span class="no">:first-name</span><span class="w"> </span><span class="s">"John"</span><span class="w"> </span><span class="no">:last-name</span><span class="w"> </span><span class="s">"Doe"</span><span class="w"> </span><span class="no">:salary</span><span class="w"> </span><span class="mi">3000</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/john-doe</span><span class="w">
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">jane-bazz</span><span class="w"> </span><span class="p">(</span><span class="nb">struct-map</span><span class="w"> </span><span class="n">employee</span><span class="w"> </span><span class="no">:first-name</span><span class="w"> </span><span class="s">"Jane"</span><span class="w"> </span><span class="no">:last-name</span><span class="w"> </span><span class="s">"Bazz"</span><span class="w"> </span><span class="no">:salary</span><span class="w"> </span><span class="mi">3200</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/jane-bazz</span><span class="w">
+</span><span class="p">(</span><span class="no">:salary</span><span class="w"> </span><span class="n">jane-bazz</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; 3200</span></code></pre></figure>
 
 <h3 id="array-map">Array-Map</h3>
 
-<p>Mapların bazen list mantığında olduğu gibi anahtarlarının ayrıca bir indeks değeri tutmaları istenebilir ve böyle durumlarda array-map kullanılır. Array-Map oluşturmak için tahmin edileceği üzere <code>array-map</code> fonksiyonu kullanılır.</p>
+<p>Mapların bazen list mantığında olduğu gibi anahtarlarının ayrıca bir indeks değeri tutmaları istenebilir ve böyle durumlarda array-map kullanılır. Array-Map oluşturmak için tahmin edileceği üzere <code class="highlighter-rouge">array-map</code> fonksiyonu kullanılır.</p>
 
 <h2 id="set">Set</h2>
 
@@ -257,42 +257,42 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 
 <h3 id="hash-set">hash-set</h3>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">a</span> <span class="p">(</span><span class="nb">hash-set </span><span class="ss">:a</span> <span class="ss">:b</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/a</span>
-<span class="p">(</span><span class="k">def </span><span class="nv">b</span> <span class="p">(</span><span class="nb">hash-set </span><span class="ss">:b</span> <span class="mi">1</span> <span class="ss">:a</span> <span class="mi">2</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/b</span>
-<span class="nv">user=&gt;</span> <span class="p">(</span><span class="nb">= </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
-<span class="c1">; =&gt; true</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="nb">hash-set</span><span class="w"> </span><span class="no">:a</span><span class="w"> </span><span class="no">:b</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/a</span><span class="w">
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">(</span><span class="nb">hash-set</span><span class="w"> </span><span class="no">:b</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="no">:a</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/b</span><span class="w">
+</span><span class="n">user=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; true</span></code></pre></figure>
 
 <h3 id="sorted-set">sorted-set</h3>
 <p>Sorted-set oluşturabilmek küme elemanlarının aynı türden olması gerekir. Aksi halde Clojure .compareTo işlemi gerçekleştirirken hata verecektir.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">c</span> <span class="p">(</span><span class="nb">sorted-set </span><span class="mi">1</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">4</span><span class="p">))</span>
-<span class="c1">; =&gt; #&#39;user/c</span>
-<span class="nv">c</span>
-<span class="c1">; =&gt; #{1 2 3 4}</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="p">(</span><span class="nb">sorted-set</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span><span class="w">
+</span><span class="c1">; =&gt; #'user/c</span><span class="w">
+</span><span class="n">c</span><span class="w">
+</span><span class="c1">; =&gt; #{1 2 3 4}</span></code></pre></figure>
 
-<h3 id="setler-yani-kmeler-ile-bilmemiz-gerekenler-nelerdir">Set’ler yani kümeler ile bilmemiz gerekenler nelerdir?</h3>
-<p>1.Her set aynı zamanda fonksiyondur.</p>
+<p>###Set’ler yani kümeler ile bilmemiz gerekenler nelerdir?
+1.Her set aynı zamanda fonksiyondur.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nf">a</span> <span class="mi">1</span><span class="p">)</span>
-<span class="c1">; =&gt; 1</span>
-<span class="p">(</span><span class="nf">a</span> <span class="ss">:b</span><span class="p">)</span>
-<span class="c1">; =&gt; :b</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nf">a</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; 1</span><span class="w">
+</span><span class="p">(</span><span class="nf">a</span><span class="w"> </span><span class="no">:b</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; :b</span></code></pre></figure>
 
 <p>2.clojure.set isim uzayında bulunan küme fonksiyonlarını uygulayabilirsiniz.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nf">clojure.set/union</span> <span class="nv">a</span> <span class="nv">c</span><span class="p">)</span>
-<span class="c1">; =&gt; #{1 4 3 2 :b :a}</span>
-<span class="p">(</span><span class="nf">clojure.set/difference</span> <span class="nv">a</span> <span class="nv">c</span><span class="p">)</span>
-<span class="c1">; =&gt; #{:b :a}</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nf">clojure.set/union</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; #{1 4 3 2 :b :a}</span><span class="w">
+</span><span class="p">(</span><span class="nf">clojure.set/difference</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; #{:b :a}</span></code></pre></figure>
 
 <p>3.hash-set tanımlamak için #{} yapısını kullanabilirsiniz.</p>
 
-<div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def </span><span class="nv">my-set</span> <span class="o">#</span><span class="p">{</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">})</span>
-<span class="c1">; =&gt; #&#39;user/my-set</span>
-<span class="p">(</span><span class="nf">type</span> <span class="nv">my-set</span><span class="p">)</span>
-<span class="c1">; =&gt; clojure.lang.PersistentHashSet</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">my-set</span><span class="w"> </span><span class="o">#</span><span class="p">{</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">})</span><span class="w">
+</span><span class="c1">; =&gt; #'user/my-set</span><span class="w">
+</span><span class="p">(</span><span class="nf">type</span><span class="w"> </span><span class="n">my-set</span><span class="p">)</span><span class="w">
+</span><span class="c1">; =&gt; clojure.lang.PersistentHashSet</span></code></pre></figure>
 
 <p>Clojure ile veri yapılarına giriş niteliğinde bir referans yazısı oldu. Bu konu hakkında anlatacak gerçekten çok şey var nasıl anlatacağıma ve ne kadarına anlatacağıma bir fikrim yoktu dolayısıyla <a href="http://clojure.org/data_structures">buradaki</a> bağlantıdan faydalanarak yazıyı nasıl organize edeceğime karar verdim. Bazı kısımlar ise dandik birer çeviri niteliğinde oldu.</p>
 
@@ -303,10 +303,10 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/clojureda-veri-yapilari/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/clojureda-veri-yapilari/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -355,7 +355,7 @@ Clojure veri yapıları - bunlara koleksiyon veri türleri de diyebiliriz - baz�
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>

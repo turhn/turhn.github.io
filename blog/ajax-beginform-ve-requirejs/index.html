@@ -11,9 +11,9 @@
     <meta name="description" content="Programming related articles.
 ">
     
-    <link rel="canonical" href="https://www.turhancoskun.com/blog/ajax-beginform-ve-requirejs/">
+    <link rel="canonical" href="http://localhost:4000/blog/ajax-beginform-ve-requirejs/">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700italic|Didact+Gothic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/app-79d35215c6c8c8bad124b2e5271a8741.css">
+    <link type="text/css" rel="stylesheet" href="/assets/app.css">
 </head>
 
 
@@ -51,8 +51,8 @@
           </header>
 
           <article class="post-content">
-            <h3 id="arka-plan">Arka Plan</h3>
-<p>Geçenlerde ASP.NET MVC ile geliştirdiğim projemin çok büyüdüğünü ve javascript kodlarının artık kontrol edilemez bir hale geldiğini farkettim.
+            <p>###Arka Plan
+Geçenlerde ASP.NET MVC ile geliştirdiğim projemin çok büyüdüğünü ve javascript kodlarının artık kontrol edilemez bir hale geldiğini farkettim.
 Modüller ve bağlılıklar içinden çıkılmaz hale geldiğinde artık projenin Require.js ile söz kesmesinin zamanı geldiğine karar verdim.
 RequireJS gerçekten harika! Kullandıkça sizi düzene alıştırıyor ve gerçekten kod yazma alışkanlıklarınızı değiştiriyor. Aslında beklentim EcmaScript6 standart olarak tüm tarayıcılarda yerini aldığında çok daha iyi AMD ler görebilmek.</p>
 
@@ -61,20 +61,20 @@ RequireJS gerçekten harika! Kullandıkça sizi düzene alıştırıyor ve gerç
 <p>Peşinen söyleyeyim bu yazıda konu ile ilgili tutorial bulmayı bekleyenler bekleyenler burada sayfayı terketsinler :). Sadece bu örnekteki gibi birbirleriyle alakasız teknolojilerin kendi aralarında çatıştığı bir durumda, barış için bulduğum kendi çözümümü sunuyorum. Zaten benim gibi ASP.NET MVC, AngularJS ve RequireJS yi bir araya getirerek yılın abzürdlüğünü yapacak fazla da kişi olmayacağından bu konu hakkında tutorial yazma hakkımı gizli tutuyorum. :)
 Ancak ola ki yardım isteyen olursa seve seve ederim. Twitter’da @turhanco hesabım üzerinden ya da GitHub’da @turhancoskun hesaplarından bana ulaşabilirsiniz.</p>
 
-<h3 id="ajaxbeginform">Ajax.BeginForm</h3>
-<p>Şimdi Ajax formunun tanımına bakarsak :</p>
+<p>###Ajax.BeginForm
+Şimdi Ajax formunun tanımına bakarsak :</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">@using</span> <span class="p">(</span><span class="n">Ajax</span><span class="p">.</span><span class="n">BeginForm</span><span class="p">(</span><span class="k">new</span> <span class="n">AjaxOptions</span><span class="p">()</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="nf">@using</span> <span class="p">(</span><span class="n">Ajax</span><span class="p">.</span><span class="nf">BeginForm</span><span class="p">(</span><span class="k">new</span> <span class="nf">AjaxOptions</span><span class="p">()</span>
 <span class="p">{</span>
-  <span class="n">HttpMethod</span> <span class="p">=</span> <span class="s">&quot;POST&quot;</span><span class="p">,</span>
-  <span class="n">UpdateTargetId</span> <span class="p">=</span> <span class="s">&quot;result&quot;</span><span class="p">,</span>
-  <span class="n">Url</span> <span class="p">=</span> <span class="s">&quot;/api/customers&quot;</span><span class="p">,</span>
-  <span class="n">OnFailure</span> <span class="p">=</span> <span class="s">&quot;onFailure&quot;</span><span class="p">,</span>
-  <span class="n">OnSuccess</span> <span class="p">=</span> <span class="s">&quot;onSuccess&quot;</span><span class="p">,</span>
+  <span class="n">HttpMethod</span> <span class="p">=</span> <span class="s">"POST"</span><span class="p">,</span>
+  <span class="n">UpdateTargetId</span> <span class="p">=</span> <span class="s">"result"</span><span class="p">,</span>
+  <span class="n">Url</span> <span class="p">=</span> <span class="s">"/api/customers"</span><span class="p">,</span>
+  <span class="n">OnFailure</span> <span class="p">=</span> <span class="s">"onFailure"</span><span class="p">,</span>
+  <span class="n">OnSuccess</span> <span class="p">=</span> <span class="s">"onSuccess"</span><span class="p">,</span>
   <span class="n">InsertionMode</span> <span class="p">=</span> <span class="n">InsertionMode</span><span class="p">.</span><span class="n">Replace</span>
-  <span class="p">}))</span></code></pre></div>
+  <span class="p">}))</span></code></pre></figure>
 
-<p>burada dikkatimizi çekmesi gereken üç satır var. Bunlar; <code>UpdateTargetId</code>, <code>OnFailure</code> ve <code>OnSuccess</code>.</p>
+<p>burada dikkatimizi çekmesi gereken üç satır var. Bunlar; <code class="highlighter-rouge">UpdateTargetId</code>, <code class="highlighter-rouge">OnFailure</code> ve <code class="highlighter-rouge">OnSuccess</code>.</p>
 
 <p>İsimlerinden de anlaşılacağı üzere :</p>
 
@@ -86,52 +86,52 @@ Ancak ola ki yardım isteyen olursa seve seve ederim. Twitter’da @turhanco hes
 
 <p>Burada apiden gelen sonuçları kullanıcıya gösterebilmek için şöyle birşey gerekebilir.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">onFailure</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#result&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#result&#39;</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">show</span><span class="p">().</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">&quot;alert-info&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;alert-danger&quot;</span><span class="p">);</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">onFailure</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">'#result'</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">'#result'</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">show</span><span class="p">().</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">"alert-info"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"alert-danger"</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">onSuccess</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#result&#39;</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">show</span><span class="p">().</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">&quot;alert-danger&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;alert-info&quot;</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">'#result'</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">show</span><span class="p">().</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">"alert-danger"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"alert-info"</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
 
 <p>tabiki bu <em>result</em> nedir diye sorarsanız :</p>
 
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-info&quot;</span> <span class="na">style=</span><span class="s">&quot;display: none&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">&quot;fa fa-info&quot;</span><span class="nt">&gt;&lt;/i&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">&quot;result&quot;</span><span class="nt">&gt;&lt;/span&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"alert alert-info"</span> <span class="na">style=</span><span class="s">"display: none"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-info"</span><span class="nt">&gt;&lt;/i&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">"result"</span><span class="nt">&gt;&lt;/span&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></figure>
 
-<h3 id="use-case">Use Case</h3>
-<p>Bir <em>drop down</em> üzerinden müşteri seçmek istiyorsunuz ve aradığınız müşteri orada yok diyelim. Drop down üzerine iliştirilmiş ‘Yeni Müşteri Ekle’ yazısına
+<p>###Use Case
+Bir <em>drop down</em> üzerinden müşteri seçmek istiyorsunuz ve aradığınız müşteri orada yok diyelim. Drop down üzerine iliştirilmiş ‘Yeni Müşteri Ekle’ yazısına
 tıkladığınızda yukarıdaki ajax formu bir bootstrap modal’ı içinde çıkıyor ve siz müşteri eklediğinizde söz konusu drop down kendiliğinden güncellenerek
 ana formdan hiç çıkmadan kayıt işleminize devam edebiliyorsunuz. İşte bütün bu dandikliklere katlanma sebebim bu. :) Meyvesinin bu kadar lezzetli olması.</p>
 
-<h3 id="ana-form">Ana Form</h3>
-<p>Bahsettiğim <code>Ajax.BeginForm()</code> ‘ların bir bootstrap modal’ı üzerinde çalıştığını ve başka bir formdaki drop downlardaki bilgilere bilgi eklemek için yardımcı olarak kullanıldığını tekrar edeyim.
+<p>###Ana Form
+Bahsettiğim <code class="highlighter-rouge">Ajax.BeginForm()</code> ‘ların bir bootstrap modal’ı üzerinde çalıştığını ve başka bir formdaki drop downlardaki bilgilere bilgi eklemek için yardımcı olarak kullanıldığını tekrar edeyim.
 Bu ana formdaki tüm veriler ve hatta drop down verileri angular.js ile kontrol ediliyor ve modal kapatıldığında angular ile kontrol edilen bu drop downlar update olmak zorunda.</p>
 
-<h3 id="requiredjsnin-devreye-girii">Required.js’nin devreye girişi</h3>
-<p>Require.js nin bağlılıkları asenkron yüklemesi ve bizi global değişkenler kullanmamaya zorlaması, konsepte aykırı gibi duruyor.
+<p>###Required.js’nin devreye girişi
+Require.js nin bağlılıkları asenkron yüklemesi ve bizi global değişkenler kullanmamaya zorlaması, konsepte aykırı gibi duruyor.
 Demek istediğim :</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">onSuccess</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#result&#39;</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">show</span><span class="p">().</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">&quot;alert-danger&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;alert-info&quot;</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">onSuccess</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">'#result'</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">show</span><span class="p">().</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">"alert-danger"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"alert-info"</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
 
-<p>JQuery bağlılığını require.js bizzat yükleyeceği için sayfa yüklenirken <code>$</code> tanımlayıcısını gören parser bize <code>undefined not a function</code> hatasını verecek.
+<p>JQuery bağlılığını require.js bizzat yükleyeceği için sayfa yüklenirken <code class="highlighter-rouge">$</code> tanımlayıcısını gören parser bize <code class="highlighter-rouge">undefined not a function</code> hatasını verecek.
 Çünkü JQuery henüz yüklenmedi!</p>
 
-<h3 id="eller-masaya">Eller masaya</h3>
-<p>Angular.js güdümündeki formda tek bir drop down veya aynı drop down’ın kendini tekrar etmesi durumları olabilir. (Bende olduğu gibi).
+<p>###Eller masaya
+Angular.js güdümündeki formda tek bir drop down veya aynı drop down’ın kendini tekrar etmesi durumları olabilir. (Bende olduğu gibi).
 Bu durumda callback fonksiyonlarını require.js ile bir AMD modülü içerisinde tanımlayalım:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
-<span class="nx">define</span><span class="p">([</span><span class="s1">&#39;jquery&#39;</span><span class="p">,</span> <span class="s1">&#39;angular&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$</span><span class="p">,</span> <span class="nx">angular</span><span class="p">)</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="s1">'use strict'</span><span class="p">;</span>
+<span class="nx">define</span><span class="p">([</span><span class="s1">'jquery'</span><span class="p">,</span> <span class="s1">'angular'</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$</span><span class="p">,</span> <span class="nx">angular</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">modalHelper</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">targetHtml</span><span class="p">,</span> <span class="nx">targetElement</span><span class="p">,</span> <span class="nx">multiple</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="nx">onSuccess</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                <span class="nx">$</span><span class="p">(</span><span class="nx">targetHtml</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">show</span><span class="p">().</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">&quot;alert-danger&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;alert-info&quot;</span><span class="p">);</span>
+            <span class="na">onSuccess</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">$</span><span class="p">(</span><span class="nx">targetHtml</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">show</span><span class="p">().</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">"alert-danger"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"alert-info"</span><span class="p">);</span>
 
                 <span class="kd">var</span> <span class="nx">isMultiple</span> <span class="o">=</span> <span class="nx">multiple</span> <span class="o">||</span> <span class="kc">false</span><span class="p">;</span>
 
@@ -150,38 +150,38 @@ Bu durumda callback fonksiyonlarını require.js ile bir AMD modülü içerisind
                 <span class="p">}</span>
 
             <span class="p">},</span>
-            <span class="nx">onFailure</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+            <span class="na">onFailure</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">$</span><span class="p">(</span><span class="nx">targetHtml</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
-                <span class="nx">$</span><span class="p">(</span><span class="nx">targetHtml</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">show</span><span class="p">().</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">&quot;alert-info&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;alert-danger&quot;</span><span class="p">);</span>
+                <span class="nx">$</span><span class="p">(</span><span class="nx">targetHtml</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">show</span><span class="p">().</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">"alert-info"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"alert-danger"</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="nx">modalHelper</span><span class="p">;</span>
-<span class="p">});</span></code></pre></div>
+<span class="p">});</span></code></pre></figure>
 
-<p>Dosyanının <code>modalhelper.js</code> verip common dizinine kopyaladım.</p>
+<p>Dosyanının <code class="highlighter-rouge">modalhelper.js</code> verip common dizinine kopyaladım.</p>
 
 <p>Ayrıca bu modülün içerisine işlem başarılı olduğunda angular.js kontrolündeki drop downların tazelenmesi için gerekli kodları da ekledim.</p>
 
 <p>Tanımladığımız bu modülü ana formun bağlı olduğu sayfadan sorumlu require.js kodundan çağırmamız gerekiyor.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">require</span><span class="p">([</span>
-        <span class="s1">&#39;jquery&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;ng-app&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;./common/modalhelper&#39;</span><span class="p">,</span> <span class="c1">// &lt;- Yazdığım modül burada</span>
-        <span class="s1">&#39;bootstrap&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;app/controllers/product&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;app/controllers/currency&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;app/controllers/customer&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;app/controllers/tax&#39;</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">require</span><span class="p">([</span>
+        <span class="s1">'jquery'</span><span class="p">,</span>
+        <span class="s1">'ng-app'</span><span class="p">,</span>
+        <span class="s1">'./common/modalhelper'</span><span class="p">,</span> <span class="c1">// &lt;- Yazdığım modül burada</span>
+        <span class="s1">'bootstrap'</span><span class="p">,</span>
+        <span class="s1">'app/controllers/product'</span><span class="p">,</span>
+        <span class="s1">'app/controllers/currency'</span><span class="p">,</span>
+        <span class="s1">'app/controllers/customer'</span><span class="p">,</span>
+        <span class="s1">'app/controllers/tax'</span>
 <span class="p">],</span>
 <span class="kd">function</span> <span class="p">(</span><span class="nx">$</span><span class="p">,</span> <span class="nx">ngapp</span><span class="p">,</span> <span class="nx">modalHelper</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">require</span><span class="p">([</span><span class="s1">&#39;application/controllers/invoice-create&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">require</span><span class="p">([</span><span class="s1">'application/controllers/invoice-create'</span><span class="p">],</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
         <span class="c1">// Bind Ajax.BeginForm callbacks</span>
-        <span class="kd">var</span> <span class="nx">customerHelper</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">modalHelper</span><span class="p">(</span><span class="s1">&#39;#result&#39;</span><span class="p">,</span> <span class="s1">&#39;#customer&#39;</span><span class="p">);</span>
-        <span class="kd">var</span> <span class="nx">productHelper</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">modalHelper</span><span class="p">(</span><span class="s1">&#39;#product_result&#39;</span><span class="p">,</span> <span class="s1">&#39;select[name=&quot;product&quot;]&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span> <span class="c1">//&lt;- multiple=true yaptık</span>
+        <span class="kd">var</span> <span class="nx">customerHelper</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">modalHelper</span><span class="p">(</span><span class="s1">'#result'</span><span class="p">,</span> <span class="s1">'#customer'</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">productHelper</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">modalHelper</span><span class="p">(</span><span class="s1">'#product_result'</span><span class="p">,</span> <span class="s1">'select[name="product"]'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span> <span class="c1">//&lt;- multiple=true yaptık</span>
         <span class="nb">window</span><span class="p">.</span><span class="nx">onFailure</span> <span class="o">=</span> <span class="nx">customerHelper</span><span class="p">.</span><span class="nx">onFailure</span><span class="p">;</span>
         <span class="nb">window</span><span class="p">.</span><span class="nx">onSuccess</span> <span class="o">=</span> <span class="nx">customerHelper</span><span class="p">.</span><span class="nx">onSuccess</span><span class="p">;</span>
         <span class="nb">window</span><span class="p">.</span><span class="nx">onProductSuccess</span> <span class="o">=</span> <span class="nx">productHelper</span><span class="p">.</span><span class="nx">onSuccess</span><span class="p">;</span>
@@ -191,7 +191,7 @@ Bu durumda callback fonksiyonlarını require.js ile bir AMD modülü içerisind
         <span class="c1">// ...</span>
 
       <span class="p">});</span>
-<span class="p">});</span></code></pre></div>
+<span class="p">});</span></code></pre></figure>
 
 <p>Modal tanımları aynı sayfada olduğu için farklı adlar veriyoruz. Aynı zamanda Ajax.BeginForm callback ler için global değişkenler
 istediğinden, window.onSuccess ve window.onFailure gibi global değişkenlere bağlıyoruz.</p>
@@ -208,10 +208,10 @@ istediğinden, window.onSuccess ve window.onFailure gibi global değişkenlere b
 
           <div class="social-share">
             <span>
-              <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-via="turhanco" data-lang="tr">Tweet</a>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="/blog/ajax-beginform-ve-requirejs/" data-via="turhanco" data-lang="tr">Tweet</a>
             </span>
             <span>
-              <div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
+              <div class="fb-like" data-href="/blog/ajax-beginform-ve-requirejs/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true">
               </div>
             </span>
           </div>
@@ -260,7 +260,7 @@ istediğinden, window.onSuccess ve window.onFailure gibi global değişkenlere b
     ga('send', 'pageview');
 
   </script>
-  <script src="/assets/post-0d4c6c767887b6afd9450488f2797e9e.js"></script>
+  <script type="text/javascript" src="/assets/post.js"></script>
 </body>
 
 </html>
